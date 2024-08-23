@@ -1,7 +1,8 @@
-// Initialize Firebase (replace with your Firebase configuration)
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+// Import Firebase libraries directly from the CDN
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js';
+import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.8.3/firebase-firestore.js';
 
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
   authDomain: "sd-crm-4e151.firebaseapp.com",
@@ -12,6 +13,7 @@ const firebaseConfig = {
   measurementId: "G-5XTC1W70QF"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
