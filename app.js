@@ -4,12 +4,12 @@ import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.c
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCxYRzKyrx43SklzWQpDB5fsHzEdsGGCts",
+  authDomain: "attendance-cf3c0.firebaseapp.com",
+  projectId: "attendance-cf3c0",
+  storageBucket: "attendance-cf3c0.appspot.com",
+  messagingSenderId: "524448696910",
+  appId: "1:524448696910:web:39bd8b35e560d98d81511f"
 };
 
 // Initialize Firebase
