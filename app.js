@@ -4,12 +4,12 @@ import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.c
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCxYRzKyrx43SklzWQpDB5fsHzEdsGGCts",
-  authDomain: "attendance-cf3c0.firebaseapp.com",
-  projectId: "attendance-cf3c0",
-  storageBucket: "attendance-cf3c0.appspot.com",
-  messagingSenderId: "524448696910",
-  appId: "1:524448696910:web:39bd8b35e560d98d81511f"
+  apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
+  authDomain: "sd-crm-4e151.firebaseapp.com",
+  projectId: "sd-crm-4e151",
+  storageBucket: "sd-crm-4e151.appspot.com",
+  messagingSenderId: "346515488213",
+  appId: "1:346515488213:web:e77b36da1732be1fb3515c",
 };
 
 // Initialize Firebase
