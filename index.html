@@ -34,11 +34,10 @@
   </form>
 
   <!-- Import Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-  
-  <!-- Your script file -->
-  <script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
+
     // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
@@ -51,8 +50,8 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
     // Handle form submissions
     document.getElementById('lead-form').addEventListener('submit', async (e) => {
@@ -61,7 +60,7 @@
       const email = document.getElementById('lead-email').value;
       const phone = document.getElementById('lead-phone').value;
       try {
-        const docRef = await db.collection('leads').add({ name, email, phone });
+        const docRef = await addDoc(collection(db, 'leads'), { name, email, phone });
         alert('Lead added with ID: ' + docRef.id);
       } catch (e) {
         console.error('Error adding document: ', e);
@@ -74,7 +73,7 @@
       const date = document.getElementById('booking-date').value;
       const details = document.getElementById('booking-details').value;
       try {
-        const docRef = await db.collection('bookings').add({ leadId, date, details });
+        const docRef = await addDoc(collection(db, 'bookings'), { leadId, date, details });
         alert('Booking added with ID: ' + docRef.id);
       } catch (e) {
         console.error('Error adding document: ', e);
@@ -87,7 +86,7 @@
       const visitDate = document.getElementById('visit-date').value;
       const notes = document.getElementById('visit-notes').value;
       try {
-        const docRef = await db.collection('visits').add({ bookingId, visitDate, notes });
+        const docRef = await addDoc(collection(db, 'visits'), { bookingId, visitDate, notes });
         alert('Visit added with ID: ' + docRef.id);
       } catch (e) {
         console.error('Error adding document: ', e);
