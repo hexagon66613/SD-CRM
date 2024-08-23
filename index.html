@@ -9,31 +9,53 @@
 <body>
   <h1>Firebase Web App</h1>
 
-  <h2>Add Lead</h2>
-  <form id="lead-form">
-    <input type="text" id="lead-name" placeholder="Name" required>
-    <input type="email" id="lead-email" placeholder="Email" required>
-    <input type="tel" id="lead-phone" placeholder="Phone" required>
-    <button type="submit">Add Lead</button>
-  </form>
+  <!-- Navigation Menu -->
+  <nav>
+    <ul>
+      <li><a href="#" id="show-leads">Leads Input</a></li>
+      <li><a href="#" id="show-bookings">Booking Input</a></li>
+      <li><a href="#" id="show-visits">Visit Input</a></li>
+    </ul>
+  </nav>
 
-  <h2>Book Appointment</h2>
-  <form id="booking-form">
-    <input type="text" id="booking-lead-id" placeholder="Lead ID" required>
-    <input type="date" id="booking-date" required>
-    <textarea id="booking-details" placeholder="Details" required></textarea>
-    <button type="submit">Book Appointment</button>
-  </form>
+  <!-- Forms -->
+  <div id="forms">
+    <section id="leads-form-section" class="form-section">
+      <h2>Add Lead</h2>
+      <form id="lead-form">
+        <input type="text" id="lead-name" placeholder="Name" required>
+        <input type="email" id="lead-email" placeholder="Email" required>
+        <input type="tel" id="lead-phone" placeholder="Phone" required>
+        <button type="submit">Add Lead</button>
+      </form>
+    </section>
 
-  <h2>Add Visit</h2>
-  <form id="visit-form">
-    <input type="text" id="visit-booking-id" placeholder="Booking ID" required>
-    <input type="date" id="visit-date" required>
-    <textarea id="visit-notes" placeholder="Notes" required></textarea>
-    <button type="submit">Add Visit</button>
-  </form>
+    <section id="booking-form-section" class="form-section" style="display:none;">
+      <h2>Book Appointment</h2>
+      <form id="booking-form">
+        <input type="text" id="booking-lead-id" placeholder="Lead ID" required>
+        <input type="date" id="booking-date" required>
+        <textarea id="booking-details" placeholder="Details" required></textarea>
+        <button type="submit">Book Appointment</button>
+      </form>
+    </section>
+
+    <section id="visit-form-section" class="form-section" style="display:none;">
+      <h2>Add Visit</h2>
+      <form id="visit-form">
+        <input type="text" id="visit-booking-id" placeholder="Booking ID" required>
+        <input type="date" id="visit-date" required>
+        <textarea id="visit-notes" placeholder="Notes" required></textarea>
+        <button type="submit">Add Visit</button>
+      </form>
+    </section>
+  </div>
 
   <!-- Import Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+  
+  <!-- Your script file -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
     import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
@@ -92,6 +114,28 @@
         console.error('Error adding document: ', e);
       }
     });
+
+    // Navigation functionality
+    document.getElementById('show-leads').addEventListener('click', () => {
+      document.getElementById('leads-form-section').style.display = 'block';
+      document.getElementById('booking-form-section').style.display = 'none';
+      document.getElementById('visit-form-section').style.display = 'none';
+    });
+
+    document.getElementById('show-bookings').addEventListener('click', () => {
+      document.getElementById('leads-form-section').style.display = 'none';
+      document.getElementById('booking-form-section').style.display = 'block';
+      document.getElementById('visit-form-section').style.display = 'none';
+    });
+
+    document.getElementById('show-visits').addEventListener('click', () => {
+      document.getElementById('leads-form-section').style.display = 'none';
+      document.getElementById('booking-form-section').style.display = 'none';
+      document.getElementById('visit-form-section').style.display = 'block';
+    });
+
+    // Set default view
+    document.getElementById('show-leads').click();
   </script>
 </body>
 </html>
