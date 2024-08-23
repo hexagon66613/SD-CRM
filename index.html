@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Web App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Firebase Web App</h1>
+
+  <h2>Add Lead</h2>
+  <form id="lead-form">
+    <input type="text" id="lead-name" placeholder="Name" required>
+    <input type="email" id="lead-email" placeholder="Email" required>
+    <input type="tel" id="lead-phone" placeholder="Phone" required>
+    <button type="submit">Add Lead</button>
+  </form>
+
+  <h2>Book Appointment</h2>
+  <form id="booking-form">
+    <input type="text" id="booking-lead-id" placeholder="Lead ID" required>
+    <input type="date" id="booking-date" required>
+    <textarea id="booking-details" placeholder="Details" required></textarea>
+    <button type="submit">Book Appointment</button>
+  </form>
+
+  <h2>Add Visit</h2>
+  <form id="visit-form">
+    <input type="text" id="visit-booking-id" placeholder="Booking ID" required>
+    <input type="date" id="visit-date" required>
+    <textarea id="visit-notes" placeholder="Notes" required></textarea>
+    <button type="submit">Add Visit</button>
+  </form>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
