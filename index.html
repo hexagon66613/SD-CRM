@@ -13,14 +13,23 @@
       <li><a href="leads.html">Leads Input</a></li>
       <li><a href="booking.html">Booking Input</a></li>
       <li><a href="visit.html">Visit Input</a></li>
+      <li><button id="profileButton">Profile</button></li>
     </ul>
   </nav>
 
   <div class="main-content">
     <h1>Welcome to the Input Forms</h1>
     <p>Select an option from the menu above to proceed.</p>
+    <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="userName">Loading...</p>
+        <button id="logoutButton">Log Out</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/profile.js"></script>
 </body>
 </html>
