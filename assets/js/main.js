@@ -22,22 +22,23 @@ const db = getFirestore(app);
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     // User is signed in
-    const profileButton = document.getElementById('profileButton');
-    profileButton.style.display = 'block'; // Show profile button
-    
+    document.getElementById('profileButton').style.display = 'block'; // Show profile button
+
     // Fetch username from Firestore
     try {
       const userDoc = doc(db, 'users', user.uid); // Adjust the collection name if necessary
       const userSnapshot = await getDoc(userDoc);
-      
+
       if (userSnapshot.exists()) {
         const userData = userSnapshot.data();
         document.getElementById('userName').textContent = `Username: ${userData.username || 'Unknown'}`;
       } else {
         console.error('No such document!');
+        document.getElementById('userName').textContent = 'No user data found.';
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
+      document.getElementById('userName').textContent = 'Error fetching user data.';
     }
   } else {
     // No user is signed in
@@ -63,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   logoutButton.addEventListener('click', () => {
     signOut(auth).then(() => {
-      // Sign-out successful.
       window.location.href = 'login.html'; // Redirect to login page
     }).catch((error) => {
       console.error('Error signing out:', error);
