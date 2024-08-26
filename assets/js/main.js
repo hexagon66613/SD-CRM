@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (userDoc.exists()) {
         const username = userDoc.data().username;
         profileButton.textContent = `Profile (${username})`;
-        // Show profile modal if needed
         profileButton.addEventListener('click', () => {
           profileModal.style.display = 'block';
         });
