@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+import { getAuth, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,6 +15,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,17 +24,34 @@ document.addEventListener('DOMContentLoaded', () => {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('username').value;
+    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      sessionStorage.setItem('authenticated', 'true');
-      sessionStorage.setItem('username', email); // Assuming email is used as username
-      window.location.href = 'index.html'; // Redirect to main menu
+      // Query Firestore for the user document
+      const userDoc = doc(db, 'users', username); // Assuming username is the document ID
+      const docSnapshot = await getDoc(userDoc);
+
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        // Check the password (assuming passwords are stored as plain text; otherwise, hash comparison is needed)
+        if (userData.password === password) {
+          // Generate a custom token for the user (needs to be implemented in backend)
+          const customToken = await generateCustomToken(username); // Implement this function in your backend
+          
+          await signInWithCustomToken(auth, customToken);
+          sessionStorage.setItem('authenticated', 'true');
+          sessionStorage.setItem('username', username);
+          window.location.href = 'index.html'; // Redirect to main menu
+        } else {
+          alert('Incorrect password.');
+        }
+      } else {
+        alert('Username not found.');
+      }
     } catch (error) {
       console.error('Error signing in:', error);
-      alert('Failed to sign in. Please check your credentials.');
+      alert('Failed to sign in. Please try again.');
     }
   });
 });
