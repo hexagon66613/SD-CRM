@@ -1,5 +1,3 @@
-// assets/js/profile.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const profileButton = document.getElementById('profileButton');
   const profileModal = document.getElementById('profileModal');
@@ -17,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   logoutButton.addEventListener('click', () => {
     sessionStorage.removeItem('authenticated');
-    sessionStorage.removeItem('userId');
     sessionStorage.removeItem('username');
     window.location.href = 'login.html'; // Redirect to login page after logout
   });
