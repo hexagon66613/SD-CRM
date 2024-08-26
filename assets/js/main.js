@@ -1,16 +1,15 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
 import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
-  authDomain: "sd-crm-4e151.firebaseapp.com",
-  projectId: "sd-crm-4e151",
-  storageBucket: "sd-crm-4e151.appspot.com",
-  messagingSenderId: "346515488213",
-  appId: "1:346515488213:web:e77b36da1732be1fb3515c",
-  measurementId: "G-5XTC1W70QF"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 // Initialize Firebase
@@ -19,11 +18,26 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Check authentication state
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     // User is signed in
-    document.getElementById('profileButton').style.display = 'block'; // Show profile button
-    document.getElementById('userName').textContent = `Username: ${user.displayName || 'Unknown'}`;
+    const profileButton = document.getElementById('profileButton');
+    profileButton.style.display = 'block'; // Show profile button
+    
+    // Fetch username from Firestore
+    try {
+      const userDoc = doc(db, 'users', user.uid); // Adjust the collection name if necessary
+      const userSnapshot = await getDoc(userDoc);
+      
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+        document.getElementById('userName').textContent = `Username: ${userData.username || 'Unknown'}`;
+      } else {
+        console.error('No such document!');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   } else {
     // No user is signed in
     document.getElementById('profileButton').style.display = 'none'; // Hide profile button
