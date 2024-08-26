@@ -40,6 +40,22 @@
       font-size: 2em;
     }
 
+    .profile-button {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: white;
+      color: #007bff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .profile-button:hover {
+      background: #e9ecef;
+    }
+
     /* Main content styling */
     .main-content {
       display: flex;
@@ -93,12 +109,13 @@
   <div class="header">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4bdT_upKtKcVsUImDjalLZFhksYFqtCrxcg&s" alt="SOZO Dental-CRM Logo">
     <h1>SOZO Dental-CRM</h1>
+    <button class="profile-button" id="profileButton">Profile</button>
   </div>
 
   <div class="main-content">
     <div class="menu-item">
       <a href="leads.html">
-        <img src="https://e7.pngegg.com/pngimages/599/500/png-clipart-lead-generation-sales-lead-advertising-business-multi-level-marketing-lead-generation-text-service.png" alt="Leads">
+        <img src="https://example.com/path/to/leads-image.jpg" alt="Leads">
         <h2>Leads Input</h2>
         <p>Manage and input new leads.</p>
       </a>
@@ -118,5 +135,9 @@
       </a>
     </div>
   </div>
+
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
