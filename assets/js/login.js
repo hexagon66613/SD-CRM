@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
+import { getFirestore, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,7 +14,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const db = getFirestore(app);
 
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
@@ -27,12 +27,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = passwordInput.value;
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, username, password);
-      const user = userCredential.user;
-      sessionStorage.setItem('authenticated', 'true');
-      sessionStorage.setItem('userId', user.uid);
-      sessionStorage.setItem('username', username);
-      window.location.href = 'index.html'; // Redirect to main menu page
+      // Query Firestore to find the user with the provided username and password
+      const q = query(
+        collection(db, 'users'),
+        where('username', '==', username),
+        where('password', '==', password)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        // User found
+        const userDoc = querySnapshot.docs[0].data();
+        sessionStorage.setItem('authenticated', 'true');
+        sessionStorage.setItem('userId', querySnapshot.docs[0].id);
+        sessionStorage.setItem('username', userDoc.username); // Store the real username
+        sessionStorage.setItem('name', userDoc.name); // Store the name if needed
+
+        window.location.href = 'index.html'; // Redirect to main menu page
+      } else {
+        alert('Invalid username or password.');
+      }
     } catch (error) {
       console.error('Error signing in:', error);
       alert('Failed to sign in. Check your username and password.');
