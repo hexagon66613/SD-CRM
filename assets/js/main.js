@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,32 +14,47 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Check if user is authenticated
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // User is signed in, display the profile button with username
-    const userDocRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userDocRef);
+document.addEventListener('DOMContentLoaded', () => {
+  const profileButton = document.getElementById('profileButton');
+  const profileModal = document.getElementById('profileModal');
+  const closeModal = profileModal.querySelector('.close');
+  const userNameDisplay = profileModal.querySelector('#userName');
+  const logoutButton = profileModal.querySelector('#logoutButton');
 
-    if (userDoc.exists()) {
-      const username = userDoc.data().username;
-      document.getElementById('profileButton').textContent = `Profile (${username})`;
+  // Check authentication state
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // User is signed in
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        const username = userDoc.data().username;
+        profileButton.textContent = `Profile (${username})`;
+        // Show profile modal if needed
+        profileButton.addEventListener('click', () => {
+          profileModal.style.display = 'block';
+        });
+        closeModal.addEventListener('click', () => {
+          profileModal.style.display = 'none';
+        });
+        logoutButton.addEventListener('click', () => {
+          signOut(auth).then(() => {
+            window.location.href = 'login.html'; // Redirect to login page
+          }).catch((error) => {
+            console.error('Error signing out:', error);
+          });
+        });
+        userNameDisplay.textContent = `Username: ${username}`;
+      } else {
+        console.error('No user document found');
+        window.location.href = 'login.html'; // Redirect if no user document
+      }
+    } else {
+      // No user is signed in
+      window.location.href = 'login.html';
     }
-  } else {
-    // No user is signed in, redirect to login page
-    window.location.href = 'login.html';
-  }
-});
-
-// Handle profile button click
-document.getElementById('profileButton').addEventListener('click', () => {
-  signOut(auth).then(() => {
-    // Sign-out successful, redirect to login page
-    window.location.href = 'login.html';
-  }).catch((error) => {
-    console.error('Error signing out:', error);
   });
 });
