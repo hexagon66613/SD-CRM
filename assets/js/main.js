@@ -20,9 +20,9 @@ const db = getFirestore(app);
 document.addEventListener('DOMContentLoaded', () => {
   const profileButton = document.getElementById('profileButton');
   const profileModal = document.getElementById('profileModal');
-  const closeModal = profileModal.querySelector('.close');
-  const userNameDisplay = profileModal.querySelector('#userName');
-  const logoutButton = profileModal.querySelector('#logoutButton');
+  const closeModal = profileModal?.querySelector('.close');
+  const userNameDisplay = profileModal?.querySelector('#userName');
+  const logoutButton = profileModal?.querySelector('#logoutButton');
 
   // Check authentication state
   onAuthStateChanged(auth, async (user) => {
@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (userDoc.exists()) {
         const username = userDoc.data().username;
         profileButton.textContent = `Profile (${username})`;
+        
         profileButton.addEventListener('click', () => {
           profileModal.style.display = 'block';
         });
