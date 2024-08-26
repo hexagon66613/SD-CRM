@@ -30,7 +30,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
     if (!querySnapshot.empty) {
       // User found
+      const userDoc = querySnapshot.docs[0];
       localStorage.setItem('authenticated', 'true');
+      localStorage.setItem('userId', userDoc.id); // Store user ID
       window.location.href = 'index.html';
     } else {
       alert('Invalid username or password');
