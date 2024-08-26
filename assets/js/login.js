@@ -1,11 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getFirestore, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-// Enable Firebase debug logging
-import { setLogLevel } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-setLogLevel('debug');
-
-// Initialize Firebase
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
   authDomain: "sd-crm-4e151.firebaseapp.com",
@@ -17,28 +13,18 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const auth = getAuth(app);
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const username = document.getElementById('username').value;
+  const email = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
   try {
-    const userQuery = query(collection(db, 'users'), where('username', '==', username), where('password', '==', password));
-    const querySnapshot = await getDocs(userQuery);
-
-    if (!querySnapshot.empty) {
-      const userDoc = querySnapshot.docs[0];
-      sessionStorage.setItem('authenticated', 'true');
-      sessionStorage.setItem('userId', userDoc.id); // Store user ID
-      sessionStorage.setItem('username', userDoc.data().username); // Store username
-      window.location.href = 'index.html';
-    } else {
-      alert('Invalid username or password');
-    }
+    await signInWithEmailAndPassword(auth, email, password);
+    window.location.href = 'index.html'; // Redirect to main menu
   } catch (error) {
-    console.error('Error logging in:', error);
-    alert('An error occurred. Please try again.');
+    console.error('Error signing in:', error);
+    alert('Login failed: ' + error.message);
   }
 });
