@@ -16,13 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   logoutButton.addEventListener('click', () => {
-    localStorage.removeItem('authenticated');
-    localStorage.removeItem('userId');
+    sessionStorage.removeItem('authenticated');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('username');
     window.location.href = 'login.html'; // Redirect to login page after logout
   });
 
   // Display username in the modal
-  const userId = localStorage.getItem('username');
+  const username = sessionStorage.getItem('username');
   if (username) {
     userNameDisplay.textContent = `Username: ${username}`;
   } else {
