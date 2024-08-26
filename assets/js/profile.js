@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Display username in the modal
-  const userId = localStorage.getItem('userId');
-  if (userId) {
-    userNameDisplay.textContent = `User ID: ${userId}`;
+  const userId = localStorage.getItem('username');
+  if (username) {
+    userNameDisplay.textContent = `Username: ${username}`;
   } else {
     userNameDisplay.textContent = 'Not logged in';
   }
