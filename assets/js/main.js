@@ -1,5 +1,4 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
-import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 // Firebase configuration
@@ -15,44 +14,20 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const firestore = getFirestore(app);
 
-// Check authentication state
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // User is signed in
-    document.getElementById('profileButton').style.display = 'block'; // Show profile button
-
-    // Fetch username from Firestore
-    try {
-      const userDoc = doc(db, 'users', user.uid); // Adjust the collection name if necessary
-      const userSnapshot = await getDoc(userDoc);
-
-      if (userSnapshot.exists()) {
-        const userData = userSnapshot.data();
-        document.getElementById('userName').textContent = `Username: ${userData.username || 'Unknown'}`;
-      } else {
-        console.error('No such document!');
-        document.getElementById('userName').textContent = 'No user data found.';
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      document.getElementById('userName').textContent = 'Error fetching user data.';
-    }
-  } else {
-    // No user is signed in
-    document.getElementById('profileButton').style.display = 'none'; // Hide profile button
-    window.location.href = 'login.html'; // Redirect to login page
-  }
-});
-
-// Profile Modal Management
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  const authenticated = sessionStorage.getItem('authenticated');
   const profileButton = document.getElementById('profileButton');
   const profileModal = document.getElementById('profileModal');
   const closeModal = profileModal.querySelector('.close');
+  const userNameDisplay = profileModal.querySelector('#userName');
   const logoutButton = profileModal.querySelector('#logoutButton');
+
+  if (!authenticated) {
+    window.location.href = 'login.html'; // Redirect to login page if not authenticated
+    return;
+  }
 
   profileButton.addEventListener('click', () => {
     profileModal.style.display = 'block';
@@ -63,10 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   logoutButton.addEventListener('click', () => {
-    signOut(auth).then(() => {
-      window.location.href = 'login.html'; // Redirect to login page
-    }).catch((error) => {
-      console.error('Error signing out:', error);
-    });
+    sessionStorage.removeItem('authenticated');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('username');
+    window.location.href = 'login.html'; // Redirect to login page after logout
   });
+
+  // Display username in the modal
+  const username = sessionStorage.getItem('username');
+  if (username) {
+    userNameDisplay.textContent = `Username: ${username}`;
+  } else {
+    userNameDisplay.textContent = 'Not logged in';
+  }
 });
