@@ -5,138 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Main Menu</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    /* Basic reset */
-    body, h1, h2, ul, li, a {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    /* General styling */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
-    }
-
-    /* Header styling */
-    .header {
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      position: relative;
-    }
-
-    .header img {
-      height: 50px;
-      position: absolute;
-      left: 20px;
-      top: 20px;
-    }
-
-    .header h1 {
-      margin-left: 80px;
-      font-size: 2em;
-    }
-
-    .profile-button {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      background: white;
-      color: #007bff;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .profile-button:hover {
-      background: #e9ecef;
-    }
-
-    /* Main content styling */
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .menu-item {
-      width: 80%;
-      max-width: 400px;
-      margin: 10px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      background-color: white;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-
-    .menu-item:hover {
-      transform: scale(1.05);
-    }
-
-    .menu-item img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      margin-bottom: 10px;
-    }
-
-    .menu-item h2 {
-      margin-bottom: 10px;
-      font-size: 1.5em;
-    }
-
-    .menu-item p {
-      font-size: 1em;
-      color: #555;
-    }
-
-    /* Responsive design */
-    @media (max-width: 600px) {
-      .menu-item {
-        width: 90%;
-      }
-    }
-  </style>
 </head>
 <body>
-  <div class="header">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4bdT_upKtKcVsUImDjalLZFhksYFqtCrxcg&s" alt="SOZO Dental-CRM Logo">
-    <h1>SOZO Dental-CRM</h1>
-    <button class="profile-button" id="profileButton">Profile</button>
-  </div>
+  <header>
+    <div class="logo-container">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4bdT_upKtKcVsUImDjalLZFhksYFqtCrxcg&s" alt="SOZO Dental-CRM Logo" id="logo">
+      <h1>SOZO Dental-CRM</h1>
+      <button id="profileButton">Profile</button>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="leads.html">Leads Input</a></li>
+      <li><a href="booking.html">Booking Input</a></li>
+      <li><a href="visit.html">Visit Input</a></li>
+    </ul>
+  </nav>
 
   <div class="main-content">
-    <div class="menu-item">
-      <a href="leads.html">
-        <img src="https://example.com/path/to/leads-image.jpg" alt="Leads">
-        <h2>Leads Input</h2>
-        <p>Manage and input new leads.</p>
-      </a>
+    <h2>Welcome to the Input Forms</h2>
+    <div class="card-container">
+      <div class="card">
+        <img src="assets/img/leads.png" alt="Leads">
+        <h3>Leads</h3>
+        <p>Manage your leads here.</p>
+      </div>
+      <div class="card">
+        <img src="assets/img/booking.png" alt="Booking">
+        <h3>Booking</h3>
+        <p>Manage your bookings here.</p>
+      </div>
+      <div class="card">
+        <img src="assets/img/visit.png" alt="Visit">
+        <h3>Visit</h3>
+        <p>Manage your visits here.</p>
+      </div>
     </div>
-    <div class="menu-item">
-      <a href="booking.html">
-        <img src="https://example.com/path/to/booking-image.jpg" alt="Booking">
-        <h2>Booking Input</h2>
-        <p>Record and manage bookings.</p>
-      </a>
-    </div>
-    <div class="menu-item">
-      <a href="visit.html">
-        <img src="https://example.com/path/to/visit-image.jpg" alt="Visit">
-        <h2>Visit Input</h2>
-        <p>Track and manage visits.</p>
-      </a>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Profile</h2>
+      <p id="userName">Username: </p>
+      <button id="logoutButton">Logout</button>
     </div>
   </div>
 
   <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
   <script type="module" src="assets/js/main.js"></script>
 </body>
