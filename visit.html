@@ -7,6 +7,14 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+  <header>
+    <div class="logo-container">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4bdT_upKtKcVsUImDjalLZFhksYFqtCrxcg&s" alt="SOZO Dental-CRM Logo" id="logo">
+      <h1>SOZO Dental-CRM</h1>
+      <button id="profileButton">Profile</button>
+    </div>
+  </header>
+
   <nav>
     <ul>
       <li><a href="index.html">Back to Main Menu</a></li>
@@ -18,11 +26,14 @@
   <div class="form-section">
     <h2>Visit Input Form</h2>
     <form id="visit-form">
-      <label for="visit-id">Booking ID:</label>
-      <input type="text" id="visit-id" name="visit-id" required>
+      <label for="visit-name">Name:</label>
+      <input type="text" id="visit-name" name="visit-name" required>
 
-      <label for="visit-date">Visit Date:</label>
+      <label for="visit-date">Date:</label>
       <input type="date" id="visit-date" name="visit-date" required>
+
+      <label for="visit-time">Time:</label>
+      <input type="time" id="visit-time" name="visit-time" required>
 
       <button type="submit">Submit</button>
     </form>
