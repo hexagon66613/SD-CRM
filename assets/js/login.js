@@ -1,20 +1,18 @@
 // assets/js/login.js
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
-import { getFirestore, query, where, getDocs, collection } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
-  authDomain: "sd-crm-4e151.firebaseapp.com",
-  projectId: "sd-crm-4e151",
-  storageBucket: "sd-crm-4e151.appspot.com",
-  messagingSenderId: "346515488213",
-  appId: "1:346515488213:web:e77b36da1732be1fb3515c",
-  measurementId: "G-5XTC1W70QF"
-};
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getFirestore, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
 // Initialize Firebase
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -24,15 +22,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value;
 
   try {
-    // Query Firestore for user credentials
     const userQuery = query(collection(db, 'users'), where('username', '==', username), where('password', '==', password));
     const querySnapshot = await getDocs(userQuery);
 
     if (!querySnapshot.empty) {
-      // User found
       const userDoc = querySnapshot.docs[0];
-      localStorage.setItem('authenticated', 'true');
-      localStorage.setItem('userId', userDoc.id); // Store user ID
+      sessionStorage.setItem('authenticated', 'true');
+      sessionStorage.setItem('userId', userDoc.id); // Store user ID
+      sessionStorage.setItem('username', userDoc.data().username); // Store username
       window.location.href = 'index.html';
     } else {
       alert('Invalid username or password');
