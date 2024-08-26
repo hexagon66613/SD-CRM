@@ -35,7 +35,8 @@ nav ul li a {
 .form-section h2 {
   margin-bottom: 10px;
 }
-/* assets/css/style.css */
+
+/* Modal Styling */
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
@@ -72,7 +73,7 @@ nav ul li a {
   cursor: pointer;
 }
 
-
+/* Form Inputs and Buttons */
 form input, form textarea, form button {
   display: block;
   margin: 10px 0;
