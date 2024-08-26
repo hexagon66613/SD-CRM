@@ -1,7 +1,9 @@
-// assets/js/login.js
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getFirestore, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+// Enable Firebase debug logging
+import { setLogLevel } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+setLogLevel('debug');
 
 // Initialize Firebase
 const firebaseConfig = {
