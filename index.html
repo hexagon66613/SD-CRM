@@ -5,31 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Main Menu</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <script type="module" src="assets/js/auth-check.js" defer></script>
+  <style>
+    /* Basic reset */
+    body, h1, h2, ul, li, a {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* General styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    /* Header styling */
+    .header {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .header img {
+      height: 50px;
+      position: absolute;
+      left: 20px;
+      top: 20px;
+    }
+
+    .header h1 {
+      margin-left: 80px;
+      font-size: 2em;
+    }
+
+    /* Main content styling */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .menu-item {
+      width: 80%;
+      max-width: 400px;
+      margin: 10px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover {
+      transform: scale(1.05);
+    }
+
+    .menu-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .menu-item h2 {
+      margin-bottom: 10px;
+      font-size: 1.5em;
+    }
+
+    .menu-item p {
+      font-size: 1em;
+      color: #555;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .menu-item {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="leads.html">Leads Input</a></li>
-      <li><a href="booking.html">Booking Input</a></li>
-      <li><a href="visit.html">Visit Input</a></li>
-      <li><button id="profileButton">Profile</button></li>
-    </ul>
-  </nav>
-
-  <div class="main-content">
-    <h1>Welcome to the Input Forms</h1>
-    <p>Select an option from the menu above to proceed.</p>
-    <div id="profileModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p id="userName">Loading...</p>
-        <button id="logoutButton">Log Out</button>
-      </div>
-    </div>
+  <div class="header">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4bdT_upKtKcVsUImDjalLZFhksYFqtCrxcg&s" alt="SOZO Dental-CRM Logo">
+    <h1>SOZO Dental-CRM</h1>
   </div>
 
-  <script type="module" src="assets/js/app.js"></script>
-  <script type="module" src="assets/js/profile.js"></script>
+  <div class="main-content">
+    <div class="menu-item">
+      <a href="leads.html">
+        <img src="https://e7.pngegg.com/pngimages/599/500/png-clipart-lead-generation-sales-lead-advertising-business-multi-level-marketing-lead-generation-text-service.png" alt="Leads">
+        <h2>Leads Input</h2>
+        <p>Manage and input new leads.</p>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a href="booking.html">
+        <img src="https://example.com/path/to/booking-image.jpg" alt="Booking">
+        <h2>Booking Input</h2>
+        <p>Record and manage bookings.</p>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a href="visit.html">
+        <img src="https://example.com/path/to/visit-image.jpg" alt="Visit">
+        <h2>Visit Input</h2>
+        <p>Track and manage visits.</p>
+      </a>
+    </div>
+  </div>
 </body>
 </html>
