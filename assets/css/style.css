@@ -25,12 +25,13 @@ header {
 }
 
 #logo {
-  height: 50px; /* Adjust as needed */
+  height: 80px; /* Adjusted size */
   margin-right: 15px;
 }
 
 h1 {
   margin: 0;
+  font-size: 24px; /* Adjust as needed */
 }
 
 #profileButton {
@@ -40,13 +41,16 @@ h1 {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 12px 20px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 #profileButton:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 /* Blue line below the header */
@@ -77,16 +81,17 @@ h1 {
   color: black;
   width: 250px;
   margin: 10px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card img {
-  width: 100px;
-  height: 100px;
+  width: 120px; /* Slightly larger image */
+  height: 120px;
 }
 
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .card h3 {
@@ -117,6 +122,8 @@ h1 {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .close {
@@ -133,6 +140,7 @@ h1 {
   cursor: pointer;
 }
 
+/* Styling for forms and buttons */
 form input, form textarea, form button {
   display: block;
   margin: 10px 0;
@@ -140,18 +148,42 @@ form input, form textarea, form button {
 
 form input, form textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 form button {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 12px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 form button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Styling for "Back to Main Menu" button */
+.back-to-main-menu {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.back-to-main-menu:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
