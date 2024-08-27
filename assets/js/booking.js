@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error fetching leads:', error);
   }
 
+  // Populate Perawatan dropdown (assuming similar logic to Leads ID)
+  // If "Perawatan" options are predefined, you can hard-code them or fetch them from Firestore
+  const perawatanOptions = ['Option1', 'Option2', 'Option3']; // Replace with actual options
+  perawatanOptions.forEach(optionText => {
+    const option = document.createElement('option');
+    option.value = optionText;
+    option.textContent = optionText;
+    perawatanSelect.appendChild(option);
+  });
+
   // Handle Leads ID change
   leadsSelect.addEventListener('change', async (event) => {
     const selectedLeadId = event.target.value;
@@ -33,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('pic-leads').value = data['PIC Leads'] || '';
           document.getElementById('channel').value = data['Channel'] || '';
           document.getElementById('leads-from').value = data['Leads From'] || '';
-          perawatanSelect.value = data['Perawatan'] || '';
+          document.getElementById('perawatan').value = data['Perawatan'] || '';
         }
       } catch (error) {
         console.error('Error fetching lead data:', error);
@@ -69,8 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       await addDoc(collection(db, 'bookings'), formData);
       alert('Booking added successfully!');
-      // Redirect to create a new booking form
-      window.location.reload();
+      window.location.reload(); // Reload to clear form after submission
     } catch (error) {
       console.error('Error adding document: ', error);
       alert('Failed to add booking. Please try again.');
