@@ -1,6 +1,5 @@
-import { db, auth } from './firebase-config.js'; // Import the Firebase config
-import { collection, doc, setDoc, getDocs, getDoc, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
+import { db } from './firebase-config.js'; // Import the Firebase config
+import { collection, doc, getDoc, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
@@ -70,11 +69,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       await addDoc(collection(db, 'bookings'), formData);
       alert('Booking added successfully!');
-      // Redirect to create a new booking form
-      window.location.reload();
-    } catch (error) {
-      console.error('Error adding document: ', error);
-      alert('Failed to add booking. Please try again.');
-    }
-  });
-});
+      // Redirect to create a new booking
