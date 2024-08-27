@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Populate Perawatan dropdown (example options)
-  const perawatanOptions = ['Option1', 'Option2', 'Option3']; // Replace with actual options
+  const perawatanOptions = ['Cabut Gigi Bungsu', 'Scaling', 'Pemeriksaan']; // Add all actual options
   perawatanOptions.forEach(optionText => {
     const option = document.createElement('option');
     option.value = optionText;
@@ -37,12 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const leadData = await getDoc(leadsDoc);
         if (leadData.exists()) {
           const data = leadData.data();
-          document.getElementById('nama').value = data['Nama'] || '';
-          document.getElementById('no-telp').value = data['No. telp'] || '';
-          document.getElementById('pic-leads').value = data['PIC Leads'] || '';
-          document.getElementById('channel').value = data['Channel'] || '';
-          document.getElementById('leads-from').value = data['Leads From'] || '';
-          document.getElementById('perawatan').value = data['Perawatan'] || '';
+          document.getElementById('nama').value = data['leadName'] || '';
+          document.getElementById('no-telp').value = data['leadPhone'] || '';
+          document.getElementById('pic-leads').value = data['picLeads'] || '';
+          document.getElementById('channel').value = data['channel'] || '';
+          document.getElementById('leads-from').value = data['leadsFrom'] || '';
+          document.getElementById('perawatan').value = data['perawatan'] || '';
+        } else {
+          console.warn('No such document!');
         }
       } catch (error) {
         console.error('Error fetching lead data:', error);
