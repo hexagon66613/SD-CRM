@@ -121,26 +121,16 @@ form {
 label {
   margin-bottom: 8px;
   font-weight: bold;
+  display: inline-block;
+  width: 150px; /* Fixed width for labels */
 }
 
-/* Form layout */
-.form-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.form-row label {
-  flex: 1;
-  margin-right: 10px;
-}
-
-.form-row .form-value {
-  flex: 2;
-}
-
-select, input[type="text"], input[type="date"], input[type="time"] {
-  width: 100%;
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+input[type="time"] {
+  width: calc(100% - 160px); /* Adjust width to fit next to label */
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #ddd;
