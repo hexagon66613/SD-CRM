@@ -1,9 +1,6 @@
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
-
-// Initialize Firebase Firestore
-const db = getFirestore();
-const auth = getAuth();
+import { db, auth } from './firebase-config.js';  // Import the Firebase config
+import { collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 // Generate a unique Leads ID
 async function generateLeadsID() {
@@ -86,4 +83,9 @@ async function saveLeadsFormData(event) {
 }
 
 // Initialize form and populate dropdowns
-document.add
+document.addEventListener('DOMContentLoaded', async () => {
+  const leadsId = await generateLeadsID();
+  document.getElementById('leads-id').value = leadsId;
+  populateUserDropdowns();
+  document.getElementById('leads-form').addEventListener('submit', saveLeadsFormData);
+});
