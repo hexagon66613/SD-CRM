@@ -6,7 +6,7 @@
   <title>Booking Form</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- Select2 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.5/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
   <header>
@@ -150,13 +150,33 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Your custom JavaScript -->
   <script type="module">
-    import  { db } from './assets/js/firebase-config.js';
+    import { db } from './assets/js/firebase-config.js';
     import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
     $(document).ready(function() {
-      // Initialize Select2
+      // Initialize Select2 for the dropdowns
       $('#leads-id').select2({
         placeholder: "Select Leads ID",
+        allowClear: true
+      });
+
+      $('#perawatan').select2({
+        placeholder: "Select Perawatan",
+        allowClear: true
+      });
+
+      $('#membership').select2({
+        placeholder: "Select Yes/No",
+        allowClear: true
+      });
+
+      $('#klinik-tujuan').select2({
+        placeholder: "Select Klinik Tujuan",
+        allowClear: true
+      });
+
+      $('#asuransi').select2({
+        placeholder: "Select Yes/No",
         allowClear: true
       });
     });
@@ -184,8 +204,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const leadsSelect = $('#leads-id');  // Use jQuery selector for Select2 initialization
-      const perawatanSelect = document.getElementById('perawatan');
+      const leadsSelect = $('#leads-id');
+      const perawatanSelect = $('#perawatan');
 
       async function fetchLeads() {
         try {
@@ -212,17 +232,17 @@
 
         const bookingData = {
           bookingId: document.getElementById('booking-id').value,
-          leadsId: document.getElementById('leads-id').value,
+          leadsId: document.getElementById('leads-id').val(),
           nama: document.getElementById('nama').textContent,
           noTelp: document.getElementById('no-telp').textContent,
           picLeads: document.getElementById('pic-leads').textContent,
           channel: document.getElementById('channel').textContent,
           leadsFrom: document.getElementById('leads-from').textContent,
-          perawatan: document.getElementById('perawatan').value,
-          membership: document.getElementById('membership').value,
-          klinikTujuan: document.getElementById('klinik-tujuan').value,
+          perawatan: document.getElementById('perawatan').val(),
+          membership: document.getElementById('membership').val(),
+          klinikTujuan: document.getElementById('klinik-tujuan').val(),
           namaPromo: document.getElementById('nama-promo').value,
-          asuransi: document.getElementById('asuransi').value,
+          asuransi: document.getElementById('asuransi').val(),
           bookingDate: document.getElementById('booking-date').value,
           bookingTime: document.getElementById('booking-time').value,
           doctor: document.getElementById('doctor').value
@@ -240,7 +260,7 @@
 
           // Reset dropdowns
           leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
-          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
+          perawatanSelect.empty().append('<option value="" disabled>Select Perawatan</option>');
 
           // Fetch updated leads to repopulate dropdown
           await fetchLeads();
