@@ -148,6 +148,120 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- Select2 JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
-  <script type="module" src="assets/js/booking.js"></script>
+  <!-- Your custom JavaScript -->
+  <script type="module">
+    import { db } from './firebase-config.js';
+    import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+
+    $(document).ready(function() {
+      // Initialize Select2
+      $('#leads-id').select2({
+        placeholder: "Select Leads ID",
+        allowClear: true
+      });
+    });
+
+    async function generateBookingID() {
+      const bookingsRef = collection(db, 'bookings');
+      const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        return 'SDB000000000001'; // Start with the initial ID
+      } else {
+        const lastDoc = querySnapshot.docs[0];
+        const lastID = lastDoc.data()['Booking ID'];
+
+        const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
+        if (isNaN(lastIDNumber)) {
+          throw new Error(`Failed to parse Booking ID: ${lastID}`);
+        }
+
+        const newIDNumber = lastIDNumber + 1;
+        const newID = `SDB${newIDNumber.toString().padStart(12, '0')}`;
+        return newID;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const leadsSelect = $('#leads-id');  // Use jQuery selector for Select2 initialization
+      const perawatanSelect = document.getElementById('perawatan');
+
+      async function fetchLeads() {
+        try {
+          const leadsSnapshot = await getDocs(collection(db, 'leads'));
+          leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>'); // Clear and populate dropdown
+          leadsSnapshot.forEach((doc) => {
+            const data = doc.data();
+            const option = $('<option></option>').val(data.leadsId).text(`${data.leadsId} | ${data.leadName}`);
+            leadsSelect.append(option);
+          });
+
+          // Reinitialize Select2 after populating options
+          leadsSelect.select2({
+            placeholder: "Select Leads ID",
+            allowClear: true
+          });
+        } catch (error) {
+          console.error('Error fetching leads: ', error);
+        }
+      }
+
+      async function handleFormSubmission(event) {
+        event.preventDefault();  // Prevent the default form submission
+
+        const bookingData = {
+          bookingId: document.getElementById('booking-id').value,
+          leadsId: document.getElementById('leads-id').value,
+          nama: document.getElementById('nama').textContent,
+          noTelp: document.getElementById('no-telp').textContent,
+          picLeads: document.getElementById('pic-leads').textContent,
+          channel: document.getElementById('channel').textContent,
+          leadsFrom: document.getElementById('leads-from').textContent,
+          perawatan: document.getElementById('perawatan').value,
+          membership: document.getElementById('membership').value,
+          klinikTujuan: document.getElementById('klinik-tujuan').value,
+          namaPromo: document.getElementById('nama-promo').value,
+          asuransi: document.getElementById('asuransi').value,
+          bookingDate: document.getElementById('booking-date').value,
+          bookingTime: document.getElementById('booking-time').value,
+          doctor: document.getElementById('doctor').value
+        };
+
+        try {
+          await setDoc(doc(db, 'bookings', bookingData.bookingId), bookingData);
+          alert('Booking added successfully!');
+          // Clear form fields and reset dropdowns
+          document.getElementById('nama').textContent = '';
+          document.getElementById('no-telp').textContent = '';
+          document.getElementById('pic-leads').textContent = '';
+          document.getElementById('channel').textContent = '';
+          document.getElementById('leads-from').textContent = '';
+
+          // Reset dropdowns
+          leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
+          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
+
+          // Fetch updated leads to repopulate dropdown
+          await fetchLeads();
+          
+          // Set a new Booking ID for the next entry
+          document.getElementById('booking-id').value = await generateBookingID();
+        } catch (error) {
+          console.error('Error adding document: ', error);
+          alert('Failed to add booking. Please try again.');
+        }
+      }
+
+      // Set initial Booking ID
+      document.getElementById('booking-id').value = await generateBookingID();
+      
+      // Attach form submission handler
+      document.getElementById('booking-form').addEventListener('submit', handleFormSubmission);
+      
+      // Fetch leads on page load
+      await fetchLeads();
+    });
+  </script>
 </body>
 </html>
