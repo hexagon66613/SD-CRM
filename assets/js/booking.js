@@ -2,7 +2,7 @@ import { db } from './firebase-config.js';  // Import your Firebase config
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 $(document).ready(function() {
-  // Initialize Select2 for the dropdowns
+  // Initialize Select2 for dropdowns
   $('#leads-id').select2({
     placeholder: "Select Leads ID",
     allowClear: true
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Handle Leads ID selection
   leadsSelect.on('change', async () => {
     const selectedLeadsId = leadsSelect.val(); // This will be just the Leads ID
-    console.log('Selected Leads ID:', selectedLeadsId);  // Debugging line
+    console.log('Selected Leads ID:', selectedLeadsId); // Debugging line
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
