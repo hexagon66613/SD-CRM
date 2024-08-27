@@ -13,9 +13,19 @@ async function generateLeadsID() {
   } else {
     const lastDoc = querySnapshot.docs[0];
     const lastID = lastDoc.data().leadsId; // Fetching Leads ID from document data
+    console.log(`Last Leads ID: ${lastID}`); // Debugging line
+
     const lastIDNumber = parseInt(lastID.replace('SDL', ''), 10);
+    console.log(`Last ID Number: ${lastIDNumber}`); // Debugging line
+
+    if (isNaN(lastIDNumber)) {
+      throw new Error(`Failed to parse Leads ID: ${lastID}`);
+    }
+
     const newIDNumber = lastIDNumber + 1;
-    return `SDL${newIDNumber.toString().padStart(12, '0')}`;
+    const newID = `SDL${newIDNumber.toString().padStart(12, '0')}`;
+    console.log(`New Leads ID: ${newID}`); // Debugging line
+    return newID;
   }
 }
 
@@ -27,8 +37,8 @@ async function populateUserDropdowns() {
   const querySnapshot = await getDocs(usersRef);
 
   // Clear previous options
-  picLeadsSelect.innerHTML = '<option value="Unassigned" selected>Unassigned</option>';
-  picClosedSelect.innerHTML = '<option value="Unassigned" selected>Unassigned</option>';
+  picLeadsSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
+  picClosedSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
 
   // Populate options for both dropdowns
   querySnapshot.forEach(doc => {
@@ -54,19 +64,19 @@ async function saveLeadsFormData(event) {
   event.preventDefault();
 
   const leadsId = document.getElementById('lead-id').value;
-  const leadName = document.getElementById('lead-name').value;
-  const leadPhone = document.getElementById('lead-phone').value;
-  const picLeads = document.getElementById('pic-leads').value;
-  const channel = document.getElementById('channel').value;
-  const leadsFrom = document.getElementById('lead-from').value;
-  const dateFirstChat = document.getElementById('date-first-chat').value;
-  const dateCreated = document.getElementById('date-created').value;
-  const perawatan = document.getElementById('perawatan').value;
-  const l1Result = document.getElementById('l1-result').value;
-  const l2Result = document.getElementById('l2-result').value;
-  const l3Result = document.getElementById('l3-result').value;
-  const remarks = document.getElementById('remarks').value;
-  const picClosed = document.getElementById('pic-closed').value;
+  const leadName = document.getElementById('lead-name').value || ''; // Allow blank values
+  const leadPhone = document.getElementById('lead-phone').value || ''; // Allow blank values
+  const picLeads = document.getElementById('pic-leads').value || 'Unassigned'; // Default to Unassigned
+  const channel = document.getElementById('channel').value || ''; // Allow blank values
+  const leadsFrom = document.getElementById('lead-from').value || ''; // Allow blank values
+  const dateFirstChat = document.getElementById('date-first-chat').value || ''; // Allow blank values
+  const dateCreated = document.getElementById('date-created').value; // Read-only
+  const perawatan = document.getElementById('perawatan').value || ''; // Allow blank values
+  const l1Result = document.getElementById('l1-result').value || ''; // Allow blank values
+  const l2Result = document.getElementById('l2-result').value || ''; // Allow blank values
+  const l3Result = document.getElementById('l3-result').value || ''; // Allow blank values
+  const remarks = document.getElementById('remarks').value || ''; // Allow blank values
+  const picClosed = document.getElementById('pic-closed').value || 'Unassigned'; // Default to Unassigned
 
   const leadsRef = collection(db, 'leads');
   await addDoc(leadsRef, {
@@ -93,11 +103,7 @@ async function saveLeadsFormData(event) {
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsId = await generateLeadsID();
   document.getElementById('lead-id').value = leadsId;
-  
-  // Automatically set the current date for date-created
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('date-created').value = today;
-  
+  document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
   populateUserDropdowns();
   document.getElementById('leads-form').addEventListener('submit', saveLeadsFormData);
 });
