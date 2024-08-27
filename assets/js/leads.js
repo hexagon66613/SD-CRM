@@ -1,0 +1,89 @@
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
+
+// Initialize Firebase Firestore
+const db = getFirestore();
+const auth = getAuth();
+
+// Generate a unique Leads ID
+async function generateLeadsID() {
+  const leadsRef = collection(db, 'leads');
+  const q = query(leadsRef, orderBy('leadsId', 'desc'), limit(1));
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    return 'SD000000000001'; // Start with the initial ID
+  } else {
+    const lastDoc = querySnapshot.docs[0];
+    const lastID = lastDoc.id; // Assuming document ID is used as Leads ID
+    const lastIDNumber = parseInt(lastID.replace('SD', ''), 10);
+    const newIDNumber = lastIDNumber + 1;
+    return `SD${newIDNumber.toString().padStart(12, '0')}`;
+  }
+}
+
+// Populate PIC Leads and PIC Closed dropdowns with usernames
+async function populateUserDropdowns() {
+  const picLeadsSelect = document.getElementById('pic-leads');
+  const picClosedSelect = document.getElementById('pic-closed');
+  const usersRef = collection(db, 'users');
+  const querySnapshot = await getDocs(usersRef);
+
+  querySnapshot.forEach(doc => {
+    const username = doc.data().username;
+    const option = document.createElement('option');
+    option.value = username;
+    option.textContent = username;
+    picLeadsSelect.appendChild(option);
+    picClosedSelect.appendChild(option.cloneNode(true)); // Clone option for PIC Closed
+  });
+
+  // Set the initial value for PIC Leads to the logged-in user
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      const userEmail = user.email; // Assuming you use email for authentication
+      picLeadsSelect.value = userEmail;
+    }
+  });
+}
+
+// Save form data to Firestore
+async function saveLeadsFormData(event) {
+  event.preventDefault();
+  const leadsId = document.getElementById('leads-id').value;
+  const leadName = document.getElementById('lead-name').value;
+  const leadPhone = document.getElementById('lead-phone').value;
+  const picLeads = document.getElementById('pic-leads').value;
+  const channel = document.getElementById('channel').value;
+  const leadsFrom = document.getElementById('leads-from').value;
+  const dateFirstChat = document.getElementById('date-first-chat').value;
+  const dateCreated = document.getElementById('date-created').value;
+  const perawatan = document.getElementById('perawatan').value;
+  const l1Result = document.getElementById('l1-result').value;
+  const l2Result = document.getElementById('l2-result').value;
+  const l3Result = document.getElementById('l3-result').value;
+  const remarks = document.getElementById('remarks').value;
+  const picClosed = document.getElementById('pic-closed').value;
+
+  const leadsRef = collection(db, 'leads');
+  await addDoc(leadsRef, {
+    leadsId,
+    leadName,
+    leadPhone,
+    picLeads,
+    channel,
+    leadsFrom,
+    dateFirstChat,
+    dateCreated,
+    perawatan,
+    l1Result,
+    l2Result,
+    l3Result,
+    remarks,
+    picClosed,
+  });
+
+  alert('Leads data saved successfully!');
+}
+
+// Initialize form and populate dropdowns
+document.add
