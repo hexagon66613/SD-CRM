@@ -14,7 +14,7 @@
       <button id="profileButton">Profile</button>
     </div>
   </header>
-
+  
   <nav>
     <ul>
       <li><a href="index.html">Back to Main Menu</a></li>
@@ -26,16 +26,84 @@
   <div class="form-section">
     <h2>Leads Input Form</h2>
     <form id="leads-form">
+      <label for="leads-id">Leads ID:</label>
+      <input type="text" id="leads-id" name="leads-id" readonly>
+
       <label for="lead-name">Name:</label>
       <input type="text" id="lead-name" name="lead-name" required>
 
-      <label for="lead-email">Email:</label>
-      <input type="email" id="lead-email" name="lead-email" required>
+      <label for="lead-phone">No. Telp:</label>
+      <input type="number" id="lead-phone" name="lead-phone" required>
+
+      <label for="pic-leads">PIC Leads:</label>
+      <select id="pic-leads" name="pic-leads" required></select>
+
+      <label for="channel">Channel:</label>
+      <select id="channel" name="channel" required>
+        <option value="Direct WA Meta">Direct WA Meta</option>
+        <option value="Form Tiktok">Form Tiktok</option>
+        <option value="Inbound WA">Inbound WA</option>
+        <!-- Add more options here -->
+      </select>
+
+      <label for="leads-from">Leads From:</label>
+      <select id="leads-from" name="leads-from" required>
+        <option value="Pondok Bambu">Pondok Bambu</option>
+        <option value="Tanjung Duren">Tanjung Duren</option>
+        <option value="Bekasi">Bekasi</option>
+        <!-- Add more options here -->
+      </select>
+
+      <label for="date-first-chat">Date First Chat:</label>
+      <input type="date" id="date-first-chat" name="date-first-chat" required>
+
+      <label for="date-created">Date Created Leads:</label>
+      <input type="date" id="date-created" name="date-created" readonly>
+
+      <label for="perawatan">Perawatan:</label>
+      <select id="perawatan" name="perawatan" required>
+        <option value="Behel Gigi">Behel Gigi</option>
+        <option value="Bleaching">Bleaching</option>
+        <option value="Bundling">Bundling</option>
+        <!-- Add more options here -->
+      </select>
+
+      <label for="l1-result">L1: Result:</label>
+      <select id="l1-result" name="l1-result" required>
+        <option value="Not Response">Not Response</option>
+        <option value="Booking">Booking</option>
+        <option value="Out of Area">Out of Area</option>
+        <!-- Add more options here -->
+      </select>
+
+      <label for="l2-result">L2: Result 2:</label>
+      <select id="l2-result" name="l2-result" required>
+        <option value="Busy_No Response_Price">Busy_No Response_Price</option>
+        <option value="Busy_No Response_Schedule">Busy_No Response_Schedule</option>
+        <option value="Busy_No Response_Promo">Busy_No Response_Promo</option>
+        <!-- Add more options here -->
+      </select>
+
+      <label for="l3-result">L3: Result 3:</label>
+      <select id="l3-result" name="l3-result" required>
+        <option value="Asuransi">Asuransi</option>
+        <option value="Cicilan">Cicilan</option>
+        <option value="Add-On (Cabut gigi/Tambal gigi)">Add-On (Cabut gigi/Tambal gigi)</option>
+        <!-- Add more options here -->
+      </select>
+
+      <label for="remarks">Remarks:</label>
+      <input type="text" id="remarks" name="remarks">
+
+      <label for="pic-closed">PIC Closed:</label>
+      <input type="text" id="pic-closed" name="pic-closed">
 
       <button type="submit">Submit</button>
     </form>
   </div>
 
-  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+  <script type="module" src="assets/js/leads.js"></script>
 </body>
 </html>
