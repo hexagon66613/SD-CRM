@@ -1,18 +1,18 @@
 // Import Firebase config and Firestore functions
-import { db } from './firebase-config.js';  // Import the Firebase config
-import { collection, doc, setDoc, getDocs, query, orderBy, limit, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { db } from './firebase-config.js';  // Import your Firebase config
+import { doc, getDoc, collection, getDocs, addDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
-// Generate a sequential Booking ID
+// Function to generate a sequential Booking ID
 async function generateBookingID() {
   const bookingsRef = collection(db, 'bookings');
-  const q = query(bookingsRef, orderBy('bookingId', 'desc'), limit(1));
+  const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1)); // Adjust query based on your document structure
   const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     return 'SDB000000000001'; // Start with the initial ID
   } else {
     const lastDoc = querySnapshot.docs[0];
-    const lastID = lastDoc.data().bookingId; // Fetching Booking ID from document data
+    const lastID = lastDoc.data()['Booking ID']; // Fetching Booking ID from document data
 
     const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
     if (isNaN(lastIDNumber)) {
@@ -25,122 +25,106 @@ async function generateBookingID() {
   }
 }
 
-// Populate dropdowns with users or any other data
-async function populateDropdowns() {
-  const picLeadsSelect = document.getElementById('pic-leads');
-  const perawatanSelect = document.getElementById('perawatan');
-  const leadsIdSelect = document.getElementById('leads-id'); // Dropdown for Leads ID
-  
-  // Example users dropdown
-  const usersRef = collection(db, 'users');
-  const querySnapshot = await getDocs(usersRef);
-
-  // Clear previous options
-  picLeadsSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
-
-  // Populate options for PIC Leads dropdown
-  querySnapshot.forEach(doc => {
-    const username = doc.data().username;
-    const option = document.createElement('option');
-    option.value = username;
-    option.textContent = username;
-    picLeadsSelect.appendChild(option);
-  });
-
-  // Example options for Perawatan dropdown
-  const perawatanOptions = [
-    "Behel Gigi", "Bleaching", "Bundling", "Cabut Gigi", "Cabut Gigi Bungsu",
-    "Gigi Palsu/Tiruan", "Implant Gigi", "Konsultasi", "Kontrol Behel", "Lainnya",
-    "Lepas Behel", "Perawatan Anak", "PSA", "Scalling", "Scalling add on",
-    "Tambal Gigi", "Veneer", "Retainer"
-  ];
-
-  // Clear previous options
-  perawatanSelect.innerHTML = '<option value="" disabled selected>Select Perawatan</option>';
-
-  // Populate options for Perawatan dropdown
-  perawatanOptions.forEach(optionText => {
-    const option = document.createElement('option');
-    option.value = optionText;
-    option.textContent = optionText;
-    perawatanSelect.appendChild(option);
-  });
-
-  // Populate Leads ID dropdown
-  const leadsRef = collection(db, 'leads');
-  const leadsQuery = query(leadsRef, orderBy('leadsId'));
-  const leadsSnapshot = await getDocs(leadsQuery);
-
-  // Clear previous options
-  leadsIdSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
-
-  // Populate options for Leads ID dropdown
-  leadsSnapshot.forEach(doc => {
-    const leadsId = doc.data().leadsId;
-    const option = document.createElement('option');
-    option.value = leadsId;
-    option.textContent = leadsId;
-    leadsIdSelect.appendChild(option);
-  });
-}
-
-// Save booking form data to Firestore
-async function saveBookingFormData(event) {
-  event.preventDefault();
-
-  const bookingId = document.getElementById('booking-id').value;
-  const leadsId = document.getElementById('leads-id').value;
-  const nama = document.getElementById('nama').innerText || ''; // Using innerText for display-only fields
-  const noTelp = document.getElementById('no-telp').innerText || ''; // Using innerText for display-only fields
-  const picLeads = document.getElementById('pic-leads').value || 'Unassigned'; // Default to Unassigned
-  const channel = document.getElementById('channel').innerText || ''; // Using innerText for display-only fields
-  const leadsFrom = document.getElementById('leads-from').innerText || ''; // Using innerText for display-only fields
-  const perawatan = document.getElementById('perawatan').value || ''; // From dropdown
-  const membership = document.getElementById('membership').value || ''; // Dropdown value
-  const klinikTujuan = document.getElementById('klinik-tujuan').value || ''; // Dropdown value
-  const namaPromo = document.getElementById('nama-promo').value || ''; // Text input
-  const asuransi = document.getElementById('asuransi').value || ''; // Dropdown value
-  const bookingDate = document.getElementById('booking-date').value; // Date input
-  const bookingTime = document.getElementById('booking-time').value; // Time input
-  const doctor = document.getElementById('doctor').value || ''; // Text input
-
-  const bookingRef = doc(db, 'bookings', bookingId); // Use Booking ID as the document ID
-  const docSnapshot = await getDoc(bookingRef);
-
-  if (docSnapshot.exists()) {
-    alert('Booking ID already exists. Please submit the form again to create a new booking.');
-  } else {
-    await setDoc(bookingRef, {
-      bookingId,
-      leadsId,
-      nama,
-      noTelp,
-      picLeads,
-      channel,
-      leadsFrom,
-      perawatan,
-      membership,
-      klinikTujuan,
-      namaPromo,
-      asuransi,
-      bookingDate,
-      bookingTime,
-      doctor,
-    });
-
-    alert('Booking data saved successfully!');
-
-    // Reset form and reload the page
-    document.getElementById('booking-form').reset();
-    document.getElementById('booking-id').value = await generateBookingID(); // Generate new ID
-    document.getElementById('leads-id').value = ''; // Reset Leads ID dropdown
-  }
-}
-
-// Initialize form and populate dropdowns
 document.addEventListener('DOMContentLoaded', async () => {
-  const bookingId = await generateBookingID();
-  document.getElementById('booking-id').value = bookingId;
-  populateDropdowns();
-  document.getElementById('booking-form').addEventListener('submit', saveBookingFormData);
+  const leadsSelect = document.getElementById('leads-id');
+  const perawatanSelect = document.getElementById('perawatan');
+
+  // Fetch leads IDs and populate the dropdown
+  async function fetchLeads() {
+    try {
+      const leadsSnapshot = await getDocs(collection(db, 'leads'));
+      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      leadsSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const option = document.createElement('option');
+        option.value = data.leadsId;
+        option.textContent = data.leadsId;
+        leadsSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    }
+  }
+
+  fetchLeads();
+
+  // Handle Leads ID selection
+  leadsSelect.addEventListener('change', async () => {
+    const selectedLeadsId = leadsSelect.value;
+    if (selectedLeadsId) {
+      try {
+        const leadDoc = doc(db, 'leads', selectedLeadsId);
+        const leadData = await getDoc(leadDoc);
+        if (leadData.exists()) {
+          const data = leadData.data();
+
+          // Update the form with lead data
+          document.getElementById('nama').textContent = data.leadName || '';
+          document.getElementById('no-telp').textContent = data.leadPhone || '';
+          document.getElementById('pic-leads').textContent = data.picLeads || '';
+          document.getElementById('channel').textContent = data.channel || '';
+          document.getElementById('leads-from').textContent = data.leadsFrom || '';
+
+          // Update perawatan dropdown
+          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
+          const perawatanOptions = [
+            'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
+            'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
+            'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
+            'Tambal Gigi', 'Veneer', 'Retainer'
+          ];
+          perawatanOptions.forEach(optionText => {
+            const option = document.createElement('option');
+            option.value = optionText;
+            option.textContent = optionText;
+            perawatanSelect.appendChild(option);
+          });
+          perawatanSelect.value = data.perawatan || '';
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching lead data:', error);
+      }
+    }
+  });
+
+  // Handle form submission
+  document.getElementById('booking-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    try {
+      const bookingID = await generateBookingID();
+      document.getElementById('booking-id').value = bookingID;
+
+      const formData = {
+        'Booking ID': bookingID,
+        'Leads ID': document.getElementById('leads-id').value,
+        'Nama': document.getElementById('nama').textContent,
+        'No. telp': document.getElementById('no-telp').textContent,
+        'PIC Leads': document.getElementById('pic-leads').textContent,
+        'Channel': document.getElementById('channel').textContent,
+        'Leads From': document.getElementById('leads-from').textContent,
+        'Perawatan': document.getElementById('perawatan').value,
+        'Membership': document.getElementById('membership').value,
+        'Klinik Tujuan': document.getElementById('klinik-tujuan').value,
+        'Nama Promo': document.getElementById('nama-promo').value,
+        'Asuransi': document.getElementById('asuransi').value,
+        'Booking Date': document.getElementById('booking-date').value,
+        'Booking Time': document.getElementById('booking-time').value,
+        'Doctor': document.getElementById('doctor').value,
+      };
+
+      await addDoc(collection(db, 'bookings'), formData);
+      alert('Booking added successfully!');
+      // Optionally reset the form
+      document.getElementById('booking-form').reset();
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      alert('Failed to add booking. Please try again.');
+    }
+  });
+
+  // Set initial Booking ID
+  document.getElementById('booking-id').value = await generateBookingID();
 });
