@@ -27,15 +27,21 @@ async function generateBookingID() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
+  const searchInput = document.getElementById('search-leads');
   const perawatanSelect = document.getElementById('perawatan');
+
+  // Store all leads data for filtering
+  let allLeads = [];
 
   // Fetch leads IDs and populate the dropdown
   async function fetchLeads() {
     try {
       const leadsSnapshot = await getDocs(collection(db, 'leads'));
       leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      allLeads = []; // Clear previous leads data
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
+        allLeads.push(data); // Store lead data
         const option = document.createElement('option');
         option.value = data.leadsId; // The value used for processing
         option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
@@ -146,4 +152,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set initial Booking ID
   document.getElementById('booking-id').value = await generateBookingID();
+
+  // Filter leads based on search input
+  searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredLeads = allLeads.filter(lead => lead.leadsId.toLowerCase().includes(searchTerm) || lead.leadName.toLowerCase().includes(searchTerm));
+    
+    // Update dropdown with filtered leads
+    leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+    filteredLeads.forEach(lead => {
+      const option = document.createElement('option');
+      option.value = lead.leadsId;
+      option.textContent = `${lead.leadsId} | ${lead.leadName}`;
+      leadsSelect.appendChild(option);
+    });
+  });
 });
