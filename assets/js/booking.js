@@ -1,5 +1,5 @@
 import { db } from './firebase-config.js';  // Import the Firebase config
-import { collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { collection, doc, getDoc, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   leadsSelect.addEventListener('change', async (event) => {
     const selectedLeadId = event.target.value;
     if (selectedLeadId) {
+      console.log('Selected Lead ID:', selectedLeadId); // Debug log
       const leadsDoc = doc(db, 'leads', selectedLeadId);
       const leadData = await getDoc(leadsDoc);
       if (leadData.exists()) {
         const data = leadData.data();
-        console.log('Selected Lead ID:', selectedLeadId);
-        console.log('Lead Data:', data);
+        console.log('Lead Data:', data); // Debug log
 
         document.getElementById('nama').value = data['leadName'] || '';
         document.getElementById('no-telp').value = data['leadPhone'] || '';
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('leads-from').value = data['leadsFrom'] || '';
         perawatanSelect.value = data['perawatan'] || '';
       } else {
-        console.log('No data found for Lead ID:', selectedLeadId);
+        console.log('No data found for Lead ID:', selectedLeadId); // Debug log
       }
     }
   });
@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       await addDoc(collection(db, 'bookings'), formData);
       alert('Booking added successfully!');
-      // Redirect to create a new booking form
-      window.location.reload();
+      // Optionally reset the form
+      document.getElementById('booking-form').reset();
     } catch (error) {
       console.error('Error adding document: ', error);
       alert('Failed to add booking. Please try again.');
