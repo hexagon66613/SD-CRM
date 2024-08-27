@@ -69,4 +69,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       await addDoc(collection(db, 'bookings'), formData);
       alert('Booking added successfully!');
-      // Redirect to create a new booking
+      // Redirect to create a new booking form
+      window.location.reload();
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      alert('Failed to add booking. Please try again.');
+    }
+  });
+});
