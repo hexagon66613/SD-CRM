@@ -1,5 +1,5 @@
 import { db } from './firebase-config.js';  // Import your Firebase config
-import { doc, getDoc, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { doc, getDoc, collection, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const leadsSelect = document.getElementById('leads-id');
