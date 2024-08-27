@@ -134,7 +134,7 @@ form {
 /* Style for result fields (spans) */
 .form-value {
   flex: 1; /* Take up remaining space */
-  text-align: right; /* Align text to the right */
+  text-align: left; /* Align text to the left */
 }
 
 input[type="text"],
