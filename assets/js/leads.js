@@ -15,7 +15,7 @@ async function generateLeadsID() {
     const lastID = lastDoc.data().leadsId; // Fetching Leads ID from document data
     const lastIDNumber = parseInt(lastID.replace('SDL', ''), 10);
     const newIDNumber = lastIDNumber + 1;
-    return `SD${newIDNumber.toString().padStart(12, '0')}`;
+    return `SDL${newIDNumber.toString().padStart(12, '0')}`;
   }
 }
 
