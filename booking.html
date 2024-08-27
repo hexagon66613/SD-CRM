@@ -26,19 +26,91 @@
   <div class="form-section">
     <h2>Booking Input Form</h2>
     <form id="booking-form">
-      <label for="booking-name">Name:</label>
-      <input type="text" id="booking-name" name="booking-name" required>
+      <label for="booking-id">Booking ID:</label>
+      <input type="text" id="booking-id" name="booking-id" readonly>
 
-      <label for="booking-date">Date:</label>
+      <label for="leads-id">Leads ID:</label>
+      <select id="leads-id" name="leads-id">
+        <!-- Options populated by JavaScript -->
+      </select>
+
+      <label for="nama">Nama:</label>
+      <input type="text" id="nama" name="nama" readonly>
+
+      <label for="no-telp">No. telp:</label>
+      <input type="text" id="no-telp" name="no-telp" readonly>
+
+      <label for="pic-leads">PIC Leads:</label>
+      <input type="text" id="pic-leads" name="pic-leads" readonly>
+
+      <label for="channel">Channel:</label>
+      <input type="text" id="channel" name="channel" readonly>
+
+      <label for="leads-from">Leads From:</label>
+      <input type="text" id="leads-from" name="leads-from" readonly>
+
+      <label for="perawatan">Perawatan:</label>
+      <select id="perawatan" name="perawatan">
+        <!-- Options populated by JavaScript -->
+      </select>
+
+      <label for="membership">7R Membership:</label>
+      <select id="membership" name="membership" required>
+        <option value="" disabled selected>Select Yes/No</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label for="klinik-tujuan">Klinik Tujuan:</label>
+      <select id="klinik-tujuan" name="klinik-tujuan" required>
+        <option value="" disabled selected>Select Klinik Tujuan</option>
+        <option value="Pondok Bambu">Pondok Bambu</option>
+        <option value="Tanjung Duren">Tanjung Duren</option>
+        <option value="Bekasi">Bekasi</option>
+        <option value="Semarang">Semarang</option>
+        <option value="Tiktok Leads">Tiktok Leads</option>
+        <option value="All">All</option>
+        <option value="Bintaro">Bintaro</option>
+        <option value="Website Retargeting">Website Retargeting</option>
+        <option value="Kelapa Gading">Kelapa Gading</option>
+        <option value="Arteri">Arteri</option>
+        <option value="Kemang">Kemang</option>
+        <option value="BSD">BSD</option>
+        <option value="Depok">Depok</option>
+        <option value="Puri Indah">Puri Indah</option>
+        <option value="PIK">PIK</option>
+        <option value="Gading Serpong">Gading Serpong</option>
+        <option value="Sozo Kids">Sozo Kids</option>
+        <option value="Mahasiswa">Mahasiswa</option>
+        <option value="New">New</option>
+        <option value="Behel Premium">Behel Premium</option>
+        <option value="Asuransi">Asuransi</option>
+        <option value="Self Ligating">Self Ligating</option>
+      </select>
+
+      <label for="nama-promo">Nama Promo:</label>
+      <input type="text" id="nama-promo" name="nama-promo">
+
+      <label for="asuransi">Asuransi:</label>
+      <select id="asuransi" name="asuransi" required>
+        <option value="" disabled selected>Select Yes/No</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <label for="booking-date">Booking Date:</label>
       <input type="date" id="booking-date" name="booking-date" required>
 
-      <label for="booking-time">Time:</label>
+      <label for="booking-time">Booking Time:</label>
       <input type="time" id="booking-time" name="booking-time" required>
+
+      <label for="doctor">Doctor:</label>
+      <input type="text" id="doctor" name="doctor">
 
       <button type="submit">Submit</button>
     </form>
   </div>
 
-  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/booking.js"></script>
 </body>
 </html>
