@@ -1,6 +1,13 @@
-// Import Firebase config and Firestore functions
 import { db } from './firebase-config.js';  // Import your Firebase config
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+
+// Initialize Select2 on select elements
+$(document).ready(function() {
+  $('#leads-id').select2({
+    placeholder: "Select Leads ID",
+    allowClear: true
+  });
+});
 
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
@@ -41,6 +48,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
         leadsSelect.appendChild(option);
       });
+
+      // Reinitialize Select2 after populating options
+      $('#leads-id').select2({
+        placeholder: "Select Leads ID",
+        allowClear: true
+      });
+
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
