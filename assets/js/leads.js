@@ -1,5 +1,5 @@
 import { db, auth } from './firebase-config.js';  // Import the Firebase config
-import { collection, doc, setDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { collection, doc, setDoc, getDocs, query, orderBy, limit, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 // Generate a unique Leads ID
@@ -13,18 +13,14 @@ async function generateLeadsID() {
   } else {
     const lastDoc = querySnapshot.docs[0];
     const lastID = lastDoc.data().leadsId; // Fetching Leads ID from document data
-    console.log(`Last Leads ID: ${lastID}`); // Debugging line
 
     const lastIDNumber = parseInt(lastID.replace('SDL', ''), 10);
-    console.log(`Last ID Number: ${lastIDNumber}`); // Debugging line
-
     if (isNaN(lastIDNumber)) {
       throw new Error(`Failed to parse Leads ID: ${lastID}`);
     }
 
     const newIDNumber = lastIDNumber + 1;
     const newID = `SDL${newIDNumber.toString().padStart(12, '0')}`;
-    console.log(`New Leads ID: ${newID}`); // Debugging line
     return newID;
   }
 }
@@ -79,24 +75,30 @@ async function saveLeadsFormData(event) {
   const picClosed = document.getElementById('pic-closed').value || 'Unassigned'; // Default to Unassigned
 
   const leadsRef = doc(db, 'leads', leadsId); // Use Leads ID as the document ID
-  await setDoc(leadsRef, {
-    leadsId,
-    leadName,
-    leadPhone,
-    picLeads,
-    channel,
-    leadsFrom,
-    dateFirstChat,
-    dateCreated,
-    perawatan,
-    l1Result,
-    l2Result,
-    l3Result,
-    remarks,
-    picClosed,
-  });
+  const docSnapshot = await getDoc(leadsRef);
 
-  alert('Leads data saved successfully!');
+  if (docSnapshot.exists()) {
+    alert('Leads ID already exists. Please submit the form again to create a new lead.');
+  } else {
+    await setDoc(leadsRef, {
+      leadsId,
+      leadName,
+      leadPhone,
+      picLeads,
+      channel,
+      leadsFrom,
+      dateFirstChat,
+      dateCreated,
+      perawatan,
+      l1Result,
+      l2Result,
+      l3Result,
+      remarks,
+      picClosed,
+    });
+
+    alert('Leads data saved successfully!');
+  }
 }
 
 // Initialize form and populate dropdowns
