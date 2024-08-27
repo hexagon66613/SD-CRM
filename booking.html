@@ -151,7 +151,7 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <!-- Your custom JavaScript -->
   <script type="module">
-    import { db } from './assets/js/firebase-config.js';
+    import { db } from './firebase-config.js';
     import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
     $(document).ready(function() {
@@ -211,14 +211,12 @@
       async function fetchLeads() {
         try {
           const leadsSnapshot = await getDocs(collection(db, 'leads'));
-          leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>'); // Clear and populate dropdown
+          leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
           leadsSnapshot.forEach((doc) => {
             const data = doc.data();
             const option = $('<option></option>').val(data.leadsId).text(`${data.leadsId} | ${data.leadName}`);
             leadsSelect.append(option);
           });
-
-          // Reinitialize Select2 after populating options
           leadsSelect.select2({
             placeholder: "Select Leads ID",
             allowClear: true
@@ -229,33 +227,46 @@
       }
 
       async function handleFormSubmission(event) {
-        event.preventDefault();  // Prevent the default form submission
+        event.preventDefault(); // Prevent the default form submission
 
         const bookingData = {
-          bookingId: document.getElementById('booking-id').value,
-          leadsId: $('#leads-id').val(),
-          nama: document.getElementById('nama').textContent,
-          noTelp: document.getElementById('no-telp').textContent,
-          picLeads: document.getElementById('pic-leads').textContent,
-          channel: document.getElementById('channel').textContent,
-          leadsFrom: document.getElementById('leads-from').textContent,
-          perawatan: $('#perawatan').val(),
-          membership: $('#membership').val(),
-          klinikTujuan: $('#klinik-tujuan').val(),
-          namaPromo: document.getElementById('nama-promo').value,
-          asuransi: $('#asuransi').val(),
-          bookingDate: document.getElementById('booking-date').value,
-          bookingTime: document.getElementById('booking-time').value,
-          doctor: document.getElementById('doctor').value
+          'Booking ID': document.getElementById('booking-id').value,
+          'Leads ID': $('#leads-id').val(),
+          'Nama': document.getElementById('nama').textContent,
+          'No. telp': document.getElementById('no-telp').textContent,
+          'PIC Leads': document.getElementById('pic-leads').textContent,
+          'Channel': document.getElementById('channel').textContent,
+          'Leads From': document.getElementById('leads-from').textContent,
+          'Perawatan': $('#perawatan').val(),
+          'Membership': $('#membership').val(),
+          'Klinik Tujuan': $('#klinik-tujuan').val(),
+          'Nama Promo': document.getElementById('nama-promo').value,
+          'Asuransi': $('#asuransi').val(),
+          'Booking Date': document.getElementById('booking-date').value,
+          'Booking Time': document.getElementById('booking-time').value,
+          'Doctor': document.getElementById('doctor').value
         };
 
         try {
-          await setDoc(doc(db, 'bookings', bookingData.bookingId), bookingData);
+          await setDoc(doc(db, 'bookings', bookingData['Booking ID']), bookingData);
           alert('Booking added successfully!');
+
           // Clear form fields and reset dropdowns
           $('#booking-form')[0].reset();
+          $('#leads-id').val(null).trigger('change');
+          $('#perawatan').val(null).trigger('change');
+          $('#membership').val(null).trigger('change');
+          $('#klinik-tujuan').val(null).trigger('change');
+          $('#asuransi').val(null).trigger('change');
+          document.getElementById('nama').textContent = '';
+          document.getElementById('no-telp').textContent = '';
+          document.getElementById('pic-leads').textContent = '';
+          document.getElementById('channel').textContent = '';
+          document.getElementById('leads-from').textContent = '';
+
+          // Re-fetch leads and generate a new Booking ID
+          await fetchLeads();
           document.getElementById('booking-id').value = await generateBookingID();
-          await fetchLeads(); // Re-populate the leads dropdown
         } catch (error) {
           console.error('Error adding document: ', error);
           alert('Failed to add booking. Please try again.');
@@ -264,10 +275,10 @@
 
       // Set initial Booking ID
       document.getElementById('booking-id').value = await generateBookingID();
-      
+
       // Attach form submission handler
       document.getElementById('booking-form').addEventListener('submit', handleFormSubmission);
-      
+
       // Fetch leads on page load
       await fetchLeads();
     });
