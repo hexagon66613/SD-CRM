@@ -1,5 +1,5 @@
 import { db, auth } from './firebase-config.js';  // Import the Firebase config
-import { collection, addDoc, getDocs, query, orderBy, limit, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 // Generate a unique Leads ID
