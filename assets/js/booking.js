@@ -1,6 +1,5 @@
-// Import Firebase config and Firestore functions
-import { db } from './firebase-config.js';  // Import your Firebase config
-import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { db } from './firebase-config.js';
+import { doc, getDocs, collection, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
@@ -13,23 +12,15 @@ async function generateBookingID() {
   } else {
     const lastDoc = querySnapshot.docs[0];
     const lastID = lastDoc.data()['Booking ID'];
-
     const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
-    if (isNaN(lastIDNumber)) {
-      throw new Error(`Failed to parse Booking ID: ${lastID}`);
-    }
-
     const newIDNumber = lastIDNumber + 1;
-    const newID = `SDB${newIDNumber.toString().padStart(12, '0')}`;
-    return newID;
+    return `SDB${newIDNumber.toString().padStart(12, '0')}`;
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
   const perawatanSelect = document.getElementById('perawatan');
-
-  // Store all leads data for filtering
   let allLeads = [];
 
   // Fetch leads IDs and populate the dropdown
@@ -40,14 +31,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       allLeads = [];
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
-        const option = document.createElement('option');
-        option.value = data.leadsId; // The value used for processing
-        option.textContent = data.leadsId; // Display text in dropdown
-        leadsSelect.appendChild(option);
         allLeads.push(data);
+        const option = document.createElement('option');
+        option.value = data.leadsId;
+        option.textContent = `${data.leadsId} | ${data.leadName}`;
+        leadsSelect.appendChild(option);
       });
 
-      // Initialize Select2 for leads dropdown
+      // Initialize Select2 after populating options
       $(leadsSelect).select2({
         placeholder: "Select Leads ID",
         allowClear: true,
@@ -66,8 +57,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       perawatanSnapshot.forEach((doc) => {
         const data = doc.data();
         const option = document.createElement('option');
-        option.value = data.perawatanName; // The value used for processing
-        option.textContent = data.perawatanName; // Display text in dropdown
+        option.value = data.perawatanName;
+        option.textContent = data.perawatanName;
         perawatanSelect.appendChild(option);
       });
     } catch (error) {
@@ -76,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Function to handle lead selection
-  async function handleLeadChange() {
+  function handleLeadChange() {
     const selectedLeadId = leadsSelect.value;
     const selectedLead = allLeads.find(lead => lead.leadsId === selectedLeadId);
 
