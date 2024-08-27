@@ -32,23 +32,24 @@ document.addEventListener('DOMContentLoaded', async () => {
           console.log('Lead Data:', data); // Debug log
 
           // Update label fields
-          document.getElementById('nama').textContent = data['leadName'] || '';
-          document.getElementById('no-telp').textContent = data['leadPhone'] || '';
-          document.getElementById('pic-leads').textContent = data['picLeads'] || '';
-          document.getElementById('channel').textContent = data['channel'] || '';
-          document.getElementById('leads-from').textContent = data['leadsFrom'] || '';
-          perawatanSelect.value = data['perawatan'] || '';
+          document.getElementById('nama').textContent = data.leadName || '';
+          document.getElementById('no-telp').textContent = data.leadPhone || '';
+          document.getElementById('pic-leads').textContent = data.picLeads || '';
+          document.getElementById('channel').textContent = data.channel || '';
+          document.getElementById('leads-from').textContent = data.leadsFrom || '';
 
-          // Ensure that select elements have a default option
-          if (!perawatanSelect.querySelector('option[value="' + data['perawatan'] + '"]')) {
-            // Add missing options to the select dropdown
+          // Update perawatan dropdown
+          perawatanSelect.innerHTML = ''; // Clear previous options
+          const perawatanOptions = ['Cabut Gigi Bungsu', 'Bundling', 'Scaling', 'Perawatan Gigi Lainnya'];
+          perawatanOptions.forEach(optionText => {
             const option = document.createElement('option');
-            option.value = data['perawatan'];
-            option.textContent = data['perawatan'];
+            option.value = optionText;
+            option.textContent = optionText;
             perawatanSelect.appendChild(option);
-          }
+          });
+          perawatanSelect.value = data.perawatan || '';
         } else {
-          console.log('No data found for Lead ID:', selectedLeadId); // Debug log
+          console.log('No such document!');
         }
       } catch (error) {
         console.error('Error fetching lead data:', error);
