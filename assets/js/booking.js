@@ -120,8 +120,33 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Booking added successfully!');
 
       // Clear all fields after submission
-      document.getElementById('booking-form').reset();
-      document.getElementById('booking-id').value = await generateBookingID(); // Set a new Booking ID for next entry
+      document.getElementById('booking-form').reset(); // Clear input fields
+
+      // Clear non-input fields
+      document.getElementById('nama').textContent = '';
+      document.getElementById('no-telp').textContent = '';
+      document.getElementById('pic-leads').textContent = '';
+      document.getElementById('channel').textContent = '';
+      document.getElementById('leads-from').textContent = '';
+
+      // Reset dropdowns
+      document.getElementById('leads-id').value = '';
+      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
+      const perawatanOptions = [
+        'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
+        'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
+        'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
+        'Tambal Gigi', 'Veneer', 'Retainer'
+      ];
+      perawatanOptions.forEach(optionText => {
+        const option = document.createElement('option');
+        option.value = optionText;
+        option.textContent = optionText;
+        perawatanSelect.appendChild(option);
+      });
+
+      // Set a new Booking ID for next entry
+      document.getElementById('booking-id').value = await generateBookingID();
     } catch (error) {
       console.error('Error adding document: ', error);
       alert('Failed to add booking. Please try again.');
