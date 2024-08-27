@@ -1,5 +1,5 @@
 import { db, auth } from './firebase-config.js';  // Import the Firebase config
-import { collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { collection, doc, setDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 // Generate a unique Leads ID
@@ -7,7 +7,7 @@ async function generateLeadsID() {
   const leadsRef = collection(db, 'leads');
   const q = query(leadsRef, orderBy('leadsId', 'desc'), limit(1));
   const querySnapshot = await getDocs(q);
-  
+
   if (querySnapshot.empty) {
     return 'SDL000000000001'; // Start with the initial ID
   } else {
@@ -78,8 +78,8 @@ async function saveLeadsFormData(event) {
   const remarks = document.getElementById('remarks').value || ''; // Allow blank values
   const picClosed = document.getElementById('pic-closed').value || 'Unassigned'; // Default to Unassigned
 
-  const leadsRef = collection(db, 'leads');
-  await addDoc(leadsRef, {
+  const leadsRef = doc(db, 'leads', leadsId); // Use Leads ID as the document ID
+  await setDoc(leadsRef, {
     leadsId,
     leadName,
     leadPhone,
