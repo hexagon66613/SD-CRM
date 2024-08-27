@@ -1,37 +1,40 @@
-import { db } from './firebase-config.js';  // Import the Firebase config
-import { collection, doc, getDoc, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { db } from './firebase-config.js';  // Import your Firebase config
+import { doc, getDoc, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   const leadsSelect = document.getElementById('leads-id');
   const perawatanSelect = document.getElementById('perawatan');
 
-  // Populate Leads ID dropdown
-  try {
-    const leadsCollectionRef = collection(db, 'leads');
-    const leadsSnapshot = await getDocs(leadsCollectionRef);
-    leadsSnapshot.forEach((doc) => {
-      const option = document.createElement('option');
-      option.value = doc.id;
-      option.textContent = doc.id;
-      leadsSelect.appendChild(option);
-    });
-  } catch (error) {
-    console.error('Error fetching leads:', error);
+  // Fetch leads IDs and populate the dropdown
+  async function fetchLeads() {
+    try {
+      const leadsSnapshot = await getDocs(collection(db, 'leads'));
+      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      leadsSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const option = document.createElement('option');
+        option.value = data.leadsId;
+        option.textContent = data.leadsId;
+        leadsSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    }
   }
 
-  // Handle Leads ID change
-  leadsSelect.addEventListener('change', async (event) => {
-    const selectedLeadId = event.target.value;
-    if (selectedLeadId) {
-      console.log('Selected Lead ID:', selectedLeadId); // Debug log
-      try {
-        const leadDocRef = doc(db, 'leads', selectedLeadId);
-        const leadDoc = await getDoc(leadDocRef);
-        if (leadDoc.exists()) {
-          const data = leadDoc.data();
-          console.log('Lead Data:', data); // Debug log
+  fetchLeads();
 
-          // Update label fields
+  // Handle Leads ID selection
+  leadsSelect.addEventListener('change', async () => {
+    const selectedLeadsId = leadsSelect.value;
+    if (selectedLeadsId) {
+      try {
+        const leadDoc = doc(db, 'leads', selectedLeadsId);
+        const leadData = await getDoc(leadDoc);
+        if (leadData.exists()) {
+          const data = leadData.data();
+
+          // Update the form with lead data
           document.getElementById('nama').textContent = data.leadName || '';
           document.getElementById('no-telp').textContent = data.leadPhone || '';
           document.getElementById('pic-leads').textContent = data.picLeads || '';
@@ -39,8 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('leads-from').textContent = data.leadsFrom || '';
 
           // Update perawatan dropdown
-          perawatanSelect.innerHTML = ''; // Clear previous options
-          const perawatanOptions = ['Cabut Gigi Bungsu', 'Bundling', 'Scaling', 'Perawatan Gigi Lainnya'];
+          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
+          const perawatanOptions = [
+            'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
+            'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
+            'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
+            'Tambal Gigi', 'Veneer', 'Retainer'
+          ];
           perawatanOptions.forEach(optionText => {
             const option = document.createElement('option');
             option.value = optionText;
