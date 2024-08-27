@@ -79,7 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Handle Leads ID selection
   leadsSelect.on('change', async () => {
-    const selectedLeadsId = leadsSelect.val();
+    const selectedLeadsId = leadsSelect.val(); // This will be just the Leads ID
+    console.log('Selected Leads ID:', selectedLeadsId);  // Debugging line
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
@@ -126,13 +127,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const formData = {
         'Booking ID': bookingID,
-        'Leads ID': $('#leads-id').val(),
+        'Leads ID': leadsSelect.val(), // This should be just the Leads ID
         'Nama': $('#nama').text(),
         'No. telp': $('#no-telp').text(),
         'PIC Leads': $('#pic-leads').text(),
         'Channel': $('#channel').text(),
         'Leads From': $('#leads-from').text(),
-        'Perawatan': $('#perawatan').val(),
+        'Perawatan': perawatanSelect.val(),
         'Membership': $('#membership').val(),
         'Klinik Tujuan': $('#klinik-tujuan').val(),
         'Nama Promo': $('#nama-promo').val(),
@@ -153,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       $('#pic-leads').text('');
       $('#channel').text('');
       $('#leads-from').text('');
-      $('#perawatan').empty().append('<option value="" disabled>Select Perawatan</option>').val(null).trigger('change');
+      perawatanSelect.empty().append('<option value="" disabled>Select Perawatan</option>').val(null).trigger('change');
 
       // Reset dropdowns
       leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
