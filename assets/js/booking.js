@@ -43,54 +43,58 @@ async function fetchLeads() {
   }
 }
 
+// Update form fields with selected lead data
+async function updateFormFields(selectedLeadsId) {
+  if (selectedLeadsId) {
+    try {
+      const leadDoc = doc(db, 'leads', selectedLeadsId);
+      const leadData = await getDoc(leadDoc);
+
+      if (leadData.exists()) {
+        const data = leadData.data();
+
+        // Update the form with lead data
+        document.getElementById('nama').value = data.leadName || '';
+        document.getElementById('no-telp').value = data.leadPhone || '';
+        document.getElementById('pic-leads').value = data.picLeads || '';
+        document.getElementById('channel').value = data.channel || '';
+        document.getElementById('leads-from').value = data.leadsFrom || '';
+
+        // Update perawatan dropdown
+        const perawatanSelect = document.getElementById('perawatan');
+        perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
+        const perawatanOptions = [
+          'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
+          'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
+          'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
+          'Tambal Gigi', 'Veneer', 'Retainer'
+        ];
+        perawatanOptions.forEach(optionText => {
+          const option = document.createElement('option');
+          option.value = optionText;
+          option.textContent = optionText;
+          perawatanSelect.appendChild(option);
+        });
+        perawatanSelect.value = data.perawatan || '';
+      } else {
+        console.log('No such document!');
+      }
+    } catch (error) {
+      console.error('Error fetching lead data:', error);
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
-  const perawatanSelect = document.getElementById('perawatan');
 
   // Fetch leads to populate the dropdown on page load
   await fetchLeads();
 
   // Handle Leads ID selection
-  leadsSelect.addEventListener('change', async () => {
-    const selectedLeadsId = leadsSelect.value;
-    if (selectedLeadsId) {
-      try {
-        const leadDoc = doc(db, 'leads', selectedLeadsId);
-        const leadData = await getDoc(leadDoc);
-
-        if (leadData.exists()) {
-          const data = leadData.data();
-          console.log('Lead Data:', data); // Log data to check fields
-
-          // Update the form with lead data
-          document.getElementById('nama').value = data.leadName || '';
-          document.getElementById('no-telp').value = data.leadPhone || '';
-          document.getElementById('pic-leads').value = data.picLeads || '';
-          document.getElementById('channel').value = data.channel || '';
-          document.getElementById('leads-from').value = data.leadsFrom || '';
-
-          // Update perawatan dropdown
-          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
-          const perawatanOptions = [
-            'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
-            'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
-            'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
-            'Tambal Gigi', 'Veneer', 'Retainer'
-          ];
-          perawatanOptions.forEach(optionText => {
-            const option = document.createElement('option');
-            option.value = optionText;
-            option.textContent = optionText;
-            perawatanSelect.appendChild(option);
-          });
-          perawatanSelect.value = data.perawatan || '';
-        } else {
-          console.log('No such document!');
-        }
-      } catch (error) {
-        console.error('Error fetching lead data:', error);
-      }
-    }
+  leadsSelect.addEventListener('change', (event) => {
+    const selectedLeadsId = event.target.value;
+    updateFormFields(selectedLeadsId);
   });
 
   // Handle form submission
@@ -131,6 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Reset dropdowns
       leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      const perawatanSelect = document.getElementById('perawatan');
       perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
 
       // Fetch updated leads to repopulate dropdown
