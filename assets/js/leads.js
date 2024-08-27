@@ -98,6 +98,13 @@ async function saveLeadsFormData(event) {
     });
 
     alert('Leads data saved successfully!');
+
+    // Reset form and reload the page
+    document.getElementById('leads-form').reset();
+    document.getElementById('lead-id').value = await generateLeadsID(); // Generate new ID
+    document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
+    // Optionally, you might want to redirect to the form page (e.g., reload or navigate)
+    // window.location.href = 'leads.html'; // Uncomment this line if you want to navigate
   }
 }
 
