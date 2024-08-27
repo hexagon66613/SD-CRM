@@ -29,6 +29,7 @@ async function generateBookingID() {
 async function populateDropdowns() {
   const picLeadsSelect = document.getElementById('pic-leads');
   const perawatanSelect = document.getElementById('perawatan');
+  const leadsIdSelect = document.getElementById('leads-id'); // Dropdown for Leads ID
   
   // Example users dropdown
   const usersRef = collection(db, 'users');
@@ -63,6 +64,23 @@ async function populateDropdowns() {
     option.value = optionText;
     option.textContent = optionText;
     perawatanSelect.appendChild(option);
+  });
+
+  // Populate Leads ID dropdown
+  const leadsRef = collection(db, 'leads');
+  const leadsQuery = query(leadsRef, orderBy('leadsId'));
+  const leadsSnapshot = await getDocs(leadsQuery);
+
+  // Clear previous options
+  leadsIdSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+
+  // Populate options for Leads ID dropdown
+  leadsSnapshot.forEach(doc => {
+    const leadsId = doc.data().leadsId;
+    const option = document.createElement('option');
+    option.value = leadsId;
+    option.textContent = leadsId;
+    leadsIdSelect.appendChild(option);
   });
 }
 
