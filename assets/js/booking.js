@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
         const option = document.createElement('option');
-        option.value = data.leadsId; // The value returned when selected
+        option.value = data.leadsId; // The value used for processing
         option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
         leadsSelect.appendChild(option);
       });
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Handle Leads ID selection
   leadsSelect.addEventListener('change', async () => {
-    const selectedLeadsId = leadsSelect.value;
+    const selectedLeadsId = leadsSelect.value; // This will be just the Leads ID
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const formData = {
         'Booking ID': bookingID,
-        'Leads ID': document.getElementById('leads-id').value,
+        'Leads ID': document.getElementById('leads-id').value, // This will be just the Leads ID
         'Nama': document.getElementById('nama').textContent,
         'No. telp': document.getElementById('no-telp').textContent,
         'PIC Leads': document.getElementById('pic-leads').textContent,
