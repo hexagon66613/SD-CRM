@@ -1,6 +1,6 @@
 // Import Firebase config and Firestore functions
 import { db } from './firebase-config.js';  // Import your Firebase config
-import { doc, getDoc, collection, getDocs, addDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
@@ -115,10 +115,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Doctor': document.getElementById('doctor').value,
       };
 
-      await addDoc(collection(db, 'bookings'), formData);
+      // Save booking data to Firestore using Booking ID as document name
+      await setDoc(doc(db, 'bookings', bookingID), formData);
       alert('Booking added successfully!');
-      // Optionally reset the form
+
+      // Clear all fields after submission
       document.getElementById('booking-form').reset();
+      document.getElementById('booking-id').value = await generateBookingID(); // Set a new Booking ID for next entry
     } catch (error) {
       console.error('Error adding document: ', error);
       alert('Failed to add booking. Please try again.');
