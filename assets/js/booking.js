@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>'); // Clear and populate dropdown
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
+        console.log('Document data:', data); // Log each document data
         const option = $('<option></option>').val(data.leadsId).text(`${data.leadsId} | ${data.leadName}`);
         leadsSelect.append(option);
       });
@@ -80,13 +81,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Handle Leads ID selection
   leadsSelect.on('change', async () => {
     const selectedLeadsId = leadsSelect.val(); // This will be just the Leads ID
-    console.log('Selected Leads ID:', selectedLeadsId); // Debugging line
+    console.log('Selected Leads ID:', selectedLeadsId); // Log the selected Leads ID
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
         const leadData = await getDoc(leadDoc);
         if (leadData.exists()) {
           const data = leadData.data();
+          console.log('Fetched lead data:', data); // Log the fetched data
 
           // Update the form with lead data
           $('#nama').text(data.leadName || '');
@@ -142,6 +144,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Booking Time': $('#booking-time').val(),
         'Doctor': $('#doctor').val(),
       };
+
+      console.log('Form Data:', formData); // Log form data before saving
 
       // Save booking data to Firestore using Booking ID as document name
       await setDoc(doc(db, 'bookings', bookingID), formData);
