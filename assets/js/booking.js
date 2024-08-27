@@ -37,14 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const leadsSnapshot = await getDocs(collection(db, 'leads'));
       leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
-      allLeads = []; // Clear previous leads data
+      allLeads = [];
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
-        allLeads.push(data); // Store lead data
         const option = document.createElement('option');
         option.value = data.leadsId; // The value used for processing
-        option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
+        option.textContent = data.leadsId; // Display text in dropdown
         leadsSelect.appendChild(option);
+        allLeads.push(data);
       });
 
       // Initialize Select2 for leads dropdown
