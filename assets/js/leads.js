@@ -18,20 +18,25 @@ async function generateLeadsID() {
   }
 }
 
-// Populate PIC Leads and PIC Closed dropdowns with usernames
+// Populate dropdowns with usernames
 async function populateUserDropdowns() {
   const picLeadsSelect = document.getElementById('pic-leads');
   const picClosedSelect = document.getElementById('pic-closed');
   const usersRef = collection(db, 'users');
   const querySnapshot = await getDocs(usersRef);
 
+  // Clear previous options
+  picLeadsSelect.innerHTML = '';
+  picClosedSelect.innerHTML = '';
+
+  // Populate options for both dropdowns
   querySnapshot.forEach(doc => {
     const username = doc.data().username;
     const option = document.createElement('option');
     option.value = username;
     option.textContent = username;
-    picLeadsSelect.appendChild(option);
-    picClosedSelect.appendChild(option.cloneNode(true)); // Clone option for PIC Closed
+    picLeadsSelect.appendChild(option.cloneNode(true)); // Clone option for PIC Closed
+    picClosedSelect.appendChild(option);
   });
 
   // Set the initial value for PIC Leads to the logged-in user
