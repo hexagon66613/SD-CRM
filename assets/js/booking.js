@@ -6,34 +6,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   const perawatanSelect = document.getElementById('perawatan');
 
   // Populate Leads ID dropdown
-  const leadsCollection = collection(db, 'leads');
-  const leadsSnapshot = await getDocs(leadsCollection);
-  leadsSnapshot.forEach(doc => {
-    const option = document.createElement('option');
-    option.value = doc.id;
-    option.textContent = doc.id;
-    leadsSelect.appendChild(option);
-  });
+  try {
+    const leadsCollectionRef = collection(db, 'leads');
+    const leadsSnapshot = await getDocs(leadsCollectionRef);
+    leadsSnapshot.forEach((doc) => {
+      const option = document.createElement('option');
+      option.value = doc.id;
+      option.textContent = doc.id;
+      leadsSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+  }
 
   // Handle Leads ID change
   leadsSelect.addEventListener('change', async (event) => {
     const selectedLeadId = event.target.value;
     if (selectedLeadId) {
       console.log('Selected Lead ID:', selectedLeadId); // Debug log
-      const leadsDoc = doc(db, 'leads', selectedLeadId);
-      const leadData = await getDoc(leadsDoc);
-      if (leadData.exists()) {
-        const data = leadData.data();
-        console.log('Lead Data:', data); // Debug log
+      try {
+        const leadDocRef = doc(db, 'leads', selectedLeadId);
+        const leadDoc = await getDoc(leadDocRef);
+        if (leadDoc.exists()) {
+          const data = leadDoc.data();
+          console.log('Lead Data:', data); // Debug log
 
-        document.getElementById('nama').value = data['leadName'] || '';
-        document.getElementById('no-telp').value = data['leadPhone'] || '';
-        document.getElementById('pic-leads').value = data['picLeads'] || '';
-        document.getElementById('channel').value = data['channel'] || '';
-        document.getElementById('leads-from').value = data['leadsFrom'] || '';
-        perawatanSelect.value = data['perawatan'] || '';
-      } else {
-        console.log('No data found for Lead ID:', selectedLeadId); // Debug log
+          document.getElementById('nama').value = data['leadName'] || '';
+          document.getElementById('no-telp').value = data['leadPhone'] || '';
+          document.getElementById('pic-leads').value = data['picLeads'] || '';
+          document.getElementById('channel').value = data['channel'] || '';
+          document.getElementById('leads-from').value = data['leadsFrom'] || '';
+          perawatanSelect.value = data['perawatan'] || '';
+        } else {
+          console.log('No data found for Lead ID:', selectedLeadId); // Debug log
+        }
+      } catch (error) {
+        console.error('Error fetching lead data:', error);
       }
     }
   });
@@ -54,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       'Channel': document.getElementById('channel').value,
       'Leads From': document.getElementById('leads-from').value,
       'Perawatan': document.getElementById('perawatan').value,
-      '7R Membership': document.getElementById('membership').value,
+      'Membership': document.getElementById('membership').value,
       'Klinik Tujuan': document.getElementById('klinik-tujuan').value,
       'Nama Promo': document.getElementById('nama-promo').value,
       'Asuransi': document.getElementById('asuransi').value,
