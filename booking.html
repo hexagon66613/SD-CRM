@@ -6,7 +6,7 @@
   <title>Booking Form</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- Select2 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
   <header>
@@ -86,7 +86,6 @@
         <label for="klinik-tujuan">Klinik Tujuan:</label>
         <select id="klinik-tujuan" name="klinik-tujuan" required>
           <option value="" disabled selected>Select Klinik Tujuan</option>
-          <!-- Options for Klinik Tujuan -->
           <option value="Pondok Bambu">Pondok Bambu</option>
           <option value="Tanjung Duren">Tanjung Duren</option>
           <option value="Bekasi">Bekasi</option>
@@ -148,140 +147,7 @@
   <!-- jQuery (necessary for Select2) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- Select2 JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <!-- Your custom JavaScript -->
-  <script type="module">
-    import { db } from './assets/js/firebase-config.js';
-    import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-
-    $(document).ready(function() {
-      // Initialize Select2 for the dropdowns
-      $('#leads-id').select2({
-        placeholder: "Select Leads ID",
-        allowClear: true
-      });
-
-      $('#perawatan').select2({
-        placeholder: "Select Perawatan",
-        allowClear: true
-      });
-
-      $('#membership').select2({
-        placeholder: "Select Yes/No",
-        allowClear: true
-      });
-
-      $('#klinik-tujuan').select2({
-        placeholder: "Select Klinik Tujuan",
-        allowClear: true
-      });
-
-      $('#asuransi').select2({
-        placeholder: "Select Yes/No",
-        allowClear: true
-      });
-    });
-
-    async function generateBookingID() {
-      const bookingsRef = collection(db, 'bookings');
-      const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        return 'SDB000000000001'; // Start with the initial ID
-      } else {
-        const lastDoc = querySnapshot.docs[0];
-        const lastID = lastDoc.data()['Booking ID'];
-
-        const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
-        if (isNaN(lastIDNumber)) {
-          throw new Error(`Failed to parse Booking ID: ${lastID}`);
-        }
-
-        const newIDNumber = lastIDNumber + 1;
-        const newID = `SDB${newIDNumber.toString().padStart(12, '0')}`;
-        return newID;
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      const leadsSelect = $('#leads-id');
-      const perawatanSelect = $('#perawatan');
-
-      async function fetchLeads() {
-        try {
-          const leadsSnapshot = await getDocs(collection(db, 'leads'));
-          leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
-          leadsSnapshot.forEach((doc) => {
-            const data = doc.data();
-            const option = $('<option></option>').val(data.leadsId).text(`${data.leadsId} | ${data.leadName}`);
-            leadsSelect.append(option);
-          });
-          leadsSelect.select2({
-            placeholder: "Select Leads ID",
-            allowClear: true
-          });
-        } catch (error) {
-          console.error('Error fetching leads: ', error);
-        }
-      }
-
-      async function handleFormSubmission(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const bookingData = {
-          'Booking ID': document.getElementById('booking-id').value,
-          'Leads ID': $('#leads-id').val(),
-          'Nama': document.getElementById('nama').textContent,
-          'No. telp': document.getElementById('no-telp').textContent,
-          'PIC Leads': document.getElementById('pic-leads').textContent,
-          'Channel': document.getElementById('channel').textContent,
-          'Leads From': document.getElementById('leads-from').textContent,
-          'Perawatan': $('#perawatan').val(),
-          'Membership': $('#membership').val(),
-          'Klinik Tujuan': $('#klinik-tujuan').val(),
-          'Nama Promo': document.getElementById('nama-promo').value,
-          'Asuransi': $('#asuransi').val(),
-          'Booking Date': document.getElementById('booking-date').value,
-          'Booking Time': document.getElementById('booking-time').value,
-          'Doctor': document.getElementById('doctor').value
-        };
-
-        try {
-          await setDoc(doc(db, 'bookings', bookingData['Booking ID']), bookingData);
-          alert('Booking added successfully!');
-
-          // Clear form fields and reset dropdowns
-          $('#booking-form')[0].reset();
-          $('#leads-id').val(null).trigger('change');
-          $('#perawatan').val(null).trigger('change');
-          $('#membership').val(null).trigger('change');
-          $('#klinik-tujuan').val(null).trigger('change');
-          $('#asuransi').val(null).trigger('change');
-          document.getElementById('nama').textContent = '';
-          document.getElementById('no-telp').textContent = '';
-          document.getElementById('pic-leads').textContent = '';
-          document.getElementById('channel').textContent = '';
-          document.getElementById('leads-from').textContent = '';
-
-          // Re-fetch leads and generate a new Booking ID
-          await fetchLeads();
-          document.getElementById('booking-id').value = await generateBookingID();
-        } catch (error) {
-          console.error('Error adding document: ', error);
-          alert('Failed to add booking. Please try again.');
-        }
-      }
-
-      // Set initial Booking ID
-      document.getElementById('booking-id').value = await generateBookingID();
-
-      // Attach form submission handler
-      document.getElementById('booking-form').addEventListener('submit', handleFormSubmission);
-
-      // Fetch leads on page load
-      await fetchLeads();
-    });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+  <script type="module" src="assets/js/booking.js"></script>
 </body>
 </html>
