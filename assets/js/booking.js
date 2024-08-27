@@ -2,6 +2,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = $('#leads-id');
   const perawatanSelect = $('#perawatan');
 
+  // Initialize Select2
+  leadsSelect.select2({
+    placeholder: "Select Leads ID",
+    allowClear: true
+  });
+
+  perawatanSelect.select2({
+    placeholder: "Select Perawatan",
+    allowClear: true
+  });
+
   async function fetchLeads() {
     try {
       const leadsSnapshot = await getDocs(collection(db, 'leads'));
@@ -11,10 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const option = $('<option></option>').val(data.leadsId).text(`${data.leadsId} | ${data.leadName}`);
         leadsSelect.append(option);
       });
-      leadsSelect.select2({
-        placeholder: "Select Leads ID",
-        allowClear: true
-      });
+      leadsSelect.trigger('change'); // Trigger change to refresh Select2 options
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
@@ -50,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const option = $('<option></option>').val(optionText).text(optionText);
             perawatanSelect.append(option);
           });
-          perawatanSelect.val(data.perawatan || '').trigger('change');
+          perawatanSelect.val(data.perawatan || '').trigger('change'); // Trigger change to refresh Select2
         } else {
           console.log('No such document!');
         }
