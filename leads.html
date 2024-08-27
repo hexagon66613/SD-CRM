@@ -18,17 +18,19 @@
   <div class="form-section">
     <h2>Leads Input Form</h2>
     <form id="leads-form">
-      <label for="leads-id">Leads ID:</label>
-      <input type="text" id="leads-id" name="leads-id" readonly>
+      <label for="lead-id">Leads ID:</label>
+      <input type="text" id="lead-id" name="lead-id" readonly>
 
-      <label for="lead-name">Name:</label>
+      <label for="lead-name">Nama:</label>
       <input type="text" id="lead-name" name="lead-name" required>
 
       <label for="lead-phone">No. telp:</label>
       <input type="number" id="lead-phone" name="lead-phone" required>
 
       <label for="pic-leads">PIC Leads:</label>
-      <select id="pic-leads" name="pic-leads" required></select>
+      <select id="pic-leads" name="pic-leads" required>
+        <!-- Options populated by JavaScript -->
+      </select>
 
       <label for="channel">Channel:</label>
       <select id="channel" name="channel" required>
@@ -48,8 +50,8 @@
         <option value="Direct WA Tiktok">Direct WA Tiktok</option>
       </select>
 
-      <label for="leads-from">Leads From:</label>
-      <select id="leads-from" name="leads-from" required>
+      <label for="lead-from">Leads From:</label>
+      <select id="lead-from" name="lead-from" required>
         <option value="Pondok Bambu">Pondok Bambu</option>
         <option value="Tanjung Duren">Tanjung Duren</option>
         <option value="Bekasi">Bekasi</option>
@@ -78,7 +80,7 @@
       <input type="date" id="date-first-chat" name="date-first-chat" required>
 
       <label for="date-created">Date Created Leads:</label>
-      <input type="date" id="date-created" name="date-created" required readonly>
+      <input type="date" id="date-created" name="date-created" readonly>
 
       <label for="perawatan">Perawatan:</label>
       <select id="perawatan" name="perawatan" required>
@@ -144,10 +146,12 @@
       </select>
 
       <label for="remarks">Remarks:</label>
-      <input type="text" id="remarks" name="remarks">
+      <textarea id="remarks" name="remarks"></textarea>
 
       <label for="pic-closed">PIC Closed:</label>
-      <select id="pic-closed" name="pic-closed" required></select>
+      <select id="pic-closed" name="pic-closed" required>
+        <!-- Options populated by JavaScript -->
+      </select>
 
       <button type="submit">Submit</button>
     </form>
