@@ -6,35 +6,9 @@
   <title>Booking Form</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    .form-section {
-      display: flex;
-      flex-direction: column;
-      margin: 20px;
-    }
-    
-    .form-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    
-    .form-row label {
-      width: 150px;
-      font-weight: bold;
-    }
-    
-    .form-row .value {
-      flex: 1;
-    }
-    
-    .form-row input,
-    .form-row select {
-      margin-left: 10px;
-    }
-    
-    .form-row input[readonly],
-    .form-row select[readonly] {
-      background-color: #f0f0f0;
+    /* Add CSS to hide the Booking ID label and input */
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -58,135 +32,87 @@
   <div class="form-section">
     <h2>Booking Input Form</h2>
     <form id="booking-form">
-      <div class="form-row">
-        <label for="booking-id">Booking ID:</label>
-        <input type="text" id="booking-id" name="booking-id" readonly>
-      </div>
+      <label for="booking-id" class="hidden">Booking ID:</label>
+      <input type="text" id="booking-id" name="booking-id" readonly class="hidden">
 
-      <div class="form-row">
-        <label for="leads-id">Leads ID:</label>
-        <select id="leads-id" name="leads-id">
-          <option value="" disabled selected>Select Leads ID</option>
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="leads-id">Leads ID:</label>
+      <select id="leads-id" name="leads-id">
+        <option value="" disabled selected>Select Leads ID</option>
+        <!-- Options populated by JavaScript -->
+      </select>
 
-      <div class="form-row">
-        <label for="nama">Nama:</label>
-        <span id="nama" class="value"></span>
-      </div>
+      <label for="nama">Nama:</label>
+      <span id="nama" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="no-telp">No. telp:</label>
-        <span id="no-telp" class="value"></span>
-      </div>
+      <label for="no-telp">No. telp:</label>
+      <span id="no-telp" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="pic-leads">PIC Leads:</label>
-        <span id="pic-leads" class="value"></span>
-      </div>
+      <label for="pic-leads">PIC Leads:</label>
+      <span id="pic-leads" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="channel">Channel:</label>
-        <span id="channel" class="value"></span>
-      </div>
+      <label for="channel">Channel:</label>
+      <span id="channel" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="leads-from">Leads From:</label>
-        <span id="leads-from" class="value"></span>
-      </div>
+      <label for="leads-from">Leads From:</label>
+      <span id="leads-from" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="perawatan">Perawatan:</label>
-        <select id="perawatan" name="perawatan">
-          <option value="" disabled>Select Perawatan</option>
-          <option value="Behel Gigi">Behel Gigi</option>
-          <option value="Bleaching">Bleaching</option>
-          <option value="Bundling">Bundling</option>
-          <option value="Cabut Gigi">Cabut Gigi</option>
-          <option value="Cabut Gigi Bungsu">Cabut Gigi Bungsu</option>
-          <option value="Gigi Palsu/Tiruan">Gigi Palsu/Tiruan</option>
-          <option value="Implant Gigi">Implant Gigi</option>
-          <option value="Konsultasi">Konsultasi</option>
-          <option value="Kontrol Behel">Kontrol Behel</option>
-          <option value="Lainnya">Lainnya</option>
-          <option value="Lepas Behel">Lepas Behel</option>
-          <option value="Perawatan Anak">Perawatan Anak</option>
-          <option value="PSA">PSA</option>
-          <option value="Scalling">Scalling</option>
-          <option value="Scalling add on">Scalling add on</option>
-          <option value="Tambal Gigi">Tambal Gigi</option>
-          <option value="Veneer">Veneer</option>
-          <option value="Retainer">Retainer</option>
-        </select>
-      </div>
+      <label for="perawatan">Perawatan:</label>
+      <select id="perawatan" name="perawatan">
+        <!-- Options populated by JavaScript -->
+      </select>
 
-      <div class="form-row">
-        <label for="membership">7R Membership:</label>
-        <select id="membership" name="membership" required>
-          <option value="" disabled selected>Select Yes/No</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
+      <label for="membership">7R Membership:</label>
+      <select id="membership" name="membership" required>
+        <option value="" disabled selected>Select Yes/No</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
 
-      <div class="form-row">
-        <label for="klinik-tujuan">Klinik Tujuan:</label>
-        <select id="klinik-tujuan" name="klinik-tujuan" required>
-          <option value="" disabled selected>Select Klinik Tujuan</option>
-          <option value="Pondok Bambu">Pondok Bambu</option>
-          <option value="Tanjung Duren">Tanjung Duren</option>
-          <option value="Bekasi">Bekasi</option>
-          <option value="Semarang">Semarang</option>
-          <option value="Tiktok Leads">Tiktok Leads</option>
-          <option value="All">All</option>
-          <option value="Bintaro">Bintaro</option>
-          <option value="Website Retargeting">Website Retargeting</option>
-          <option value="Kelapa Gading">Kelapa Gading</option>
-          <option value="Arteri">Arteri</option>
-          <option value="Kemang">Kemang</option>
-          <option value="BSD">BSD</option>
-          <option value="Depok">Depok</option>
-          <option value="Puri Indah">Puri Indah</option>
-          <option value="PIK">PIK</option>
-          <option value="Gading Serpong">Gading Serpong</option>
-          <option value="Sozo Kids">Sozo Kids</option>
-          <option value="Mahasiswa">Mahasiswa</option>
-          <option value="New">New</option>
-          <option value="Behel Premium">Behel Premium</option>
-          <option value="Asuransi">Asuransi</option>
-          <option value="Self Ligating">Self Ligating</option>
-        </select>
-      </div>
+      <label for="klinik-tujuan">Klinik Tujuan:</label>
+      <select id="klinik-tujuan" name="klinik-tujuan" required>
+        <option value="" disabled selected>Select Klinik Tujuan</option>
+        <option value="Pondok Bambu">Pondok Bambu</option>
+        <option value="Tanjung Duren">Tanjung Duren</option>
+        <option value="Bekasi">Bekasi</option>
+        <option value="Semarang">Semarang</option>
+        <option value="Tiktok Leads">Tiktok Leads</option>
+        <option value="All">All</option>
+        <option value="Bintaro">Bintaro</option>
+        <option value="Website Retargeting">Website Retargeting</option>
+        <option value="Kelapa Gading">Kelapa Gading</option>
+        <option value="Arteri">Arteri</option>
+        <option value="Kemang">Kemang</option>
+        <option value="BSD">BSD</option>
+        <option value="Depok">Depok</option>
+        <option value="Puri Indah">Puri Indah</option>
+        <option value="PIK">PIK</option>
+        <option value="Gading Serpong">Gading Serpong</option>
+        <option value="Sozo Kids">Sozo Kids</option>
+        <option value="Mahasiswa">Mahasiswa</option>
+        <option value="New">New</option>
+        <option value="Behel Premium">Behel Premium</option>
+        <option value="Asuransi">Asuransi</option>
+        <option value="Self Ligating">Self Ligating</option>
+      </select>
 
-      <div class="form-row">
-        <label for="nama-promo">Nama Promo:</label>
-        <input type="text" id="nama-promo" name="nama-promo">
-      </div>
+      <label for="nama-promo">Nama Promo:</label>
+      <input type="text" id="nama-promo" name="nama-promo">
 
-      <div class="form-row">
-        <label for="asuransi">Asuransi:</label>
-        <select id="asuransi" name="asuransi" required>
-          <option value="" disabled selected>Select Yes/No</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
+      <label for="asuransi">Asuransi:</label>
+      <select id="asuransi" name="asuransi" required>
+        <option value="" disabled selected>Select Yes/No</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
 
-      <div class="form-row">
-        <label for="booking-date">Booking Date:</label>
-        <input type="date" id="booking-date" name="booking-date" required>
-      </div>
+      <label for="booking-date">Booking Date:</label>
+      <input type="date" id="booking-date" name="booking-date" required>
 
-      <div class="form-row">
-        <label for="booking-time">Booking Time:</label>
-        <input type="time" id="booking-time" name="booking-time" required>
-      </div>
+      <label for="booking-time">Booking Time:</label>
+      <input type="time" id="booking-time" name="booking-time" required>
 
-      <div class="form-row">
-        <label for="doctor">Doctor:</label>
-        <input type="text" id="doctor" name="doctor">
-      </div>
+      <label for="doctor">Doctor:</label>
+      <input type="text" id="doctor" name="doctor">
 
       <button type="submit">Submit</button>
     </form>
