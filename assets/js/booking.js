@@ -31,12 +31,22 @@ document.addEventListener('DOMContentLoaded', async () => {
           const data = leadDoc.data();
           console.log('Lead Data:', data); // Debug log
 
+          // Update form fields
           document.getElementById('nama').value = data['leadName'] || '';
           document.getElementById('no-telp').value = data['leadPhone'] || '';
           document.getElementById('pic-leads').value = data['picLeads'] || '';
           document.getElementById('channel').value = data['channel'] || '';
           document.getElementById('leads-from').value = data['leadsFrom'] || '';
           perawatanSelect.value = data['perawatan'] || '';
+
+          // Ensure that select elements have a default option
+          if (!perawatanSelect.querySelector('option[value="' + data['perawatan'] + '"]')) {
+            // Add missing options to the select dropdown
+            const option = document.createElement('option');
+            option.value = data['perawatan'];
+            option.textContent = data['perawatan'];
+            perawatanSelect.appendChild(option);
+          }
         } else {
           console.log('No data found for Lead ID:', selectedLeadId); // Debug log
         }
