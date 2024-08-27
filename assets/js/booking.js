@@ -39,7 +39,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error('Error fetching leads:', error);
     }
   }
-  fetchLeads();
+   leadsSelect.select2({
+        placeholder: "Select Leads ID",
+        allowClear: true
+      });
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    }
+  }
+
+  await fetchLeads();
   // Handle Leads ID selection
   leadsSelect.addEventListener('change', async () => {
     const selectedLeadsId = leadsSelect.value; // This will be just the Leads ID
