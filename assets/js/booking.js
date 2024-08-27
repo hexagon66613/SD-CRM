@@ -1,4 +1,4 @@
-import { db } from './firebase-config.js'; // Import the Firebase config
+import { db } from './firebase-config.js';
 import { collection, doc, getDoc, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Error fetching leads:', error);
   }
 
-  // Populate Perawatan dropdown (assuming similar logic to Leads ID)
-  // If "Perawatan" options are predefined, you can hard-code them or fetch them from Firestore
+  // Populate Perawatan dropdown (example options)
   const perawatanOptions = ['Option1', 'Option2', 'Option3']; // Replace with actual options
   perawatanOptions.forEach(optionText => {
     const option = document.createElement('option');
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       await addDoc(collection(db, 'bookings'), formData);
       alert('Booking added successfully!');
-      window.location.reload(); // Reload to clear form after submission
+      window.location.reload();
     } catch (error) {
       console.error('Error adding document: ', error);
       alert('Failed to add booking. Please try again.');
