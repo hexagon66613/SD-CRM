@@ -31,12 +31,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Handle Leads ID change
   leadsSelect.addEventListener('change', async (event) => {
     const selectedLeadId = event.target.value;
+    console.log('Selected Lead ID:', selectedLeadId); // Debugging
     if (selectedLeadId) {
       try {
         const leadsDoc = doc(db, 'leads', selectedLeadId);
         const leadData = await getDoc(leadsDoc);
         if (leadData.exists()) {
           const data = leadData.data();
+          console.log('Lead Data:', data); // Debugging
           document.getElementById('nama').value = data['leadName'] || '';
           document.getElementById('no-telp').value = data['leadPhone'] || '';
           document.getElementById('pic-leads').value = data['picLeads'] || '';
