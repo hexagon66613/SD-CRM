@@ -200,3 +200,17 @@ label[for="lead-id"], label[for="date-created"] {
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Select2 Styling */
+.select2-container {
+  width: 100% !important; /* Ensure the container uses the full width */
+}
+
+.select2-selection {
+  height: 38px; /* Adjust as needed */
+}
+
+.select2-dropdown {
+  max-height: 200px; /* Adjust as needed */
+  overflow-y: auto; /* Enable vertical scrolling if necessary */
+}
