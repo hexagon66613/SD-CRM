@@ -1,15 +1,14 @@
 import { db } from './firebase-config.js';  // Import your Firebase config
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
-// Initialize Select2 on select elements
 $(document).ready(function() {
+  // Initialize Select2
   $('#leads-id').select2({
     placeholder: "Select Leads ID",
     allowClear: true
   });
 });
 
-// Function to generate a sequential Booking ID
 async function generateBookingID() {
   const bookingsRef = collection(db, 'bookings');
   const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1));
@@ -33,24 +32,21 @@ async function generateBookingID() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const leadsSelect = document.getElementById('leads-id');
+  const leadsSelect = $('#leads-id');  // Use jQuery selector for Select2 initialization
   const perawatanSelect = document.getElementById('perawatan');
 
-  // Fetch leads IDs and populate the dropdown
   async function fetchLeads() {
     try {
       const leadsSnapshot = await getDocs(collection(db, 'leads'));
-      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>'); // Clear and populate dropdown
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
-        const option = document.createElement('option');
-        option.value = data.leadsId; // The value used for processing
-        option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
-        leadsSelect.appendChild(option);
+        const option = $('<option></option>').val(data.leadsId).text(`${data.leadsId} | ${data.leadName}`);
+        leadsSelect.append(option);
       });
 
       // Reinitialize Select2 after populating options
-      $('#leads-id').select2({
+      leadsSelect.select2({
         placeholder: "Select Leads ID",
         allowClear: true
       });
@@ -60,11 +56,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  fetchLeads();
+  await fetchLeads();
 
   // Handle Leads ID selection
-  leadsSelect.addEventListener('change', async () => {
-    const selectedLeadsId = leadsSelect.value; // This will be just the Leads ID
+  leadsSelect.on('change', async () => {
+    const selectedLeadsId = leadsSelect.val(); // This will be just the Leads ID
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
@@ -142,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('leads-from').textContent = '';
 
       // Reset dropdowns
-      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
       perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
 
       // Fetch updated leads to repopulate dropdown
