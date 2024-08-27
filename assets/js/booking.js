@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
         const option = document.createElement('option');
-        option.value = data.leadsId;
-        option.textContent = data.leadsId;
+        option.value = data.leadsId; // The value returned when selected
+        option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
         leadsSelect.appendChild(option);
       });
     } catch (error) {
