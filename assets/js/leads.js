@@ -1,5 +1,5 @@
 import { db, auth } from './firebase-config.js';  // Import the Firebase config
-import { collection, addDoc, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { collection, addDoc, getDocs, query, orderBy, limit, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 // Generate a unique Leads ID
@@ -7,11 +7,12 @@ async function generateLeadsID() {
   const leadsRef = collection(db, 'leads');
   const q = query(leadsRef, orderBy('leadsId', 'desc'), limit(1));
   const querySnapshot = await getDocs(q);
+  
   if (querySnapshot.empty) {
     return 'SD000000000001'; // Start with the initial ID
   } else {
     const lastDoc = querySnapshot.docs[0];
-    const lastID = lastDoc.id; // Assuming document ID is used as Leads ID
+    const lastID = lastDoc.data().leadsId; // Fetching Leads ID from document data
     const lastIDNumber = parseInt(lastID.replace('SD', ''), 10);
     const newIDNumber = lastIDNumber + 1;
     return `SD${newIDNumber.toString().padStart(12, '0')}`;
@@ -51,12 +52,13 @@ async function populateUserDropdowns() {
 // Save form data to Firestore
 async function saveLeadsFormData(event) {
   event.preventDefault();
-  const leadsId = document.getElementById('lead-id').value; // Updated ID
+
+  const leadsId = document.getElementById('lead-id').value;
   const leadName = document.getElementById('lead-name').value;
   const leadPhone = document.getElementById('lead-phone').value;
   const picLeads = document.getElementById('pic-leads').value;
   const channel = document.getElementById('channel').value;
-  const leadsFrom = document.getElementById('lead-from').value; // Updated ID
+  const leadsFrom = document.getElementById('lead-from').value;
   const dateFirstChat = document.getElementById('date-first-chat').value;
   const dateCreated = document.getElementById('date-created').value;
   const perawatan = document.getElementById('perawatan').value;
@@ -90,8 +92,12 @@ async function saveLeadsFormData(event) {
 // Initialize form and populate dropdowns
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsId = await generateLeadsID();
-  document.getElementById('lead-id').value = leadsId; // Updated ID
-  document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
+  document.getElementById('lead-id').value = leadsId;
+  
+  // Automatically set the current date for date-created
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date-created').value = today;
+  
   populateUserDropdowns();
   document.getElementById('leads-form').addEventListener('submit', saveLeadsFormData);
 });
