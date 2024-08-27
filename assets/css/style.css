@@ -118,11 +118,23 @@ form {
   flex-direction: column;
 }
 
-label {
-  margin-bottom: 8px;
-  font-weight: bold;
-  display: inline-block;
+/* Flexbox layout for form rows */
+.form-row {
+  display: flex;
+  align-items: center; /* Align items vertically center */
+  margin-bottom: 15px; /* Space between rows */
+}
+
+/* Style for labels */
+.form-row label {
   width: 150px; /* Fixed width for labels */
+  margin-right: 10px; /* Space between label and result field */
+}
+
+/* Style for result fields (spans) */
+.form-value {
+  flex: 1; /* Take up remaining space */
+  text-align: right; /* Align text to the right */
 }
 
 input[type="text"],
