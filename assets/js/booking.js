@@ -1,6 +1,7 @@
 // Import Firebase config and Firestore functions
 import { db } from './firebase-config.js';  // Import your Firebase config
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
   const bookingsRef = collection(db, 'bookings');
@@ -23,41 +24,51 @@ async function generateBookingID() {
     return newID;
   }
 }
+
+// Function to fetch leads and populate the dropdown
+async function fetchLeads() {
+  const leadsSelect = document.getElementById('leads-id');
+  try {
+    const leadsSnapshot = await getDocs(collection(db, 'leads'));
+    leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+    leadsSnapshot.forEach((doc) => {
+      const data = doc.data();
+      const option = document.createElement('option');
+      option.value = data.leadsId; // The value used for processing
+      option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
+      leadsSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
   const perawatanSelect = document.getElementById('perawatan');
-  // Fetch leads IDs and populate the dropdown
-  async function fetchLeads() {
-    try {
-      const leadsSnapshot = await getDocs(collection(db, 'leads'));
-      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
-      leadsSnapshot.forEach((doc) => {
-        const data = doc.data();
-        const option = document.createElement('option');
-        option.value = data.leadsId; // The value used for processing
-        option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
-        leadsSelect.appendChild(option);
-      });
-    } catch (error) {
-      console.error('Error fetching leads:', error);
-    }
-  }
-  fetchLeads();
+
+  // Fetch leads to populate the dropdown on page load
+  await fetchLeads();
+
   // Handle Leads ID selection
   leadsSelect.addEventListener('change', async () => {
-    const selectedLeadsId = leadsSelect.value; // This will be just the Leads ID
+    const selectedLeadsId = leadsSelect.value;
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
         const leadData = await getDoc(leadDoc);
+
         if (leadData.exists()) {
           const data = leadData.data();
+          console.log('Lead Data:', data); // Log data to check fields
+
           // Update the form with lead data
-          document.getElementById('nama').textContent = data.leadName || '';
-          document.getElementById('no-telp').textContent = data.leadPhone || '';
-          document.getElementById('pic-leads').textContent = data.picLeads || '';
-          document.getElementById('channel').textContent = data.channel || '';
-          document.getElementById('leads-from').textContent = data.leadsFrom || '';
+          document.getElementById('nama').value = data.leadName || '';
+          document.getElementById('no-telp').value = data.leadPhone || '';
+          document.getElementById('pic-leads').value = data.picLeads || '';
+          document.getElementById('channel').value = data.channel || '';
+          document.getElementById('leads-from').value = data.leadsFrom || '';
+
           // Update perawatan dropdown
           perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
           const perawatanOptions = [
@@ -81,6 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
   // Handle form submission
   document.getElementById('booking-form').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -91,11 +103,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       const formData = {
         'Booking ID': bookingID,
         'Leads ID': document.getElementById('leads-id').value,
-        'Nama': document.getElementById('nama').textContent,
-        'No. telp': document.getElementById('no-telp').textContent,
-        'PIC Leads': document.getElementById('pic-leads').textContent,
-        'Channel': document.getElementById('channel').textContent,
-        'Leads From': document.getElementById('leads-from').textContent,
+        'Nama': document.getElementById('nama').value,
+        'No. telp': document.getElementById('no-telp').value,
+        'PIC Leads': document.getElementById('pic-leads').value,
+        'Channel': document.getElementById('channel').value,
+        'Leads From': document.getElementById('leads-from').value,
         'Perawatan': document.getElementById('perawatan').value,
         'Membership': document.getElementById('membership').value,
         'Klinik Tujuan': document.getElementById('klinik-tujuan').value,
@@ -111,11 +123,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Clear all fields after submission
       document.getElementById('booking-form').reset(); // Clear input fields
-      document.getElementById('nama').textContent = '';
-      document.getElementById('no-telp').textContent = '';
-      document.getElementById('pic-leads').textContent = '';
-      document.getElementById('channel').textContent = '';
-      document.getElementById('leads-from').textContent = '';
+      document.getElementById('nama').value = '';
+      document.getElementById('no-telp').value = '';
+      document.getElementById('pic-leads').value = '';
+      document.getElementById('channel').value = '';
+      document.getElementById('leads-from').value = '';
 
       // Reset dropdowns
       leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
@@ -131,6 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Failed to add booking. Please try again.');
     }
   });
+
   // Set initial Booking ID
   document.getElementById('booking-id').value = await generateBookingID();
 });
