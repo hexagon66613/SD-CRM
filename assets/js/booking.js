@@ -31,12 +31,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           const data = leadDoc.data();
           console.log('Lead Data:', data); // Debug log
 
-          // Update form fields
-          document.getElementById('nama').value = data['leadName'] || '';
-          document.getElementById('no-telp').value = data['leadPhone'] || '';
-          document.getElementById('pic-leads').value = data['picLeads'] || '';
-          document.getElementById('channel').value = data['channel'] || '';
-          document.getElementById('leads-from').value = data['leadsFrom'] || '';
+          // Update label fields
+          document.getElementById('nama').textContent = data['leadName'] || '';
+          document.getElementById('no-telp').textContent = data['leadPhone'] || '';
+          document.getElementById('pic-leads').textContent = data['picLeads'] || '';
+          document.getElementById('channel').textContent = data['channel'] || '';
+          document.getElementById('leads-from').textContent = data['leadsFrom'] || '';
           perawatanSelect.value = data['perawatan'] || '';
 
           // Ensure that select elements have a default option
@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const formData = {
       'Booking ID': bookingID,
       'Leads ID': document.getElementById('leads-id').value,
-      'Nama': document.getElementById('nama').value,
-      'No. telp': document.getElementById('no-telp').value,
-      'PIC Leads': document.getElementById('pic-leads').value,
-      'Channel': document.getElementById('channel').value,
-      'Leads From': document.getElementById('leads-from').value,
+      'Nama': document.getElementById('nama').textContent,
+      'No. telp': document.getElementById('no-telp').textContent,
+      'PIC Leads': document.getElementById('pic-leads').textContent,
+      'Channel': document.getElementById('channel').textContent,
+      'Leads From': document.getElementById('leads-from').textContent,
       'Perawatan': document.getElementById('perawatan').value,
       'Membership': document.getElementById('membership').value,
       'Klinik Tujuan': document.getElementById('klinik-tujuan').value,
