@@ -27,8 +27,8 @@ async function populateUserDropdowns() {
   const querySnapshot = await getDocs(usersRef);
 
   // Clear previous options
-  picLeadsSelect.innerHTML = '';
-  picClosedSelect.innerHTML = '';
+  picLeadsSelect.innerHTML = '<option value="Unassigned" selected>Unassigned</option>';
+  picClosedSelect.innerHTML = '<option value="Unassigned" selected>Unassigned</option>';
 
   // Populate options for both dropdowns
   querySnapshot.forEach(doc => {
