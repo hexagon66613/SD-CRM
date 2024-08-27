@@ -9,11 +9,11 @@ async function generateLeadsID() {
   const querySnapshot = await getDocs(q);
   
   if (querySnapshot.empty) {
-    return 'SD000000000001'; // Start with the initial ID
+    return 'SDL000000000001'; // Start with the initial ID
   } else {
     const lastDoc = querySnapshot.docs[0];
     const lastID = lastDoc.data().leadsId; // Fetching Leads ID from document data
-    const lastIDNumber = parseInt(lastID.replace('SD', ''), 10);
+    const lastIDNumber = parseInt(lastID.replace('SDL', ''), 10);
     const newIDNumber = lastIDNumber + 1;
     return `SD${newIDNumber.toString().padStart(12, '0')}`;
   }
