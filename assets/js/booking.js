@@ -1,5 +1,5 @@
-import { db, auth } from './firebase-config.js';  // Import the Firebase config
-import { collection, doc, setDoc, getDocs, query, orderBy, limit, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { db, auth } from './firebase-config.js'; // Import the Firebase config
+import { collection, doc, setDoc, getDocs, getDoc, addDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -7,29 +7,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   const perawatanSelect = document.getElementById('perawatan');
 
   // Populate Leads ID dropdown
-  const leadsCollection = collection(db, 'leads');
-  const leadsSnapshot = await getDocs(leadsCollection);
-  leadsSnapshot.forEach(doc => {
-    const option = document.createElement('option');
-    option.value = doc.id;
-    option.textContent = doc.id;
-    leadsSelect.appendChild(option);
-  });
+  try {
+    const leadsCollection = collection(db, 'leads');
+    const leadsSnapshot = await getDocs(leadsCollection);
+    leadsSnapshot.forEach(doc => {
+      const option = document.createElement('option');
+      option.value = doc.id;
+      option.textContent = doc.id;
+      leadsSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+  }
 
   // Handle Leads ID change
   leadsSelect.addEventListener('change', async (event) => {
     const selectedLeadId = event.target.value;
     if (selectedLeadId) {
-      const leadsDoc = doc(db, 'leads', selectedLeadId);
-      const leadData = await getDoc(leadsDoc);
-      if (leadData.exists()) {
-        const data = leadData.data();
-        document.getElementById('nama').value = data['Nama'] || '';
-        document.getElementById('no-telp').value = data['No. telp'] || '';
-        document.getElementById('pic-leads').value = data['PIC Leads'] || '';
-        document.getElementById('channel').value = data['Channel'] || '';
-        document.getElementById('leads-from').value = data['Leads From'] || '';
-        perawatanSelect.value = data['Perawatan'] || '';
+      try {
+        const leadsDoc = doc(db, 'leads', selectedLeadId);
+        const leadData = await getDoc(leadsDoc);
+        if (leadData.exists()) {
+          const data = leadData.data();
+          document.getElementById('nama').value = data['Nama'] || '';
+          document.getElementById('no-telp').value = data['No. telp'] || '';
+          document.getElementById('pic-leads').value = data['PIC Leads'] || '';
+          document.getElementById('channel').value = data['Channel'] || '';
+          document.getElementById('leads-from').value = data['Leads From'] || '';
+          perawatanSelect.value = data['Perawatan'] || '';
+        }
+      } catch (error) {
+        console.error('Error fetching lead data:', error);
       }
     }
   });
@@ -37,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Handle form submission
   document.getElementById('booking-form').addEventListener('submit', async (event) => {
     event.preventDefault();
-    
+
     const bookingID = `SDB${Date.now()}`;
     document.getElementById('booking-id').value = bookingID;
 
