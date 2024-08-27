@@ -5,22 +5,22 @@ import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
   const bookingsRef = collection(db, 'bookings');
-  const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1)); // Adjust query based on your document structure
+  const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1));
   const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
     return 'SDB000000000001'; // Start with the initial ID
   } else {
     const lastDoc = querySnapshot.docs[0];
-    const lastID = lastDoc.data()['Booking ID']; // Fetching Booking ID from document data
+    const lastID = lastDoc.data()['Booking ID'];
 
     const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
     if (isNaN(lastIDNumber)) {
-      throw new Error(Failed to parse Booking ID: ${lastID});
+      throw new Error(`Failed to parse Booking ID: ${lastID}`);
     }
 
     const newIDNumber = lastIDNumber + 1;
-    const newID = SDB${newIDNumber.toString().padStart(12, '0')};
+    const newID = `SDB${newIDNumber.toString().padStart(12, '0')}`;
     return newID;
   }
 }
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = doc.data();
         const option = document.createElement('option');
         option.value = data.leadsId; // The value used for processing
-        option.textContent = ${data.leadsId} | ${data.leadName}; // Display text in dropdown
+        option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
         leadsSelect.appendChild(option);
       });
     } catch (error) {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const formData = {
         'Booking ID': bookingID,
-        'Leads ID': document.getElementById('leads-id').value, // This will be just the Leads ID
+        'Leads ID': document.getElementById('leads-id').value,
         'Nama': document.getElementById('nama').textContent,
         'No. telp': document.getElementById('no-telp').textContent,
         'PIC Leads': document.getElementById('pic-leads').textContent,
@@ -121,8 +121,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Clear all fields after submission
       document.getElementById('booking-form').reset(); // Clear input fields
-
-      // Clear non-input fields
       document.getElementById('nama').textContent = '';
       document.getElementById('no-telp').textContent = '';
       document.getElementById('pic-leads').textContent = '';
@@ -130,11 +128,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('leads-from').textContent = '';
 
       // Reset dropdowns
-      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>'; // Reset Leads ID dropdown
-      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Reset Perawatan dropdown
+      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
 
       // Fetch updated leads to repopulate dropdown
-      fetchLeads();
+      await fetchLeads();
       
       // Set a new Booking ID for the next entry
       document.getElementById('booking-id').value = await generateBookingID();
