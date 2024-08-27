@@ -51,12 +51,12 @@ async function populateUserDropdowns() {
 // Save form data to Firestore
 async function saveLeadsFormData(event) {
   event.preventDefault();
-  const leadsId = document.getElementById('leads-id').value;
+  const leadsId = document.getElementById('lead-id').value; // Updated ID
   const leadName = document.getElementById('lead-name').value;
   const leadPhone = document.getElementById('lead-phone').value;
   const picLeads = document.getElementById('pic-leads').value;
   const channel = document.getElementById('channel').value;
-  const leadsFrom = document.getElementById('leads-from').value;
+  const leadsFrom = document.getElementById('lead-from').value; // Updated ID
   const dateFirstChat = document.getElementById('date-first-chat').value;
   const dateCreated = document.getElementById('date-created').value;
   const perawatan = document.getElementById('perawatan').value;
@@ -90,7 +90,8 @@ async function saveLeadsFormData(event) {
 // Initialize form and populate dropdowns
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsId = await generateLeadsID();
-  document.getElementById('leads-id').value = leadsId;
+  document.getElementById('lead-id').value = leadsId; // Updated ID
+  document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
   populateUserDropdowns();
   document.getElementById('leads-form').addEventListener('submit', saveLeadsFormData);
 });
