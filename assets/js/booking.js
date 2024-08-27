@@ -1,21 +1,6 @@
-import { getFirestore, collection, getDocs, addDoc, doc, getDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyBCidslTYtvEynEeZ9p46UuV5phZ8sliHk",
-  authDomain: "sd-crm-4e151.firebaseapp.com",
-  projectId: "sd-crm-4e151",
-  storageBucket: "sd-crm-4e151.appspot.com",
-  messagingSenderId: "346515488213",
-  appId: "1:346515488213:web:e77b36da1732be1fb3515c",
-  measurementId: "G-5XTC1W70QF"
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
-const auth = getAuth();
+import { db, auth } from './firebase-config.js';  // Import the Firebase config
+import { collection, doc, setDoc, getDocs, query, orderBy, limit, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = document.getElementById('leads-id');
