@@ -86,6 +86,7 @@
         <label for="klinik-tujuan">Klinik Tujuan:</label>
         <select id="klinik-tujuan" name="klinik-tujuan" required>
           <option value="" disabled selected>Select Klinik Tujuan</option>
+          <!-- Options for Klinik Tujuan -->
           <option value="Pondok Bambu">Pondok Bambu</option>
           <option value="Tanjung Duren">Tanjung Duren</option>
           <option value="Bekasi">Bekasi</option>
@@ -232,17 +233,17 @@
 
         const bookingData = {
           bookingId: document.getElementById('booking-id').value,
-          leadsId: document.getElementById('leads-id').val(),
+          leadsId: $('#leads-id').val(),
           nama: document.getElementById('nama').textContent,
           noTelp: document.getElementById('no-telp').textContent,
           picLeads: document.getElementById('pic-leads').textContent,
           channel: document.getElementById('channel').textContent,
           leadsFrom: document.getElementById('leads-from').textContent,
-          perawatan: document.getElementById('perawatan').val(),
-          membership: document.getElementById('membership').val(),
-          klinikTujuan: document.getElementById('klinik-tujuan').val(),
+          perawatan: $('#perawatan').val(),
+          membership: $('#membership').val(),
+          klinikTujuan: $('#klinik-tujuan').val(),
           namaPromo: document.getElementById('nama-promo').value,
-          asuransi: document.getElementById('asuransi').val(),
+          asuransi: $('#asuransi').val(),
           bookingDate: document.getElementById('booking-date').value,
           bookingTime: document.getElementById('booking-time').value,
           doctor: document.getElementById('doctor').value
@@ -252,21 +253,9 @@
           await setDoc(doc(db, 'bookings', bookingData.bookingId), bookingData);
           alert('Booking added successfully!');
           // Clear form fields and reset dropdowns
-          document.getElementById('nama').textContent = '';
-          document.getElementById('no-telp').textContent = '';
-          document.getElementById('pic-leads').textContent = '';
-          document.getElementById('channel').textContent = '';
-          document.getElementById('leads-from').textContent = '';
-
-          // Reset dropdowns
-          leadsSelect.empty().append('<option value="" disabled selected>Select Leads ID</option>');
-          perawatanSelect.empty().append('<option value="" disabled>Select Perawatan</option>');
-
-          // Fetch updated leads to repopulate dropdown
-          await fetchLeads();
-          
-          // Set a new Booking ID for the next entry
+          $('#booking-form')[0].reset();
           document.getElementById('booking-id').value = await generateBookingID();
+          await fetchLeads(); // Re-populate the leads dropdown
         } catch (error) {
           console.error('Error adding document: ', error);
           alert('Failed to add booking. Please try again.');
