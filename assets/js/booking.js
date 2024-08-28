@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Initialize the form with a Booking ID
+  // Set initial Booking ID
   document.getElementById('booking-id').value = await generateBookingID();
 
   fetchLeads();
@@ -67,10 +67,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('pic-leads').textContent = data.picLeads || '';
           document.getElementById('channel').textContent = data.channel || '';
           document.getElementById('leads-from').textContent = data.leadsFrom || '';
-          
+
           // Update perawatan dropdown
-          const perawatanSelect = document.getElementById('perawatan');
-          $(perawatanSelect).empty(); // Clear previous options
+          const perawatanSelect = $('#perawatan');
+          perawatanSelect.empty(); // Clear previous options
           const perawatanOptions = [
             'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu',
             'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya',
@@ -78,12 +78,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             'Tambal Gigi', 'Veneer', 'Retainer'
           ];
           perawatanOptions.forEach(optionText => {
-            const option = document.createElement('option');
-            option.value = optionText;
-            option.textContent = optionText;
-            perawatanSelect.appendChild(option);
+            const option = $('<option></option>').val(optionText).text(optionText);
+            perawatanSelect.append(option);
           });
-          $(perawatanSelect).select2({
+          perawatanSelect.select2({
             placeholder: 'Select Perawatan',
             allowClear: true
           });
@@ -132,8 +130,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Reset dropdowns
       leadsSelect.val(null).trigger('change');
-      const perawatanSelect = document.getElementById('perawatan');
-      $(perawatanSelect).empty(); // Clear previous options
+      const perawatanSelect = $('#perawatan');
+      perawatanSelect.empty(); // Clear previous options
       const perawatanOptions = [
         'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu',
         'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya',
@@ -141,12 +139,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Tambal Gigi', 'Veneer', 'Retainer'
       ];
       perawatanOptions.forEach(optionText => {
-        const option = document.createElement('option');
-        option.value = optionText;
-        option.textContent = optionText;
-        perawatanSelect.appendChild(option);
+        const option = $('<option></option>').val(optionText).text(optionText);
+        perawatanSelect.append(option);
       });
-      $(perawatanSelect).select2({
+      perawatanSelect.select2({
         placeholder: 'Select Perawatan',
         allowClear: true
       });
