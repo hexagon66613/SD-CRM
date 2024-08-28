@@ -2,13 +2,30 @@
 import { db } from './firebase-config.js';  // Import your Firebase config
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
-$(document).ready(function() {
-  // Initialize Select2 for Leads ID, Perawatan, and Klinik Tujuan fields
+async function generateBookingID() {
+  const bookingsRef = collection(db, 'bookings');
+  const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1));
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) {
+    return 'SDB000000000001';
+  } else {
+    const lastDoc = querySnapshot.docs[0];
+    const lastID = lastDoc.data()['Booking ID'];
+    const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
+    if (isNaN(lastIDNumber)) {
+      throw new Error(`Failed to parse Booking ID: ${lastID}`);
+    }
+    const newIDNumber = lastIDNumber + 1;
+    const newID = `SDB${newIDNumber.toString().padStart(12, '0')}`;
+    return newID;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = $('#leads-id');
   const perawatanSelect = $('#perawatan');
-  const klinikSelect = $('#klinik-tujuan');
+  const klinikTujuanSelect = $('#klinik-tujuan');
 
-  // Function to fetch and populate Leads ID dropdown
   async function fetchLeads() {
     try {
       const leadsSnapshot = await getDocs(collection(db, 'leads'));
@@ -30,50 +47,31 @@ $(document).ready(function() {
     }
   }
 
-  // Populate Perawatan options
-  function populatePerawatan() {
-    const perawatanOptions = [
-      'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
-      'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
-      'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
-      'Tambal Gigi', 'Veneer', 'Retainer'
-    ];
-    const perawatanData = perawatanOptions.map(optionText => ({
-      id: optionText,
-      text: optionText
-    }));
-    perawatanSelect.select2({
-      data: perawatanData,
-      placeholder: 'Select Perawatan',
-      allowClear: true
-    });
+  async function fetchOptions(collectionName, selectElement, placeholder) {
+    try {
+      const snapshot = await getDocs(collection(db, collectionName));
+      const options = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        options.push({
+          id: data.id, // Ensure your documents have an `id` field
+          text: data.name // Ensure your documents have a `name` field
+        });
+      });
+      selectElement.select2({
+        data: options,
+        placeholder: placeholder,
+        allowClear: true
+      });
+    } catch (error) {
+      console.error(`Error fetching ${collectionName}:`, error);
+    }
   }
 
-  // Populate Klinik Tujuan options
-  function populateKlinik() {
-    const klinikOptions = [
-      'Pondok Bambu', 'Tanjung Duren', 'Bekasi', 'Semarang', 'Tiktok Leads', 
-      'All', 'Bintaro', 'Website Retargeting', 'Kelapa Gading', 'Arteri', 
-      'Kemang', 'BSD', 'Depok', 'Puri Indah', 'PIK', 'Gading Serpong', 
-      'Sozo Kids', 'Mahasiswa', 'New', 'Behel Premium', 'Asuransi', 'Self Ligating'
-    ];
-    const klinikData = klinikOptions.map(optionText => ({
-      id: optionText,
-      text: optionText
-    }));
-    klinikSelect.select2({
-      data: klinikData,
-      placeholder: 'Select Klinik Tujuan',
-      allowClear: true
-    });
-  }
-
-  // Fetch Leads and populate dropdowns on document ready
   fetchLeads();
-  populatePerawatan();
-  populateKlinik();
+  await fetchOptions('perawatan', perawatanSelect, 'Select Perawatan');
+  await fetchOptions('klinikTujuan', klinikTujuanSelect, 'Select Klinik Tujuan');
 
-  // Handle Leads ID selection
   leadsSelect.on('change', async function () {
     const selectedLeadsId = $(this).val();
     if (selectedLeadsId) {
@@ -82,15 +80,12 @@ $(document).ready(function() {
         const leadData = await getDoc(leadDoc);
         if (leadData.exists()) {
           const data = leadData.data();
-          // Update the form with lead data
           document.getElementById('nama').textContent = data.leadName || '';
           document.getElementById('no-telp').textContent = data.leadPhone || '';
           document.getElementById('pic-leads').textContent = data.picLeads || '';
           document.getElementById('channel').textContent = data.channel || '';
           document.getElementById('leads-from').textContent = data.leadsFrom || '';
-          // Set Perawatan and Klinik values
           perawatanSelect.val(data.perawatan || '').trigger('change');
-          klinikSelect.val(data.klinik || '').trigger('change');
         } else {
           console.log('No such document!');
         }
@@ -100,7 +95,6 @@ $(document).ready(function() {
     }
   });
 
-  // Handle form submission
   document.getElementById('booking-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
@@ -108,39 +102,32 @@ $(document).ready(function() {
       document.getElementById('booking-id').value = bookingID;
       const formData = {
         'Booking ID': bookingID,
-        'Leads ID': $('#leads-id').val(), // Use Select2 value
+        'Leads ID': document.getElementById('leads-id').value,
         'Nama': document.getElementById('nama').textContent,
         'No. telp': document.getElementById('no-telp').textContent,
         'PIC Leads': document.getElementById('pic-leads').textContent,
         'Channel': document.getElementById('channel').textContent,
         'Leads From': document.getElementById('leads-from').textContent,
-        'Perawatan': $('#perawatan').val(), // Use Select2 value
+        'Perawatan': document.getElementById('perawatan').value,
         'Membership': document.getElementById('membership').value,
-        'Klinik Tujuan': $('#klinik-tujuan').val(), // Use Select2 value
+        'Klinik Tujuan': document.getElementById('klinik-tujuan').value,
         'Nama Promo': document.getElementById('nama-promo').value,
         'Asuransi': document.getElementById('asuransi').value,
         'Booking Date': document.getElementById('booking-date').value,
         'Booking Time': document.getElementById('booking-time').value,
         'Doctor': document.getElementById('doctor').value,
       };
-      // Save booking data to Firestore using Booking ID as document name
       await setDoc(doc(db, 'bookings', bookingID), formData);
       alert('Booking added successfully!');
-      // Clear all fields after submission
-      document.getElementById('booking-form').reset(); // Clear input fields
-      // Clear non-input fields
+      document.getElementById('booking-form').reset();
       document.getElementById('nama').textContent = '';
       document.getElementById('no-telp').textContent = '';
       document.getElementById('pic-leads').textContent = '';
       document.getElementById('channel').textContent = '';
       document.getElementById('leads-from').textContent = '';
-
-      // Reset dropdowns
-      leadsSelect.val(null).trigger('change'); // Reset Leads ID dropdown
-      perawatanSelect.val(null).trigger('change'); // Reset Perawatan dropdown
-      klinikSelect.val(null).trigger('change'); // Reset Klinik Tujuan dropdown
-
-      // Set a new Booking ID for the next entry
+      leadsSelect.val(null).trigger('change');
+      perawatanSelect.val(null).trigger('change');
+      klinikTujuanSelect.val(null).trigger('change');
       document.getElementById('booking-id').value = await generateBookingID();
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -148,6 +135,5 @@ $(document).ready(function() {
     }
   });
 
-  // Set initial Booking ID
   document.getElementById('booking-id').value = await generateBookingID();
 });
