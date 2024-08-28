@@ -25,6 +25,7 @@ async function generateBookingID() {
 document.addEventListener('DOMContentLoaded', async () => {
   const leadsSelect = $('#leads-id');
   const perawatanSelect = $('#perawatan');
+  const klinikSelect = $('#klinik-tujuan'); // Add this line
 
   // Fetch leads IDs and populate the dropdown
   async function fetchLeads() {
@@ -64,11 +65,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // Fetch klinik options and initialize Select2
+  async function initializeKlinikSelect() {
+    const klinikOptions = [
+      'Klinik A', 'Klinik B', 'Klinik C' // Replace these with actual clinic names
+    ];
+    const formattedOptions = klinikOptions.map(option => ({ id: option, text: option }));
+    klinikSelect.select2({
+      data: formattedOptions,
+      placeholder: 'Select Klinik Tujuan',
+      allowClear: true
+    });
+  }
+
   // Set initial Booking ID
   document.getElementById('booking-id').value = await generateBookingID();
 
   fetchLeads();
   await initializePerawatanSelect();
+  await initializeKlinikSelect(); // Initialize Klinik Tujuan
 
   // Handle Leads ID selection
   leadsSelect.on('change', async function () {
@@ -112,9 +127,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         'PIC Leads': document.getElementById('pic-leads').textContent,
         'Channel': document.getElementById('channel').textContent,
         'Leads From': document.getElementById('leads-from').textContent,
-        'Perawatan': document.getElementById('perawatan').value,
+        'Perawatan': document.getElementById('perawatan').val(),
         'Membership': document.getElementById('membership').value,
-        'Klinik Tujuan': document.getElementById('klinik-tujuan').value,
+        'Klinik Tujuan': document.getElementById('klinik-tujuan').val(),
         'Nama Promo': document.getElementById('nama-promo').value,
         'Asuransi': document.getElementById('asuransi').value,
         'Booking Date': document.getElementById('booking-date').value,
@@ -135,6 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Reset dropdowns
       leadsSelect.val(null).trigger('change');
       perawatanSelect.val(null).trigger('change');
+      klinikSelect.val(null).trigger('change'); // Reset Klinik Tujuan
       
       // Set a new Booking ID for the next entry
       document.getElementById('booking-id').value = await generateBookingID();
