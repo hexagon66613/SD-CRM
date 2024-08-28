@@ -79,11 +79,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             option.textContent = optionText;
             perawatanSelect.appendChild(option);
           });
-          perawatanSelect.select2({
-            data: perawatanOptions,
-            placeholder: 'Select Perawatan ID',
-            allowClear: true
-          });          
           perawatanSelect.value = data.perawatan || '';
         } else {
           console.log('No such document!');
