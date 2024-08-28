@@ -5,13 +5,13 @@ import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
   const bookingsRef = collection(db, 'bookings');
-  const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1)); // Adjust query based on your document structure
+  const q = query(bookingsRef, orderBy('Booking ID', 'desc'), limit(1));
   const querySnapshot = await getDocs(q);
   if (querySnapshot.empty) {
     return 'SDB000000000001'; // Start with the initial ID
   } else {
     const lastDoc = querySnapshot.docs[0];
-    const lastID = lastDoc.data()['Booking ID']; // Fetching Booking ID from document data
+    const lastID = lastDoc.data()['Booking ID'];
     const lastIDNumber = parseInt(lastID.replace('SDB', ''), 10);
     if (isNaN(lastIDNumber)) {
       throw new Error(`Failed to parse Booking ID: ${lastID}`);
@@ -64,13 +64,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('pic-leads').textContent = data.picLeads || '';
           document.getElementById('channel').textContent = data.channel || '';
           document.getElementById('leads-from').textContent = data.leadsFrom || '';
+          
           // Update perawatan dropdown
           const perawatanSelect = document.getElementById('perawatan');
-          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
+          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
           const perawatanOptions = [
-            'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
-            'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
-            'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
+            'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu',
+            'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya',
+            'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on',
             'Tambal Gigi', 'Veneer', 'Retainer'
           ];
           perawatanOptions.forEach(optionText => {
@@ -79,8 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             option.textContent = optionText;
             perawatanSelect.appendChild(option);
           });
-          perawatanSelect.select2({
-            data: perawatanOptions,
+          $(perawatanSelect).select2({
             placeholder: 'Select Perawatan',
             allowClear: true
           });
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('booking-id').value = bookingID;
       const formData = {
         'Booking ID': bookingID,
-        'Leads ID': document.getElementById('leads-id').value, // This will be just the Leads ID
+        'Leads ID': document.getElementById('leads-id').value,
         'Nama': document.getElementById('nama').textContent,
         'No. telp': document.getElementById('no-telp').textContent,
         'PIC Leads': document.getElementById('pic-leads').textContent,
@@ -120,8 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       await setDoc(doc(db, 'bookings', bookingID), formData);
       alert('Booking added successfully!');
       // Clear all fields after submission
-      document.getElementById('booking-form').reset(); // Clear input fields
-      // Clear non-input fields
+      document.getElementById('booking-form').reset();
       document.getElementById('nama').textContent = '';
       document.getElementById('no-telp').textContent = '';
       document.getElementById('pic-leads').textContent = '';
@@ -129,13 +128,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('leads-from').textContent = '';
 
       // Reset dropdowns
-      leadsSelect.val(null).trigger('change'); // Reset Leads ID dropdown
+      leadsSelect.val(null).trigger('change');
       const perawatanSelect = document.getElementById('perawatan');
-      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
+      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
       const perawatanOptions = [
-        'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
-        'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya', 
-        'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on', 
+        'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu',
+        'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya',
+        'Lepas Behel', 'Perawatan Anak', 'PSA', 'Scalling', 'Scalling add on',
         'Tambal Gigi', 'Veneer', 'Retainer'
       ];
       perawatanOptions.forEach(optionText => {
@@ -144,15 +143,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         option.textContent = optionText;
         perawatanSelect.appendChild(option);
       });
+      $(perawatanSelect).select2({
+        placeholder: 'Select Perawatan',
+        allowClear: true
+      });
 
       // Set a new Booking ID for the next entry
       document.getElementById('booking-id').value = await generateBookingID();
     } catch (error) {
-      console.error('Error adding document: ', error);
+      console.error('Error adding document:', error);
       alert('Failed to add booking. Please try again.');
     }
   });
 
   // Set initial Booking ID
-  document.getElementById('booking-id').value = await generateBookingID();
-});
+  document
