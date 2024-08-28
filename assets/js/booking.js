@@ -1,6 +1,7 @@
 // Import Firebase config and Firestore functions
 import { db } from './firebase-config.js';  // Import your Firebase config
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+
 // Function to generate a sequential Booking ID
 async function generateBookingID() {
   const bookingsRef = collection(db, 'bookings');
@@ -20,29 +21,37 @@ async function generateBookingID() {
     return newID;
   }
 }
+
 document.addEventListener('DOMContentLoaded', async () => {
-  const leadsSelect = document.getElementById('leads-id');
-  const perawatanSelect = document.getElementById('perawatan');
+  const leadsSelect = $('#leads-id');
+
   // Fetch leads IDs and populate the dropdown
   async function fetchLeads() {
     try {
       const leadsSnapshot = await getDocs(collection(db, 'leads'));
-      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>';
+      const leadsOptions = [];
       leadsSnapshot.forEach((doc) => {
         const data = doc.data();
-        const option = document.createElement('option');
-        option.value = data.leadsId; // The value used for processing
-        option.textContent = `${data.leadsId} | ${data.leadName}`; // Display text in dropdown
-        leadsSelect.appendChild(option);
+        leadsOptions.push({
+          id: data.leadsId,
+          text: `${data.leadsId} | ${data.leadName}`
+        });
+      });
+      leadsSelect.select2({
+        data: leadsOptions,
+        placeholder: 'Select Leads ID',
+        allowClear: true
       });
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
   }
+
   fetchLeads();
+
   // Handle Leads ID selection
-  leadsSelect.addEventListener('change', async () => {
-    const selectedLeadsId = leadsSelect.value; // This will be just the Leads ID
+  leadsSelect.on('change', async function () {
+    const selectedLeadsId = $(this).val();
     if (selectedLeadsId) {
       try {
         const leadDoc = doc(db, 'leads', selectedLeadsId);
@@ -56,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           document.getElementById('channel').textContent = data.channel || '';
           document.getElementById('leads-from').textContent = data.leadsFrom || '';
           // Update perawatan dropdown
+          const perawatanSelect = document.getElementById('perawatan');
           perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
           const perawatanOptions = [
             'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
@@ -78,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
   // Handle form submission
   document.getElementById('booking-form').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -114,7 +125,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('leads-from').textContent = '';
 
       // Reset dropdowns
-      document.getElementById('leads-id').value = '';
+      leadsSelect.val(null).trigger('change'); // Reset Leads ID dropdown
+      const perawatanSelect = document.getElementById('perawatan');
       perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Clear previous options
       const perawatanOptions = [
         'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu', 
@@ -128,12 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         option.textContent = optionText;
         perawatanSelect.appendChild(option);
       });
-      leadsSelect.innerHTML = '<option value="" disabled selected>Select Leads ID</option>'; // Reset Leads ID dropdown
-      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>'; // Reset Perawatan dropdown
-
-      // Set a new Booking ID for next entry
-      // Fetch updated leads to repopulate dropdown
-      fetchLeads();
 
       // Set a new Booking ID for the next entry
       document.getElementById('booking-id').value = await generateBookingID();
@@ -142,6 +148,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Failed to add booking. Please try again.');
     }
   });
+
   // Set initial Booking ID
   document.getElementById('booking-id').value = await generateBookingID();
 });
