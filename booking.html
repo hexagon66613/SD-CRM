@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking Form</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Include Select2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <style>
+    /* Custom styles if needed */
+  </style>
 </head>
 <body>
   <header>
@@ -30,7 +35,7 @@
       </div>
       <div class="form-row">
         <label for="leads-id">Leads ID:</label>
-        <select id="leads-id" name="leads-id">
+        <select id="leads-id" name="leads-id" style="width: 100%;">
           <option value="" disabled selected>Select Leads ID</option>
           <!-- Options populated by JavaScript -->
         </select>
@@ -124,8 +129,11 @@
       <button type="submit">Submit</button>
     </form>
   </div>
-      });
-    });
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include Select2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <!-- Include custom JavaScript -->
   <script type="module" src="assets/js/booking.js"></script>
 </body>
 </html>
