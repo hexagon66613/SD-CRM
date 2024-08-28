@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             option.textContent = optionText;
             perawatanSelect.appendChild(option);
           });
-          leadsSelect.select2({
-            data: leadsOptions,
-            placeholder: 'Select Leads ID',
+          perawatanSelect.select2({
+            data: perawatanOptions,
+            placeholder: 'Select Perawatan',
             allowClear: true
           });
         } else {
