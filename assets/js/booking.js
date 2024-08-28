@@ -155,3 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Failed to add booking. Please try again.');
     }
   });
+
+  // Set initial Booking ID
+  document.getElementById('booking-id').value = await generateBookingID();
+});
