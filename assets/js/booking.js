@@ -79,7 +79,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             option.textContent = optionText;
             perawatanSelect.appendChild(option);
           });
-          perawatanSelect.value = data.perawatan || '';
+          leadsSelect.select2({
+            data: leadsOptions,
+            placeholder: 'Select Leads ID',
+            allowClear: true
+          });
         } else {
           console.log('No such document!');
         }
