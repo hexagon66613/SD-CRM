@@ -47,6 +47,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Initialize the form with a Booking ID
+  document.getElementById('booking-id').value = await generateBookingID();
+
   fetchLeads();
 
   // Handle Leads ID selection
@@ -67,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           
           // Update perawatan dropdown
           const perawatanSelect = document.getElementById('perawatan');
-          perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
+          $(perawatanSelect).empty(); // Clear previous options
           const perawatanOptions = [
             'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu',
             'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya',
@@ -130,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Reset dropdowns
       leadsSelect.val(null).trigger('change');
       const perawatanSelect = document.getElementById('perawatan');
-      perawatanSelect.innerHTML = '<option value="" disabled>Select Perawatan</option>';
+      $(perawatanSelect).empty(); // Clear previous options
       const perawatanOptions = [
         'Behel Gigi', 'Bleaching', 'Bundling', 'Cabut Gigi', 'Cabut Gigi Bungsu',
         'Gigi Palsu/Tiruan', 'Implant Gigi', 'Konsultasi', 'Kontrol Behel', 'Lainnya',
