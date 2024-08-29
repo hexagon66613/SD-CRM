@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = doc.data();
         bookingsOptions.push({
           id: data['Booking ID'],
-          text: data['Booking ID']
+          text: `${data['Booking ID']} | ${data['Nama']}`
         });
       });
       bookingSelect.select2({
