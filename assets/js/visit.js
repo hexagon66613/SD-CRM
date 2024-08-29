@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           [data['Perawatan Add-On 1'], data['Perawatan Add-On 2'], data['Perawatan Add-On 3'], data['Perawatan Add-On 4'], data['Perawatan Add-On 5']].forEach(addOn => {
             totalBill += perawatanCost[addOn] || 0;
           });
-          $('#total-bill').text(`IDR ${totalBill}`);
+          $('#total-bill').val(formatIDR(totalBill));
         } else {
           console.log('No such document!');
         }
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Perawatan Add-On 3': $('#perawatan-add-on-3').val(),
         'Perawatan Add-On 4': $('#perawatan-add-on-4').val(),
         'Perawatan Add-On 5': $('#perawatan-add-on-5').val(),
-        'Total Bill': $('#total-bill').text(),
+        'Total Bill': $('#total-bill').val(),
       };
       // Save visit data to Firestore using Visit ID as document name
       await setDoc(doc(db, 'visits', visitID), formData);
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       $('#nama').text('');
       $('#no-telp').text('');
       $('#leads-id').val('');
-      $('#total-bill').text('');
+      $('#total-bill').val('');
 
       // Reset dropdowns
       bookingSelect.val(null).trigger('change');
@@ -226,4 +226,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set initial Visit ID
   $('#visit-id').val(await generateVisitID());
+
+  // Format total bill input as IDR
+  function formatIDR(value) {
+    return 'IDR ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  // Add event listener to format input as IDR
+  $('#total-bill').on('input', function() {
+    let value = this.value.replace(/[^0-9]/g, '');
+    this.value = formatIDR(value);
+  });
 });
