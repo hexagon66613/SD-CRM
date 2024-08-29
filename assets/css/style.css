@@ -183,7 +183,7 @@ button[type="submit"]:hover {
 
 /* Hide Booking ID field and labels */
 .hidden {
-  display: none;
+  display: none !important; /* Forcefully hide elements */
 }
 
 /* Hide both input fields and their labels */
