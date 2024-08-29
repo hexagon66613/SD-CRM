@@ -25,12 +25,16 @@
   <div class="form-section">
     <h2>Visit Input Form</h2>
     <form id="visit-form">
-      <label for="visit-id">Visit ID:</label>
-      <input type="text" id="visit-id" name="visit-id" readonly>
-      <label for="booking-id">Booking ID:</label>
-      <select id="booking-id" name="booking-id" required>
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
+      <div class="form-row">
+        <label for="visit-id">Visit ID:</label>
+        <input type="text" id="visit-id" name="visit-id" readonly>
+      </div>
+      <div class="form-row">
+        <label for="booking-id">Booking ID:</label>
+        <select id="booking-id" name="booking-id" required>
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
       <div class="form-row">
         <label for="nama">Nama:</label>
         <span id="nama" class="form-value"></span>
@@ -39,41 +43,61 @@
         <label for="no-telp">No. telp:</label>
         <span id="no-telp" class="form-value"></span>
       </div>
-      <label for="perawatan-utama">Perawatan Utama:</label>
-      <select id="perawatan-utama" name="perawatan-utama" required>
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-      <label for="membership">7R Membership:</label>
-      <select id="membership" name="membership" required>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-      <label for="booking-date">Booking Date:</label>
-      <span id="booking-date" class="form-value"></span>
-      <label for="booking-time">Booking Time:</label>
-      <span id="booking-time" class="form-value"></span>
-      <label for="perawatan-add-on-1">Perawatan Add-On 1:</label>
-      <select id="perawatan-add-on-1" name="perawatan-add-on-1">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-      <label for="perawatan-add-on-2">Perawatan Add-On 2:</label>
-      <select id="perawatan-add-on-2" name="perawatan-add-on-2">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-      <label for="perawatan-add-on-3">Perawatan Add-On 3:</label>
-      <select id="perawatan-add-on-3" name="perawatan-add-on-3">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-      <label for="perawatan-add-on-4">Perawatan Add-On 4:</label>
-      <select id="perawatan-add-on-4" name="perawatan-add-on-4">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-      <label for="perawatan-add-on-5">Perawatan Add-On 5:</label>
-      <select id="perawatan-add-on-5" name="perawatan-add-on-5">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-      <label for="total-bill">Total Bill:</label>
-      <span id="total-bill" class="form-value"></span>
+      <div class="form-row">
+        <label for="perawatan-utama">Perawatan Utama:</label>
+        <select id="perawatan-utama" name="perawatan-utama" required>
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="membership">7R Membership:</label>
+        <select id="membership" name="membership" required>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="booking-date">Booking Date:</label>
+        <span id="booking-date" class="form-value"></span>
+      </div>
+      <div class="form-row">
+        <label for="booking-time">Booking Time:</label>
+        <span id="booking-time" class="form-value"></span>
+      </div>
+      <div class="form-row">
+        <label for="perawatan-add-on-1">Perawatan Add-On 1:</label>
+        <select id="perawatan-add-on-1" name="perawatan-add-on-1">
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="perawatan-add-on-2">Perawatan Add-On 2:</label>
+        <select id="perawatan-add-on-2" name="perawatan-add-on-2">
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="perawatan-add-on-3">Perawatan Add-On 3:</label>
+        <select id="perawatan-add-on-3" name="perawatan-add-on-3">
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="perawatan-add-on-4">Perawatan Add-On 4:</label>
+        <select id="perawatan-add-on-4" name="perawatan-add-on-4">
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="perawatan-add-on-5">Perawatan Add-On 5:</label>
+        <select id="perawatan-add-on-5" name="perawatan-add-on-5">
+          <option></option> <!-- Placeholder for Select2 -->
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="total-bill">Total Bill:</label>
+        <span id="total-bill" class="form-value"></span>
+      </div>
       <button type="submit">Submit</button>
     </form>
   </div>
