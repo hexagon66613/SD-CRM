@@ -40,29 +40,42 @@ async function populateUserDropdowns() {
   }
 
   const usersRef = collection(db, 'users');
-  const querySnapshot = await getDocs(usersRef);
+  try {
+    const querySnapshot = await getDocs(usersRef);
 
-  // Clear previous options
-  picLeadsSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
-  picClosedSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
+    // Clear previous options
+    picLeadsSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
+    picClosedSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
 
-  // Populate options for both dropdowns
-  querySnapshot.forEach(doc => {
-    const username = doc.data().username;
-    const option = document.createElement('option');
-    option.value = username;
-    option.textContent = username;
-    picLeadsSelect.appendChild(option.cloneNode(true)); // Clone option for PIC Closed
-    picClosedSelect.appendChild(option);
-  });
-
-  // Set the initial value for PIC Leads to the logged-in user
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      const userEmail = user.email; // Assuming you use email for authentication
-      picLeadsSelect.value = userEmail;
+    // Check if there are documents
+    if (querySnapshot.empty) {
+      console.warn('No users found in the collection');
     }
-  });
+
+    // Populate options for both dropdowns
+    querySnapshot.forEach(doc => {
+      const username = doc.data().username;
+      if (username) {
+        const option = document.createElement('option');
+        option.value = username;
+        option.textContent = username;
+        picLeadsSelect.appendChild(option.cloneNode(true)); // Clone option for PIC Closed
+        picClosedSelect.appendChild(option);
+      } else {
+        console.warn('User document missing "username" field:', doc.id);
+      }
+    });
+
+    // Set the initial value for PIC Leads to the logged-in user
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        const userEmail = user.email; // Assuming you use email for authentication
+        picLeadsSelect.value = userEmail;
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching users from Firestore:', error);
+  }
 }
 
 // Save form data to Firestore
