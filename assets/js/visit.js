@@ -31,6 +31,36 @@ document.addEventListener('DOMContentLoaded', async () => {
   const perawatanAddOn4Select = $('#perawatan-add-on-4');
   const perawatanAddOn5Select = $('#perawatan-add-on-5');
 
+  // Initialize Select2 on the dropdown elements
+  bookingSelect.select2({
+    placeholder: 'Select Booking ID',
+    allowClear: true
+  });
+  perawatanUtamaSelect.select2({
+    placeholder: 'Select Perawatan Utama',
+    allowClear: true
+  });
+  perawatanAddOn1Select.select2({
+    placeholder: 'Select Perawatan Add-On 1',
+    allowClear: true
+  });
+  perawatanAddOn2Select.select2({
+    placeholder: 'Select Perawatan Add-On 2',
+    allowClear: true
+  });
+  perawatanAddOn3Select.select2({
+    placeholder: 'Select Perawatan Add-On 3',
+    allowClear: true
+  });
+  perawatanAddOn4Select.select2({
+    placeholder: 'Select Perawatan Add-On 4',
+    allowClear: true
+  });
+  perawatanAddOn5Select.select2({
+    placeholder: 'Select Perawatan Add-On 5',
+    allowClear: true
+  });
+
   // Fetch Booking IDs and populate the dropdown
   async function fetchBookings() {
     try {
