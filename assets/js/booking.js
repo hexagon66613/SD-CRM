@@ -78,9 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Set initial Booking ID
-  document.getElementById('booking-id').value = await generateBookingID();
-
+  // Fetch data for dropdowns
   fetchLeads();
   await initializePerawatanSelect();
   await initializeKlinikSelect(); // Initialize Klinik Tujuan
@@ -117,8 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('booking-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
+      // Generate new Booking ID upon form submission
       const bookingID = await generateBookingID();
-      document.getElementById('booking-id').value = bookingID;
+      
       const formData = {
         'Booking ID': bookingID,
         'Leads ID': leadsSelect.val(),
@@ -136,9 +135,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Booking Time': $('#booking-time').val(),
         'Doctor': $('#doctor').val(),
       };
+      
       await setDoc(doc(db, 'bookings', bookingID), formData);
       alert('Booking added successfully!');
-      // Clear all fields after submission
+      
+      // Reset form and fields
       document.getElementById('booking-form').reset();
       $('#nama').text('');
       $('#no-telp').text('');
@@ -158,7 +159,4 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Failed to add booking. Please try again.');
     }
   });
-
-  // Set initial Booking ID
-  document.getElementById('booking-id').value = await generateBookingID();
 });
