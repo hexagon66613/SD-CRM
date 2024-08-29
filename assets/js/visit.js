@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   $('#visit-form').on('submit', async function (event) {
     event.preventDefault();
     try {
-      const visitID = await generateVisitID();
+      const visitID = await generateVisitID(); // Generate Visit ID upon form submission
       $('#visit-id').val(visitID);
       const formData = {
         'Visit ID': visitID,
@@ -213,9 +213,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Failed to add visit. Please try again.');
     }
   });
-
-  // Set initial Visit ID
-  $('#visit-id').val(await generateVisitID());
 
   // Format total bill input as IDR
   function formatIDR(value) {
