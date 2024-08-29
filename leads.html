@@ -41,6 +41,11 @@
       resize: vertical; /* Allow vertical resize only */
       height: 100px; /* Set a default height */
     }
+
+    /* Hide elements visually but keep them in the DOM */
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -141,9 +146,9 @@
         <input type="date" id="date-first-chat" name="date-first-chat">
       </div>
 
-      <div class="form-row">
-        <label for="date-created" class="hidden">Date Created Leads:</label>
-        <input type="date" id="date-created" name="date-created" readonly class="hidden">
+      <div class="form-row hidden">
+        <label for="date-created">Date Created Leads:</label>
+        <input type="date" id="date-created" name="date-created" readonly>
       </div>
 
       <div class="form-row">
