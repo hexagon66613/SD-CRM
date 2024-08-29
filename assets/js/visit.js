@@ -1,5 +1,5 @@
 // Import Firebase config and Firestore functions
-import { db } from './firebase-config.js';  // Import your Firebase config
+import { db } from './firebase-config.js';
 import { doc, getDoc, collection, getDocs, setDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 
 // Function to generate a sequential Visit ID
@@ -124,11 +124,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Set initial Visit ID
-  document.getElementById('visit-id').value = await generateVisitID();
-
+  // Populate booking and perawatan dropdowns
   fetchBookings();
-  await initializePerawatanSelect();
+  initializePerawatanSelect();
 
   // Handle Booking ID selection
   bookingSelect.on('change', async function () {
@@ -140,31 +138,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (bookingData.exists()) {
           const data = bookingData.data();
           // Update the form with booking data
-          document.getElementById('nama').value = data['Nama'] || '';
-          document.getElementById('no-telp').value = data['No. telp'] || '';
-          perawatanUtamaSelect.val(data['Perawatan'] || '').trigger('change');
-          document.getElementById('membership').value = data['Membership'] || '';
-          document.getElementById('booking-date').value = data['Booking Date'] || '';
-          document.getElementById('booking-time').value = data['Booking Time'] || '';
+          $('#nama').text(data['Nama'] || '');
+          $('#no-telp').text(data['No. telp'] || '');
+          $('#booking-date').text(data['Booking Date'] || '');
+          $('#booking-time').text(data['Booking Time'] || '');
 
-          // Update Perawatan Add-Ons
+          // Set the value for the other selects and trigger change
+          perawatanUtamaSelect.val(data['Perawatan'] || '').trigger('change');
+          $('#membership').val(data['Membership'] || '').trigger('change');
+
+          // Update perawatan add-ons
           perawatanAddOn1Select.val(data['Perawatan Add-On 1'] || '').trigger('change');
           perawatanAddOn2Select.val(data['Perawatan Add-On 2'] || '').trigger('change');
           perawatanAddOn3Select.val(data['Perawatan Add-On 3'] || '').trigger('change');
           perawatanAddOn4Select.val(data['Perawatan Add-On 4'] || '').trigger('change');
           perawatanAddOn5Select.val(data['Perawatan Add-On 5'] || '').trigger('change');
-          
-          // Calculate Total Bill (you will need to adjust this according to your requirements)
+
+          // Calculate total bill
           const perawatanCost = {
             'Behel Gigi': 500000,
-            'Bleaching': 300000,
-            // Add costs for all other perawatan options
+            'Bleaching': 600000,
+            // Add other perawatan costs here
           };
           let totalBill = perawatanCost[data['Perawatan']] || 0;
           [data['Perawatan Add-On 1'], data['Perawatan Add-On 2'], data['Perawatan Add-On 3'], data['Perawatan Add-On 4'], data['Perawatan Add-On 5']].forEach(addOn => {
             totalBill += perawatanCost[addOn] || 0;
           });
-          document.getElementById('total-bill').value = `IDR ${totalBill}`;
+          $('#total-bill').text(`IDR ${totalBill}`);
         } else {
           console.log('No such document!');
         }
@@ -175,37 +175,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Handle form submission
-  document.getElementById('visit-form').addEventListener('submit', async (event) => {
+  $('#visit-form').on('submit', async function (event) {
     event.preventDefault();
     try {
       const visitID = await generateVisitID();
-      document.getElementById('visit-id').value = visitID;
+      $('#visit-id').val(visitID);
       const formData = {
         'Visit ID': visitID,
-        'Leads ID': document.getElementById('leads-id').value,
-        'Booking ID': document.getElementById('booking-id').value,
-        'Nama': document.getElementById('nama').value,
-        'No. telp': document.getElementById('no-telp').value,
-        'Perawatan Utama': document.getElementById('perawatan-utama').val(),
-        'Membership': document.getElementById('membership').value,
-        'Booking Date': document.getElementById('booking-date').value,
-        'Booking Time': document.getElementById('booking-time').value,
-        'Perawatan Add-On 1': document.getElementById('perawatan-add-on-1').val(),
-        'Perawatan Add-On 2': document.getElementById('perawatan-add-on-2').val(),
-        'Perawatan Add-On 3': document.getElementById('perawatan-add-on-3').val(),
-        'Perawatan Add-On 4': document.getElementById('perawatan-add-on-4').val(),
-        'Perawatan Add-On 5': document.getElementById('perawatan-add-on-5').val(),
-        'Total Bill': document.getElementById('total-bill').value,
+        'Leads ID': $('#leads-id').val(),
+        'Booking ID': $('#booking-id').val(),
+        'Nama': $('#nama').text(),
+        'No. telp': $('#no-telp').text(),
+        'Perawatan Utama': $('#perawatan-utama').val(),
+        'Membership': $('#membership').val(),
+        'Booking Date': $('#booking-date').text(),
+        'Booking Time': $('#booking-time').text(),
+        'Perawatan Add-On 1': $('#perawatan-add-on-1').val(),
+        'Perawatan Add-On 2': $('#perawatan-add-on-2').val(),
+        'Perawatan Add-On 3': $('#perawatan-add-on-3').val(),
+        'Perawatan Add-On 4': $('#perawatan-add-on-4').val(),
+        'Perawatan Add-On 5': $('#perawatan-add-on-5').val(),
+        'Total Bill': $('#total-bill').text(),
       };
       // Save visit data to Firestore using Visit ID as document name
       await setDoc(doc(db, 'visits', visitID), formData);
       alert('Visit added successfully!');
       // Clear all fields after submission
-      document.getElementById('visit-form').reset();
-      document.getElementById('nama').value = '';
-      document.getElementById('no-telp').value = '';
-      document.getElementById('leads-id').value = '';
-      document.getElementById('total-bill').value = '';
+      $('#visit-form').trigger('reset');
+      $('#nama').text('');
+      $('#no-telp').text('');
+      $('#leads-id').val('');
+      $('#total-bill').text('');
 
       // Reset dropdowns
       bookingSelect.val(null).trigger('change');
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       perawatanAddOn5Select.val(null).trigger('change');
       
       // Set a new Visit ID for the next entry
-      document.getElementById('visit-id').value = await generateVisitID();
+      $('#visit-id').val(await generateVisitID());
     } catch (error) {
       console.error('Error adding visit:', error);
       alert('Failed to add visit. Please try again.');
@@ -225,5 +225,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Set initial Visit ID
-  document.getElementById('visit-id').value = await generateVisitID();
+  $('#visit-id').val(await generateVisitID());
 });
