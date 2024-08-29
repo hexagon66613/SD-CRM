@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     placeholder: 'Select Perawatan Add-On 1',
     allowClear: true
   });
-  perawatanAddOn2Select({
+  perawatanAddOn2Select.select2({
     placeholder: 'Select Perawatan Add-On 2',
     allowClear: true
   });
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       placeholder: 'Select Perawatan Add-On 1',
       allowClear: true
     });
-    perawatanAddOn2Select({
+    perawatanAddOn2Select.select2({
       data: formattedOptions,
       placeholder: 'Select Perawatan Add-On 2',
       allowClear: true
@@ -170,7 +170,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       $('#visit-id').val(visitID);
       const formData = {
         'Visit ID': visitID,
-        'Leads ID': $('#leads-id').val(),
         'Booking ID': $('#booking-id').val(),
         'Nama': $('#nama').text(),
         'No. telp': $('#no-telp').text(),
@@ -192,7 +191,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       $('#visit-form').trigger('reset');
       $('#nama').text('');
       $('#no-telp').text('');
-      $('#leads-id').val('');
       $('#total-bill').val('');
 
       // Reset dropdowns
