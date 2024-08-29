@@ -92,23 +92,57 @@
 
       <div class="form-row">
         <label for="channel">Channel:</label>
-        <select id="channel" name="channel">
+        <select id="channel" name="channel" required>
           <option value="" disabled selected>Select Channel</option>
-          <!-- Channel options -->
+          <option value="Direct WA Meta">Direct WA Meta</option>
+          <option value="Form Tiktok">Form Tiktok</option>
+          <option value="Inbound WA">Inbound WA</option>
+          <option value="Inbound IG">Inbound IG</option>
+          <option value="Inbound Website">Inbound Website</option>
+          <option value="Inbound Organic">Inbound Organic</option>
+          <option value="Referral Telesales">Referral Telesales</option>
+          <option value="Referral FL">Referral FL</option>
+          <option value="Referral HO">Referral HO</option>
+          <option value="KOL">KOL</option>
+          <option value="Voucher">Voucher</option>
+          <option value="Blasting">Blasting</option>
+          <option value="Tiktok Inbox">Tiktok Inbox</option>
+          <option value="Direct WA Tiktok">Direct WA Tiktok</option>
         </select>
       </div>
 
       <div class="form-row">
         <label for="lead-from">Leads From:</label>
-        <select id="lead-from" name="lead-from">
+        <select id="lead-from" name="lead-from" required>
           <option value="" disabled selected>Select Leads From</option>
-          <!-- Leads From options -->
+          <option value="Pondok Bambu">Pondok Bambu</option>
+          <option value="Tanjung Duren">Tanjung Duren</option>
+          <option value="Bekasi">Bekasi</option>
+          <option value="Semarang">Semarang</option>
+          <option value="Tiktok Leads">Tiktok Leads</option>
+          <option value="All">All</option>
+          <option value="Bintaro">Bintaro</option>
+          <option value="Website Retargeting">Website Retargeting</option>
+          <option value="Kelapa Gading">Kelapa Gading</option>
+          <option value="Arteri">Arteri</option>
+          <option value="Kemang">Kemang</option>
+          <option value="BSD">BSD</option>
+          <option value="Depok">Depok</option>
+          <option value="Puri Indah">Puri Indah</option>
+          <option value="PIK">PIK</option>
+          <option value="Gading Serpong">Gading Serpong</option>
+          <option value="Sozo Kids">Sozo Kids</option>
+          <option value="Mahasiswa">Mahasiswa</option>
+          <option value="New">New</option>
+          <option value="Behel Premium">Behel Premium</option>
+          <option value="Asuransi">Asuransi</option>
+          <option value="Self Ligating">Self Ligating</option>
         </select>
       </div>
 
       <div class="form-row">
         <label for="date-first-chat">Date First Chat:</label>
-        <input type="date" id="date-first-chat" name="date-first-chat">
+        <input type="date" id="date-first-chat" name="date-first-chat" required>
       </div>
 
       <div class="form-row hidden">
@@ -118,9 +152,26 @@
 
       <div class="form-row">
         <label for="perawatan">Perawatan:</label>
-        <select id="perawatan" name="perawatan">
+        <select id="perawatan" name="perawatan" required>
           <option value="" disabled selected>Select Perawatan</option>
-          <!-- Perawatan options -->
+          <option value="Behel Gigi">Behel Gigi</option>
+          <option value="Bleaching">Bleaching</option>
+          <option value="Bundling">Bundling</option>
+          <option value="Cabut Gigi">Cabut Gigi</option>
+          <option value="Cabut Gigi Bungsu">Cabut Gigi Bungsu</option>
+          <option value="Gigi Palsu/Tiruan">Gigi Palsu/Tiruan</option>
+          <option value="Implant Gigi">Implant Gigi</option>
+          <option value="Konsultasi">Konsultasi</option>
+          <option value="Kontrol Behel">Kontrol Behel</option>
+          <option value="Lainnya">Lainnya</option>
+          <option value="Lepas Behel">Lepas Behel</option>
+          <option value="Perawatan Anak">Perawatan Anak</option>
+          <option value="PSA">PSA</option>
+          <option value="Scalling">Scalling</option>
+          <option value="Scalling add on">Scalling add on</option>
+          <option value="Tambal Gigi">Tambal Gigi</option>
+          <option value="Veneer">Veneer</option>
+          <option value="Retainer">Retainer</option>
         </select>
       </div>
 
@@ -128,7 +179,49 @@
         <label for="l1-result">L1: Result:</label>
         <select id="l1-result" name="l1-result">
           <option value="" disabled selected>Select L1 Result</option>
-          <!-- L1 Result options -->
+          <option value="Not Response">Not Response</option>
+          <option value="Booking">Booking</option>
+          <option value="Out of Area">Out of Area</option>
+          <option value="Hot Prospect">Hot Prospect</option>
+          <option value="Double Leads">Double Leads</option>
+          <option value="Waiting List">Waiting List</option>
+          <option value="No Response_DP">No Response_DP</option>
+          <option value="Considering_Promo">Considering_Promo</option>
+          <option value="Considering_Schedule">Considering_Schedule</option>
+          <option value="Considering_Price">Considering_Price</option>
+          <option value="Considering_Only Survey">Considering_Only Survey</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="l2-result">L2: Result 2:</label>
+        <select id="l2-result" name="l2-result">
+          <option value="" disabled selected>Select L2 Result 2</option>
+          <option value="Busy_No Response_Price">Busy_No Response_Price</option>
+          <option value="Busy_No Response_Schedule">Busy_No Response_Schedule</option>
+          <option value="Busy_No Response_Promo">Busy_No Response_Promo</option>
+          <option value="Busy_No Response_Other Reason">Busy_No Response_Other Reason</option>
+          <option value="Busy_No Response_Out of Area">Busy_No Response_Out of Area</option>
+          <option value="Busy_Considering_Price">Busy_Considering_Price</option>
+          <option value="Busy_Considering_Schedule">Busy_Considering_Schedule</option>
+          <option value="Busy_Considering_Promo">Busy_Considering_Promo</option>
+          <option value="Busy_Considering_Other Reason">Busy_Considering_Other Reason</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="l3-result">L3: Result 3:</label>
+        <select id="l3-result" name="l3-result">
+          <option value="" disabled selected>Select L3 Result 3</option>
+          <option value="Asuransi">Asuransi</option>
+          <option value="Cicilan">Cicilan</option>
+          <option value="Add-On (Cabut gigi/Tambal gigi)">Add-On (Cabut gigi/Tambal gigi)</option>
+          <option value="Rontgen">Rontgen</option>
+          <option value="Kontrol Behel">Kontrol Behel</option>
+          <option value="Just Survey">Just Survey</option>
+          <option value="Diskusi">Diskusi</option>
+          <option value="Perawatan">Perawatan</option>
+          <option value="Jadwal full">Jadwal full</option>
         </select>
       </div>
 
@@ -142,7 +235,6 @@
       <div class="form-row">
         <label for="lead-status">Status:</label>
         <select id="lead-status" name="lead-status">
-          <option value="" disabled selected>Select Status</option>
           <!-- Status options -->
         </select>
       </div>
