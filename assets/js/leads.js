@@ -40,7 +40,7 @@ async function populateUserDropdowns() {
     const querySnapshot = await getDocs(usersRef);
 
     // Clear previous options
-    picLeadsSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
+    picLeadsSelect.innerHTML = '<option value="Unassigned" selected>Unassigned</option>';
     picClosedSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
 
     // Check if there are documents
