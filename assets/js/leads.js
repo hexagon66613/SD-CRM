@@ -29,6 +29,16 @@ async function generateLeadsID() {
 async function populateUserDropdowns() {
   const picLeadsSelect = document.getElementById('pic-leads');
   const picClosedSelect = document.getElementById('pic-closed');
+
+  // Check if elements exist
+  if (!picLeadsSelect || !picClosedSelect) {
+    console.error('Dropdown elements not found:', {
+      picLeadsSelect,
+      picClosedSelect
+    });
+    return;
+  }
+
   const usersRef = collection(db, 'users');
   const querySnapshot = await getDocs(usersRef);
 
