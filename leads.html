@@ -42,9 +42,8 @@
       height: 100px; /* Set a default height */
     }
 
-    /* Hide elements visually but keep them in the DOM */
     .hidden {
-      display: none;
+      display: none !important; /* Forcefully hide elements */
     }
   </style>
 </head>
@@ -190,59 +189,41 @@
           <option value="Considering_Promo">Considering_Promo</option>
           <option value="Considering_Schedule">Considering_Schedule</option>
           <option value="Considering_Price">Considering_Price</option>
-          <option value="Considering_Only Survey">Considering_Only Survey</option>
+          <option value="Considering_Notes">Considering_Notes</option>
+          <option value="Wrong Number">Wrong Number</option>
+          <option value="On Process">On Process</option>
         </select>
       </div>
 
       <div class="form-row">
-        <label for="l2-result">L2: Result 2:</label>
-        <select id="l2-result" name="l2-result">
-          <option value="" disabled selected>Select L2 Result</option>
-          <option value="Busy_No Response_Price">Busy_No Response_Price</option>
-          <option value="Busy_No Response_Schedule">Busy_No Response_Schedule</option>
-          <option value="Busy_No Response_Promo">Busy_No Response_Promo</option>
-          <option value="Busy_No Response_Other Reason">Busy_No Response_Other Reason</option>
-          <option value="Busy_No Response_Out of Area">Busy_No Response_Out of Area</option>
-          <option value="Busy_Considering_Price">Busy_Considering_Price</option>
-          <option value="Busy_Considering_Schedule">Busy_Considering_Schedule</option>
-          <option value="Busy_Considering_Promo">Busy_Considering_Promo</option>
-          <option value="Busy_Considering_Other Reason">Busy_Considering_Other Reason</option>
-        </select>
-      </div>
-
-      <div class="form-row">
-        <label for="l3-result">L3: Result 3:</label>
-        <select id="l3-result" name="l3-result">
-          <option value="" disabled selected>Select L3 Result</option>
-          <option value="Asuransi">Asuransi</option>
-          <option value="Cicilan">Cicilan</option>
-          <option value="Add-On (Cabut gigi/Tambal gigi)">Add-On (Cabut gigi/Tambal gigi)</option>
-          <option value="Rontgen">Rontgen</option>
-          <option value="Kontrol Behel">Kontrol Behel</option>
-          <option value="Just Survey">Just Survey</option>
-          <option value="Diskusi">Diskusi</option>
-          <option value="Perawatan">Perawatan</option>
-          <option value="Jadwal full">Jadwal full</option>
-        </select>
-      </div>
-
-      <div class="form-row">
-        <label for="remarks">Remarks:</label>
-        <textarea id="remarks" name="remarks" placeholder="Optional"></textarea>
-      </div>
-
-      <div class="form-row">
-        <label for="pic-closed">PIC Closed:</label>
-        <select id="pic-closed" name="pic-closed">
-          <option value="Unassigned" selected>Unassigned</option>
+        <label for="l1-pic">PIC L1:</label>
+        <select id="l1-pic" name="l1-pic">
           <!-- Options populated by JavaScript -->
         </select>
       </div>
 
-      <button type="submit">Submit</button>
+      <div class="form-row">
+        <label for="lead-status">Status:</label>
+        <select id="lead-status" name="lead-status">
+          <option value="" disabled selected>Select Status</option>
+          <option value="L1">L1</option>
+          <option value="L2">L2</option>
+          <option value="L3">L3</option>
+          <option value="L4">L4</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="notes">Notes:</label>
+        <textarea id="notes" name="notes"></textarea>
+      </div>
+
+      <div class="form-row">
+        <button type="submit">Submit</button>
+      </div>
     </form>
   </div>
 
-  <script type="module" src="assets/js/leads.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 </html>
