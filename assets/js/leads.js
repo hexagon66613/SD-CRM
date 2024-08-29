@@ -59,7 +59,7 @@ async function populateUserDropdowns() {
 async function saveLeadsFormData(event) {
   event.preventDefault();
 
-  const leadsId = document.getElementById('lead-id').value;
+  const leadsId = await generateLeadsID(); // Generate new ID when form is submitted
   const leadName = document.getElementById('lead-name').value || ''; // Allow blank values
   const leadPhone = document.getElementById('lead-phone').value || ''; // Allow blank values
   const picLeads = document.getElementById('pic-leads').value || 'Unassigned'; // Default to Unassigned
@@ -101,7 +101,7 @@ async function saveLeadsFormData(event) {
 
     // Reset form and reload the page
     document.getElementById('leads-form').reset();
-    document.getElementById('lead-id').value = await generateLeadsID(); // Generate new ID
+    document.getElementById('lead-id').value = ''; // Clear Leads ID field
     document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
     // Optionally, you might want to redirect to the form page (e.g., reload or navigate)
     // window.location.href = 'leads.html'; // Uncomment this line if you want to navigate
@@ -110,8 +110,6 @@ async function saveLeadsFormData(event) {
 
 // Initialize form and populate dropdowns
 document.addEventListener('DOMContentLoaded', async () => {
-  const leadsId = await generateLeadsID();
-  document.getElementById('lead-id').value = leadsId;
   document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
   populateUserDropdowns();
   document.getElementById('leads-form').addEventListener('submit', saveLeadsFormData);
