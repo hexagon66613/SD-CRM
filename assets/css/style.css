@@ -129,14 +129,19 @@ form {
 .form-row label {
   width: 150px; /* Fixed width for labels */
   margin-right: 10px; /* Space between label and result field */
+  font-weight: bold; /* Bold for better readability */
 }
 
 /* Style for result fields (spans) */
 .form-value {
   flex: 1; /* Take up remaining space */
-  text-align: left; /* Align text to the left */
+  background-color: #f9f9f9;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
+/* Input and select styles */
 input[type="text"],
 input[type="number"],
 input[type="date"],
