@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visit Input</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- Include Select2 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
   <header>
@@ -28,22 +27,13 @@
   <div class="form-section">
     <h2>Visit Input Form</h2>
     <form id="visit-form">
-      <div class="form-row hidden">
-        <label for="visit-id">Visit ID:</label>
-        <input type="text" id="visit-id" name="visit-id" readonly>
-      </div>
+      <label for="visit-id">Visit ID:</label>
+      <input type="text" id="visit-id" name="visit-id" readonly>
 
-      <div class="form-row hidden">
-        <label for="leads-id">Leads ID:</label>
-        <input type="text" id="leads-id" name="leads-id" readonly>
-      </div>
-
-      <div class="form-row">
-        <label for="booking-id">Booking ID:</label>
-        <select id="booking-id" name="booking-id">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="booking-id">Booking ID:</label>
+      <select id="booking-id" name="booking-id" required>
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
       <div class="form-row">
         <label for="nama">Nama:</label>
@@ -52,83 +42,60 @@
 
       <div class="form-row">
         <label for="no-telp">No. telp:</label>
-        <input type="text" id="no-telp" name="no-telp" readonly>
+        <span id="no-telp" class="form-value"></span>
       </div>
 
-      <div class="form-row">
-        <label for="perawatan-utama">Perawatan Utama:</label>
-        <select id="perawatan-utama" name="perawatan-utama">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="perawatan-utama">Perawatan Utama:</label>
+      <select id="perawatan-utama" name="perawatan-utama" required>
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
-      <div class="form-row">
-        <label for="membership">7R Membership:</label>
-        <select id="membership" name="membership" required>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
+      <label for="membership">7R Membership:</label>
+      <select id="membership" name="membership" required>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
 
-      <div class="form-row">
-        <label for="booking-date">Booking Date:</label>
-        <input type="date" id="booking-date" name="booking-date" readonly>
-      </div>
+      <label for="booking-date">Booking Date:</label>
+      <span id="booking-date" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="booking-time">Booking Time:</label>
-        <input type="time" id="booking-time" name="booking-time" readonly>
-      </div>
+      <label for="booking-time">Booking Time:</label>
+      <span id="booking-time" class="form-value"></span>
 
-      <div class="form-row">
-        <label for="perawatan-add-on-1">Perawatan Add-On 1:</label>
-        <select id="perawatan-add-on-1" name="perawatan-add-on-1">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="perawatan-add-on-1">Perawatan Add-On 1:</label>
+      <select id="perawatan-add-on-1" name="perawatan-add-on-1">
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
-      <div class="form-row">
-        <label for="perawatan-add-on-2">Perawatan Add-On 2:</label>
-        <select id="perawatan-add-on-2" name="perawatan-add-on-2">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="perawatan-add-on-2">Perawatan Add-On 2:</label>
+      <select id="perawatan-add-on-2" name="perawatan-add-on-2">
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
-      <div class="form-row">
-        <label for="perawatan-add-on-3">Perawatan Add-On 3:</label>
-        <select id="perawatan-add-on-3" name="perawatan-add-on-3">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="perawatan-add-on-3">Perawatan Add-On 3:</label>
+      <select id="perawatan-add-on-3" name="perawatan-add-on-3">
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
-      <div class="form-row">
-        <label for="perawatan-add-on-4">Perawatan Add-On 4:</label>
-        <select id="perawatan-add-on-4" name="perawatan-add-on-4">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="perawatan-add-on-4">Perawatan Add-On 4:</label>
+      <select id="perawatan-add-on-4" name="perawatan-add-on-4">
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
-      <div class="form-row">
-        <label for="perawatan-add-on-5">Perawatan Add-On 5:</label>
-        <select id="perawatan-add-on-5" name="perawatan-add-on-5">
-          <!-- Options populated by JavaScript -->
-        </select>
-      </div>
+      <label for="perawatan-add-on-5">Perawatan Add-On 5:</label>
+      <select id="perawatan-add-on-5" name="perawatan-add-on-5">
+        <option></option> <!-- Placeholder for Select2 -->
+      </select>
 
-      <div class="form-row">
-        <label for="total-bill">Total Bill:</label>
-        <input type="text" id="total-bill" name="total-bill" readonly>
-      </div>
+      <label for="total-bill">Total Bill:</label>
+      <span id="total-bill" class="form-value"></span>
 
       <button type="submit">Submit</button>
     </form>
   </div>
 
-  <!-- Include jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Include Select2 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <!-- Include custom JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
   <script type="module" src="assets/js/visit.js"></script>
 </body>
 </html>
