@@ -1,107 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visit Input</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-</head>
-<body>
-  <header>
-    <div class="logo-container">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4bdT_upKtKcVsUImDjalLZFhksYFqtCrxcg&s" alt="SOZO Dental-CRM Logo" id="logo">
-      <h1>SOZO Dental-CRM</h1>
-      <button id="profileButton">Profile</button>
-    </div>
-  </header>
-
-  <nav>
-    <ul>
-      <li><a href="index.html">Back to Main Menu</a></li>
-      <li><a href="leads.html">Leads Input</a></li>
-      <li><a href="booking.html">Booking Input</a></li>
-    </ul>
-  </nav>
-
-  <div class="form-section">
-    <h2>Visit Input Form</h2>
-    <form id="visit-form">
-      <label for="visit-id">Visit ID:</label>
-      <input type="text" id="visit-id" name="visit-id" readonly>
-
-      <label for="booking-id">Booking ID:</label>
-      <select id="booking-id" name="booking-id" required>
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <div class="form-row">
-        <label for="nama">Nama:</label>
-        <span id="nama" class="form-value"></span>
-      </div>
-
-      <div class="form-row">
-        <label for="no-telp">No. telp:</label>
-        <span id="no-telp" class="form-value"></span>
-      </div>
-
-      <label for="perawatan-utama">Perawatan Utama:</label>
-      <select id="perawatan-utama" name="perawatan-utama" required>
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <label for="membership">7R Membership:</label>
-      <select id="membership" name="membership" required>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-
-      <div class="form-row">
-        <label for="booking-date">Booking Date:</label>
-        <span id="booking-date" class="form-value"></span>
-      </div>
-
-      <div class="form-row">
-        <label for="booking-time">Booking Time:</label>
-        <span id="booking-time" class="form-value"></span>
-      </div>
-
-      <label for="perawatan-add-on-1">Perawatan Add-On 1:</label>
-      <select id="perawatan-add-on-1" name="perawatan-add-on-1">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <label for="perawatan-add-on-2">Perawatan Add-On 2:</label>
-      <select id="perawatan-add-on-2" name="perawatan-add-on-2">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <label for="perawatan-add-on-3">Perawatan Add-On 3:</label>
-      <select id="perawatan-add-on-3" name="perawatan-add-on-3">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <label for="perawatan-add-on-4">Perawatan Add-On 4:</label>
-      <select id="perawatan-add-on-4" name="perawatan-add-on-4">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <label for="perawatan-add-on-5">Perawatan Add-On 5:</label>
-      <select id="perawatan-add-on-5" name="perawatan-add-on-5">
-        <option></option> <!-- Placeholder for Select2 -->
-      </select>
-
-      <div class="form-row">
-        <label for="total-bill">Total Bill:</label>
-        <span id="total-bill" class="form-value"></span>
-      </div>
-
-      <button type="submit">Submit</button>
-    </form>
+<form id="visit-form">
+  <div class="form-row">
+    <label for="visit-id">Visit ID:</label>
+    <input type="text" id="visit-id" name="visit-id" readonly>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <script type="module" src="assets/js/visit.js"></script>
-</body>
-</html>
+  <div class="form-row">
+    <label for="leads-id">Leads ID:</label>
+    <select id="leads-id" name="leads-id">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="booking-id">Booking ID:</label>
+    <select id="booking-id" name="booking-id">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="nama">Nama:</label>
+    <span id="nama" class="form-value"></span>
+  </div>
+
+  <div class="form-row">
+    <label for="no-telp">No. Telp:</label>
+    <span id="no-telp" class="form-value"></span>
+  </div>
+
+  <div class="form-row">
+    <label for="booking-date">Booking Date:</label>
+    <input type="date" id="booking-date" name="booking-date" readonly>
+  </div>
+
+  <div class="form-row">
+    <label for="booking-time">Booking Time:</label>
+    <input type="time" id="booking-time" name="booking-time" readonly>
+  </div>
+
+  <div class="form-row">
+    <label for="perawatan-utama">Perawatan Utama:</label>
+    <select id="perawatan-utama" name="perawatan-utama">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="membership">7R Membership:</label>
+    <select id="membership" name="membership" required>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="perawatan-addon1">Perawatan Add-On 1:</label>
+    <select id="perawatan-addon1" name="perawatan-addon1">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="perawatan-addon2">Perawatan Add-On 2:</label>
+    <select id="perawatan-addon2" name="perawatan-addon2">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="perawatan-addon3">Perawatan Add-On 3:</label>
+    <select id="perawatan-addon3" name="perawatan-addon3">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="perawatan-addon4">Perawatan Add-On 4:</label>
+    <select id="perawatan-addon4" name="perawatan-addon4">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="perawatan-addon5">Perawatan Add-On 5:</label>
+    <select id="perawatan-addon5" name="perawatan-addon5">
+      <!-- Options populated dynamically -->
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="total-bill">Total Bill:</label>
+    <input type="number" id="total-bill" name="total-bill" step="0.01" placeholder="IDR">
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
