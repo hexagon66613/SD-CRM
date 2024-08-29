@@ -30,19 +30,11 @@ async function populateUserDropdowns() {
   const picLeadsSelect = document.getElementById('pic-leads');
   const picClosedSelect = document.getElementById('pic-closed');
 
-  // Check if elements exist
-  if (!picLeadsSelect || !picClosedSelect) {
-    console.error('Dropdown elements not found:', {
-      picLeadsSelect,
-      picClosedSelect
-    });
-    return;
-  }
-
+async function populateUserDropdowns() {
+  const picLeadsSelect = document.getElementById('pic-leads');
+  const picClosedSelect = document.getElementById('pic-closed');
   const usersRef = collection(db, 'users');
-  try {
-    const querySnapshot = await getDocs(usersRef);
-
+  const querySnapshot = await getDocs(usersRef);
     // Clear previous options
     picLeadsSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
     picClosedSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
