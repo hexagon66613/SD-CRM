@@ -92,6 +92,7 @@ async function saveLeadsFormData(event) {
   const l3Result = document.getElementById('l3-result').value || ''; // Allow blank values
   const remarks = document.getElementById('remarks').value || ''; // Allow blank values
   const picClosed = document.getElementById('pic-closed').value || 'Unassigned'; // Default to Unassigned
+  const status = document.getElementById('lead-status').value || 'Open'; // Default to Open
 
   const leadsRef = doc(db, 'leads', leadsId); // Use Leads ID as the document ID
   const docSnapshot = await getDoc(leadsRef);
@@ -114,6 +115,7 @@ async function saveLeadsFormData(event) {
       l3Result,
       remarks,
       picClosed,
+      status // Save the initial status
     });
 
     alert('Leads data saved successfully!');
@@ -122,8 +124,6 @@ async function saveLeadsFormData(event) {
     document.getElementById('leads-form').reset();
     document.getElementById('lead-id').value = await generateLeadsID(); // Generate new ID
     document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
-    // Optionally, you might want to redirect to the form page (e.g., reload or navigate)
-    // window.location.href = 'leads.html'; // Uncomment this line if you want to navigate
   }
 }
 
@@ -134,15 +134,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Debugging: Check if the elements exist at DOMContentLoaded
   const picLeadsSelect = document.getElementById('pic-leads');
   const picClosedSelect = document.getElementById('pic-closed');
+  const statusSelect = document.getElementById('lead-status'); // Add this line
+
   console.log('Dropdown elements at DOMContentLoaded:', {
     picLeadsSelect,
-    picClosedSelect
+    picClosedSelect,
+    statusSelect // Add this line
   });
 
   // Generate Leads ID and set the date
   document.getElementById('lead-id').value = await generateLeadsID();
   document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
-  
+
+  // Set the initial value of the Status dropdown
+  statusSelect.value = 'Open'; // Ensure the status is set to 'Open'
+
   // Populate dropdowns
   populateUserDropdowns();
   
