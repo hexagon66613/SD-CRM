@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     placeholder: 'Select Perawatan Add-On 1',
     allowClear: true
   });
-  perawatanAddOn2Select.select2({
+  perawatanAddOn2Select({
     placeholder: 'Select Perawatan Add-On 2',
     allowClear: true
   });
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       placeholder: 'Select Perawatan Add-On 1',
       allowClear: true
     });
-    perawatanAddOn2Select.select2({
+    perawatanAddOn2Select({
       data: formattedOptions,
       placeholder: 'Select Perawatan Add-On 2',
       allowClear: true
@@ -153,18 +153,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           perawatanAddOn3Select.val(data['Perawatan Add-On 3'] || '').trigger('change');
           perawatanAddOn4Select.val(data['Perawatan Add-On 4'] || '').trigger('change');
           perawatanAddOn5Select.val(data['Perawatan Add-On 5'] || '').trigger('change');
-
-          // Calculate total bill
-          const perawatanCost = {
-            'Behel Gigi': 500000,
-            'Bleaching': 600000,
-            // Add other perawatan costs here
-          };
-          let totalBill = perawatanCost[data['Perawatan']] || 0;
-          [data['Perawatan Add-On 1'], data['Perawatan Add-On 2'], data['Perawatan Add-On 3'], data['Perawatan Add-On 4'], data['Perawatan Add-On 5']].forEach(addOn => {
-            totalBill += perawatanCost[addOn] || 0;
-          });
-          $('#total-bill').val(formatIDR(totalBill));
         } else {
           console.log('No such document!');
         }
@@ -195,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Perawatan Add-On 3': $('#perawatan-add-on-3').val(),
         'Perawatan Add-On 4': $('#perawatan-add-on-4').val(),
         'Perawatan Add-On 5': $('#perawatan-add-on-5').val(),
-        'Total Bill': $('#total-bill').val(),
+        'Total Bill': $('#total-bill').val(), // User-input Total Bill
       };
       // Save visit data to Firestore using Visit ID as document name
       await setDoc(doc(db, 'visits', visitID), formData);
