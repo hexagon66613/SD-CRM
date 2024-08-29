@@ -120,7 +120,17 @@ async function saveLeadsFormData(event) {
 
 // Initialize form and populate dropdowns
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('DOM fully loaded and parsed');
   document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
+  
+  // Debugging: Check if the elements exist at DOMContentLoaded
+  const picLeadsSelect = document.getElementById('pic-leads');
+  const picClosedSelect = document.getElementById('pic-closed');
+  console.log('Dropdown elements at DOMContentLoaded:', {
+    picLeadsSelect,
+    picClosedSelect
+  });
+
   populateUserDropdowns();
   document.getElementById('leads-form').addEventListener('submit', saveLeadsFormData);
 });
