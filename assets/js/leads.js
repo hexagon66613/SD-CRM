@@ -1,4 +1,4 @@
-import { db, auth } from './firebase-config.js';
+import { db, auth } from './firebase-config.js';  // Import the Firebase config
 import { collection, doc, setDoc, getDocs, query, orderBy, limit, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
@@ -9,10 +9,10 @@ async function generateLeadsID() {
   const querySnapshot = await getDocs(q);
 
   if (querySnapshot.empty) {
-    return 'SDL000000000001';
+    return 'SDL000000000001'; // Start with the initial ID
   } else {
     const lastDoc = querySnapshot.docs[0];
-    const lastID = lastDoc.data().leadsId;
+    const lastID = lastDoc.data().leadsId; // Fetching Leads ID from document data
 
     const lastIDNumber = parseInt(lastID.replace('SDL', ''), 10);
     if (isNaN(lastIDNumber)) {
@@ -39,13 +39,16 @@ async function populateUserDropdowns() {
     const usersRef = collection(db, 'users');
     const querySnapshot = await getDocs(usersRef);
 
+    // Clear previous options
     picLeadsSelect.innerHTML = '<option value="Unassigned" selected>Unassigned</option>';
     picClosedSelect.innerHTML = '<option value="Unassigned">Unassigned</option>';
 
+    // Check if there are documents
     if (querySnapshot.empty) {
       console.warn('No users found in the collection');
     }
 
+    // Populate options for both dropdowns
     querySnapshot.forEach(doc => {
       const username = doc.data().username;
       if (username) {
@@ -59,9 +62,10 @@ async function populateUserDropdowns() {
       }
     });
 
+    // Set the initial value for PIC Leads to the logged-in user
     onAuthStateChanged(auth, user => {
       if (user) {
-        const userEmail = user.email;
+        const userEmail = user.email; // Assuming you use email for authentication
         picLeadsSelect.value = userEmail;
       }
     });
@@ -74,26 +78,27 @@ async function populateUserDropdowns() {
 async function saveLeadsFormData(event) {
   event.preventDefault();
 
-  const leadsId = document.getElementById('lead-id').value;
-  const leadName = document.getElementById('lead-name').value || '';
-  const leadPhone = document.getElementById('lead-phone').value || '';
-  const picLeads = document.getElementById('pic-leads').value || 'Unassigned';
-  const channel = document.getElementById('channel').value || '';
-  const leadsFrom = document.getElementById('lead-from').value || '';
-  const dateFirstChat = document.getElementById('date-first-chat').value || '';
-  const dateCreated = document.getElementById('date-created').value;
-  const perawatan = document.getElementById('perawatan').value || '';
-  const l1Result = document.getElementById('l1-result').value || '';
-  const l2Result = document.getElementById('l2-result').value || '';
-  const l3Result = document.getElementById('l3-result').value || '';
-  const remarks = document.getElementById('remarks').value || '';
-  const picClosed = document.getElementById('pic-closed').value || 'Unassigned';
-  const status = document.getElementById('lead-status').value || 'Open';
+  const statusSelect = document.getElementById('lead-status');
+  if (!statusSelect) {
+    console.error('Element with ID "lead-status" not found.');
+    return;
+  }
 
-  console.log('Form data:', {
-    leadsId, leadName, leadPhone, picLeads, channel, leadsFrom, dateFirstChat,
-    dateCreated, perawatan, l1Result, l2Result, l3Result, remarks, picClosed, status
-  });
+  const leadsId = document.getElementById('lead-id').value;
+  const leadName = document.getElementById('lead-name').value || ''; // Allow blank values
+  const leadPhone = document.getElementById('lead-phone').value || ''; // Allow blank values
+  const picLeads = document.getElementById('pic-leads').value || 'Unassigned'; // Default to Unassigned
+  const channel = document.getElementById('channel').value || ''; // Allow blank values
+  const leadsFrom = document.getElementById('lead-from').value || ''; // Allow blank values
+  const dateFirstChat = document.getElementById('date-first-chat').value || ''; // Allow blank values
+  const dateCreated = document.getElementById('date-created').value; // Read-only
+  const perawatan = document.getElementById('perawatan').value || ''; // Allow blank values
+  const l1Result = document.getElementById('l1-result').value || ''; // Allow blank values
+  const l2Result = document.getElementById('l2-result').value || ''; // Allow blank values
+  const l3Result = document.getElementById('l3-result').value || ''; // Allow blank values
+  const remarks = document.getElementById('remarks').value || ''; // Allow blank values
+  const picClosed = document.getElementById('pic-closed').value || 'Unassigned'; // Default to Unassigned
+  const status = statusSelect.value || 'Open'; // Default to Open
 
   const leadsRef = doc(db, 'leads', leadsId);
   const docSnapshot = await getDoc(leadsRef);
@@ -121,16 +126,18 @@ async function saveLeadsFormData(event) {
 
     alert('Leads data saved successfully!');
 
+    // Reset form and reload the page
     document.getElementById('leads-form').reset();
-    document.getElementById('lead-id').value = await generateLeadsID();
-    document.getElementById('date-created').value = new Date().toISOString().split('T')[0];
+    document.getElementById('lead-id').value = await generateLeadsID(); // Generate new ID
+    document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
   }
 }
 
 // Initialize form and populate dropdowns
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('DOM fully loaded and parsed');
-
+  
+  // Debugging: Check if the elements exist at DOMContentLoaded
   const picLeadsSelect = document.getElementById('pic-leads');
   const picClosedSelect = document.getElementById('pic-closed');
   const statusSelect = document.getElementById('lead-status');
@@ -141,13 +148,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     statusSelect
   });
 
+  if (!statusSelect) {
+    console.error('Element with ID "lead-status" not found.');
+    return;
+  }
+
+  // Generate Leads ID and set the date
   document.getElementById('lead-id').value = await generateLeadsID();
-  document.getElementById('date-created').value = new Date().toISOString().split('T')[0];
+  document.getElementById('date-created').value = new Date().toISOString().split('T')[0]; // Set current date
 
-  statusSelect.value = 'Open';
+  // Set the initial value of the Status dropdown
+  statusSelect.value = 'Open'; // Ensure the status is set to 'Open'
+  statusSelect.style.display = 'none'; // Hide the Status dropdown
 
+  // Populate dropdowns
   populateUserDropdowns();
   
+  // Add form submit event listener
   const form = document.getElementById('leads-form');
   if (form) {
     form.addEventListener('submit', saveLeadsFormData);
