@@ -96,7 +96,7 @@ async function saveLeadsFormData(event) {
   const l1Result = document.getElementById('l1-result').value || ''; // Allow blank values
   const l2Result = document.getElementById('l2-result').value || ''; // Allow blank values
   const l3Result = document.getElementById('l3-result').value || ''; // Allow blank values
-  const remarks = document.getElementById('remarks').value || ''; // Allow blank values
+  const remarks = document.getElementById('notes').value || ''; // Use 'notes' for remarks
   const picClosed = document.getElementById('pic-closed').value || 'Unassigned'; // Default to Unassigned
   const status = statusSelect.value || 'Open'; // Default to Open
 
