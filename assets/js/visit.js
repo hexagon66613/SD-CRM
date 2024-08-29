@@ -153,6 +153,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           perawatanAddOn3Select.val(data['Perawatan Add-On 3'] || '').trigger('change');
           perawatanAddOn4Select.val(data['Perawatan Add-On 4'] || '').trigger('change');
           perawatanAddOn5Select.val(data['Perawatan Add-On 5'] || '').trigger('change');
+
+          // Set Leads ID
+          $('#leads-id').val(data['Leads ID'] || '');
         } else {
           console.log('No such document!');
         }
@@ -171,6 +174,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const formData = {
         'Visit ID': visitID,
         'Booking ID': $('#booking-id').val(),
+        'Leads ID': $('#leads-id').val(),
         'Nama': $('#nama').text(),
         'No. telp': $('#no-telp').text(),
         'Perawatan Utama': $('#perawatan-utama').val(),
